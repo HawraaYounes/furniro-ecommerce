@@ -12,9 +12,10 @@ export default {
         success: "#2EC1AC",   // Teal Green
         light: "#FAF3EA",     // Off White
         graydarkest: "#333333", // Dark Gray
-        graydarker: "#3A3A3A", // Darker Gray
+        graydarker: "#666666", // Darker Gray
         graydark: "#898989",   // Medium Gray
-        gray: "#B0B0B0",       // Light Gray
+        gray: "#9F9F9F",
+        graylight: "#B0B0B0",       // Light Gray
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
