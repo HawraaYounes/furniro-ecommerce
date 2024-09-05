@@ -1,14 +1,10 @@
 import "./App.css";
-import Hero from "./components/Hero";
-import Nav from "./components/Nav";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <>
-      <div className=" bg-hero-pattern bg-no-repeat bg-cover bg-center " >
-        <Nav />
-        <Hero />
-      </div>
+        <Home/>
     </>
   );
 }
