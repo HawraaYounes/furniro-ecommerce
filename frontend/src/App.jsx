@@ -5,7 +5,7 @@ import Nav from "./components/Nav";
 function App() {
   return (
     <>
-      <div className="bg-hero-pattern bg-no-repeat bg-cover bg-center" >
+      <div className=" bg-hero-pattern bg-no-repeat bg-cover bg-center " >
         <Nav />
         <Hero />
       </div>
