@@ -1,4 +1,12 @@
-import { userAlertIcon, searchIcon, favIcon, cartIcon } from "../assets";
+import {
+  userAlertIcon,
+  searchIcon,
+  favIcon,
+  cartIcon,
+  diningImg,
+  livingImg,
+  bedroomImg,
+} from "../assets";
 export const navLinks = [
   {
     id: "home",
@@ -33,5 +41,22 @@ export const navIcons = [
   {
     id: "cart",
     icon: cartIcon,
+  },
+];
+export const categories = [
+  {
+    id: "dining",
+    name: "Dining",
+    image: diningImg,
+  },
+  {
+    id: "living",
+    name: "Living",
+    image: livingImg,
+  },
+  {
+    id: "bedroom",
+    name: "Bedroom",
+    image: bedroomImg,
   },
 ];
