@@ -2,6 +2,7 @@ import React from "react";
 import Nav from "../components/Nav";
 import Hero from "../sections/home/Hero";
 import Categories from "../sections/home/Categories";
+import Products from "../sections/home/Products";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
         <Hero />
       </div>
       <Categories />
+      <Products />
     </>
   );
 };

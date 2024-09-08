@@ -10,7 +10,7 @@ const Hero = () => {
         <p className="font-poppins font-medium text-sm md:text-lg text-graydarkest mt-4">
           Explore our latest designs, crafted for modern living. Discover comfort and style for your home.
         </p>
-        <button className="bg-[#B88E2F] text-white py-2 px-4 md:py-[25px] md:px-[72px] md:mt-10 mt-1 font-bold outline">BUY NOW</button>
+        <button className="bg-[#B88E2F] text-white py-2 px-4 md:py-[25px] md:px-[72px] md:mt-10 mt-1 font-bold ">BUY NOW</button>
       </div>
     </div>
   );
