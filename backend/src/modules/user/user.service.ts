@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
-export class UserService {
+export class UsersService {
 
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -29,6 +29,10 @@ export class UserService {
 
   viewUser(id: number): Promise<User> {
     return this.userRepository.findOneBy({ id });
+  }
+
+  findOneBy(email: string): Promise<User> {
+    return this.userRepository.findOneBy({ email });
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
