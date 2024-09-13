@@ -10,6 +10,8 @@ import {
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../enums/roles.enum';
 
 /**
  * whatever the string pass in controller decorator it will be appended to
@@ -38,6 +40,7 @@ export class UserController {
    * GET http://localhost:3000/user
    */
   @Get()
+  @Roles(Role.Admin)
   findAll() {
     return this.userService.findAllUser();
   }
