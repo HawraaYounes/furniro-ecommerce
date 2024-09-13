@@ -1,12 +1,14 @@
 import {
     IsAlphanumeric,
     IsEmail,
+    IsEnum,
     IsNotEmpty,
     IsString,
     Matches,
     MinLength,
   } from 'class-validator';
-  
+  import { Role } from 'src/modules/enums/roles.enum';
+
   const passwordRegEx =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
   
@@ -36,4 +38,8 @@ import {
       one special character`,
     })
     password: string;
+
+    @IsNotEmpty()
+    @IsEnum(Role, { each: true, message: 'Invalid role provided.' })
+    roles?: Role[] ; // Default to Role.User if no role is provided
   }
