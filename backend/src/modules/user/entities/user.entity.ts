@@ -21,7 +21,6 @@ export class User {
 
   @Column({
     type: 'simple-array', 
-    default: [Role.User] 
   })
   roles: Role[];
 }

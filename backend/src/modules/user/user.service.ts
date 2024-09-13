@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { Role } from '../enums/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,7 @@ export class UsersService {
     user.email = createUserDto.email;
     user.username = createUserDto.username;
     user.password = createUserDto.password;
+    user.roles = createUserDto.roles ?? [Role.User];
     return this.userRepository.save(user);
   }
 
