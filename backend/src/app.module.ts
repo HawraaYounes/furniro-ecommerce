@@ -17,7 +17,7 @@ import { AuthModule } from './modules/auth/auth.module';
       entities: [User],
       database: 'furniro-db',
       synchronize: true,
-      logging: true,
+      //logging: true,
     }),
     UserModule,AuthModule
   ],
