@@ -1,11 +1,11 @@
 import Nav from "../components/Nav"
-import LoginForm from "../sections/login/LoginForm"
+import AuthForm from "../sections/auth/AuthForm"
 
 const Login = () => {
   return (
     <>
       <Nav/>
-      <LoginForm/>
+      <AuthForm/>
     </>
   )
 }
