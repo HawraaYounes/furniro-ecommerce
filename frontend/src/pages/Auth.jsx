@@ -1,6 +1,7 @@
 import { json, redirect } from "react-router-dom";
 import Nav from "../components/Nav";
 import AuthForm from "../sections/auth/AuthForm";
+import axios from "axios";
 
 const Auth = () => {
   return (
@@ -42,19 +43,23 @@ export async function action({ request }) {
     authData.name = name;
   }
 
+  try {
+    const response = await axios.post(`http://localhost:3000/auth/${mode}`, authData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.data)
 
-  const response = await fetch(`http://localhost:3000/auth/${mode}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(authData),
-  });
-
-  if (response.status === 401 || response.status===404) {
-    return response;
+    // Redirect after successful login/signup
+    return redirect('/');
+  } catch (error) {
+    if (error.response) {
+      alert(error.response.data.message)
+      // Handle specific errors
+      
+    }
+    // Handle generic errors
+    return json({ message: "An unexpected error occurred!" }, { status: 500 });
   }
-
-  // Redirect after successful login/signup
-  return redirect('/');
 }
