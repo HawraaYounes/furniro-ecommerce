@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { UsersService } from "../user/user.service";
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from "./dto/signin.dto";
@@ -17,7 +17,10 @@ export class AuthService {
       });
     }
     if (user?.password !== signInDto.password) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException({
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: 'Incorrect email and password!',
+      });
     }
     const payload = { sub: user.id, email: user.email, roles: user.roles };
     return {
@@ -26,7 +29,14 @@ export class AuthService {
   }
 
   async signUp(payload: SignUpDto) {
-    const user = await this.usersService.createUser(payload);
-    return user;
+    const user = await this.usersService.findOneBy(payload.email);
+    if (user) {
+      throw new ConflictException({
+        statusCode: HttpStatus.CONFLICT,
+        message: 'Email address is already registered. Please use a different email or log in.',
+      });
+    }
+    const newUser = await this.usersService.createUser(payload);
+    return newUser;
   }
 }

@@ -33,10 +33,6 @@ export async function action({ request }) {
     const name = data.get("name");
     const confirmPassword = data.get("confirmPassword");
 
-    if (!name || !confirmPassword) {
-      return json({ message: "Name and confirm password are required!" }, { status: 422 });
-    }
-
     if (authData.password !== confirmPassword) {
       return json({ message: "Passwords do not match!" }, { status: 422 });
     }
