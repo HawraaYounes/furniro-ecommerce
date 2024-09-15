@@ -3,7 +3,6 @@ import Input from "../../components/Input";
 import styles from "../../style";
 import Button from "../../components/Button";
 
-
 const LoginForm = () => {
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
@@ -13,9 +12,16 @@ const LoginForm = () => {
       <h2 className={`${styles.heading}`}>
         {isLogin ? "Log In" : "Create New Account"}
       </h2>
-      <Input label="Email" />
-      <Input label="Password" />
-      {!isLogin && <Input label="Confirm Password" />}
+      {!isLogin && <Input label="Name" name="name" />}
+      <Input label="Email" name="email" />
+      <Input label="Password" name="password" type="password" />
+      {!isLogin && (
+        <Input
+          label="Confirm Password"
+          type="password"
+          
+        />
+      )}
       <Button label="Save" type="submit" />
       <Link to={`?mode=${isLogin ? "signup" : "login"}`}>
         {isLogin
