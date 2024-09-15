@@ -17,7 +17,7 @@ export async function action({ request }) {
   const data = await request.formData();
   const searchParams = new URL(request.url).searchParams;
 
-  const mode = searchParams.get("mode") || "login";
+  const mode = searchParams.get("mode") || "signup";
   if (mode !== "login" && mode !== "signup") {
     throw json({ message: "Invalid mode!" }, { status: 422 });
   }
@@ -28,7 +28,6 @@ export async function action({ request }) {
     password: data.get("password"),
   };
 
-  // Handle additional fields for signup
   if (mode === "signup") {
     const name = data.get("name");
     const confirmPassword = data.get("confirmPassword");
@@ -40,12 +39,10 @@ export async function action({ request }) {
     if (authData.password !== confirmPassword) {
       return json({ message: "Passwords do not match!" }, { status: 422 });
     }
-
     authData.name = name;
-    // Optionally include more fields here as needed
   }
 
-  // Send request to backend
+
   const response = await fetch(`http://localhost:3000/auth/${mode}`, {
     method: "POST",
     headers: {
@@ -54,7 +51,7 @@ export async function action({ request }) {
     body: JSON.stringify(authData),
   });
 
-  if (response.status === 401) {
+  if (response.status === 401 || response.status===404) {
     return response;
   }
 

@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 
 const LoginForm = () => {
   const [searchParams] = useSearchParams();
-  const isLogin = searchParams.get("mode") === "login";
+  const isLogin = searchParams.get("mode") === "signup";
 
   return (
     <Form className="" method="post">
@@ -19,7 +19,7 @@ const LoginForm = () => {
         <Input
           label="Confirm Password"
           type="password"
-          
+          name="confirmPassword"
         />
       )}
       <Button label="Save" type="submit" />
