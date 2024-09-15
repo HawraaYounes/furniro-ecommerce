@@ -10,7 +10,7 @@ const passwordRegEx =
 export class SignInDto {
 
   @IsNotEmpty()
-  @IsEmail(null, { message: 'Please provide valid Email.' })
+  @IsEmail({}, { message: 'Please provide valid Email.' })
   email: string;
 
   @IsNotEmpty()

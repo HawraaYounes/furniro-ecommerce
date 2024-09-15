@@ -20,7 +20,7 @@ export class CreateUserDto {
   name: string;
 
   @IsNotEmpty()
-  @IsEmail(null, { message: 'Please provide valid Email.' })
+  @IsEmail({}, { message: 'Please provide valid Email.' })
   email: string;
 
   @IsNotEmpty()
