@@ -9,11 +9,11 @@ const LoginForm = () => {
 
   return (
     <div className="flex items-center justify-center w-full">
-      <Form method="post" >
+      <Form method="post">
         <h2 className={`${styles.heading} my-9`}>
           {isLogin ? "Log In" : "Create New Account"}
         </h2>
-        <div className={`flex flex-col `}>
+        <div className={`grid grid-cols-1 gap-4 ${!isLogin ? 'md:grid-cols-2' : ''}`}>
           {!isLogin && <Input label="Name" name="name" placeholder="John Doe"/>}
           <Input label="Email" name="email" placeholder="johndoe@gmail.com" />
           <Input
@@ -32,7 +32,7 @@ const LoginForm = () => {
           )}
         </div>
 
-        <Button label="Save" type="submit" />
+        <Button label={isLogin? "LOGIN": "SIGN UP"} type="submit" />
         <Link
           to={`?mode=${isLogin ? "signup" : "login"}`}
           className="block mt-4 text-blue-600 hover:underline"

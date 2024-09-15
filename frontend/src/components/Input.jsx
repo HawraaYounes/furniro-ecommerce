@@ -1,8 +1,7 @@
-import React from "react";
 
-const Input = ({ label, name, placeholder, type = "text" }) => {
+const Input = ({ label, name, placeholder, type = "text", width = "w-full" }) => {
   return (
-    <div className="flex flex-col items-start">
+    <div className={`flex flex-col items-start ${width}`}>
       <label
         htmlFor={name}
         className="block mb-[22px] font-medium font-poppins"
@@ -14,7 +13,7 @@ const Input = ({ label, name, placeholder, type = "text" }) => {
         name={name}
         type={type}
         placeholder={placeholder}
-        className="bg-white border border-gray mb-3 py-[25px] px-[30px] w-full rounded-[10px] focus:outline-none"
+        className="bg-white border border-gray mb-3 py-[25px] px-[30px] rounded-[10px] focus:outline-none min-w-[400px] max-w-[500px]"
         required
       />
     </div>
