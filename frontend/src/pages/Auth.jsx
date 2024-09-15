@@ -1,13 +1,24 @@
-import Nav from "../components/Nav"
-import AuthForm from "../sections/auth/AuthForm"
+import Nav from "../components/Nav";
+import AuthForm from "../sections/auth/AuthForm";
 
-const Login = () => {
+const Auth = () => {
   return (
     <>
-      <Nav/>
-      <AuthForm/>
+      <Nav />
+      <AuthForm />
     </>
-  )
-}
+  );
+};
 
-export default Login
+export default Auth;
+
+export async function action({ request }) {
+  const data = await request.formData();
+  const authData = {
+    email: data.get("email"),
+    password: data.get("password"),
+  };
+
+  console.log("AUTH DATA", authData);
+  return null;
+}
