@@ -29,20 +29,25 @@ export const navIcons = [
   {
     id: "user",
     icon: userAlertIcon,
+    link: "/auth",
   },
   {
     id: "search",
     icon: searchIcon,
+    link: "/search",
   },
   {
     id: "fav",
     icon: favIcon,
+    link: "/favorites",
   },
   {
     id: "cart",
     icon: cartIcon,
+    link: "/cart",
   },
 ];
+
 export const categories = [
   {
     id: "dining",

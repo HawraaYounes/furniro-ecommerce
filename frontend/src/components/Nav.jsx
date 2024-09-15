@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { navIcons, navLinks } from "../constants";
 
 const Nav = () => {
@@ -14,7 +15,9 @@ const Nav = () => {
       <ul className="list-none hidden sm:flex flex-row gap-4">
         {navIcons.map((icon) => (
           <li key={icon.id} className="md:px-3 gap-10">
-            <img src={icon.icon} />
+            <Link to={icon.link}>
+              <img src={icon.icon} alt={icon.id} />
+            </Link>
           </li>
         ))}
       </ul>
