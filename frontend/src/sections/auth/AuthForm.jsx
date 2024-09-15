@@ -8,23 +8,35 @@ const LoginForm = () => {
   const isLogin = searchParams.get("mode") === "login";
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Form className="w-full max-w-md p-8 rounded-lg" method="post">
-        <h2 className={`${styles.heading}`}>
+    <div className="flex items-center justify-center w-full">
+      <Form method="post" >
+        <h2 className={`${styles.heading} my-9`}>
           {isLogin ? "Log In" : "Create New Account"}
         </h2>
-        {!isLogin && <Input label="Name" name="name" />}
-        <Input label="Email" name="email" />
-        <Input label="Password" name="password" type="password" />
-        {!isLogin && (
+        <div className={`flex flex-col `}>
+          {!isLogin && <Input label="Name" name="name" placeholder="John Doe"/>}
+          <Input label="Email" name="email" placeholder="johndoe@gmail.com" />
           <Input
-            label="Confirm Password"
+            label="Password"
+            name="password"
             type="password"
-            name="confirmPassword"
+            placeholder="********"
           />
-        )}
+          {!isLogin && (
+            <Input
+              label="Confirm Password"
+              type="password"
+              name="confirmPassword"
+              placeholder="********"
+            />
+          )}
+        </div>
+
         <Button label="Save" type="submit" />
-        <Link to={`?mode=${isLogin ? "signup" : "login"}`} className="block mt-4 text-blue-600 hover:underline">
+        <Link
+          to={`?mode=${isLogin ? "signup" : "login"}`}
+          className="block mt-4 text-blue-600 hover:underline"
+        >
           {isLogin
             ? "New Customer? Create your account"
             : "Already have an account? Login Here"}
