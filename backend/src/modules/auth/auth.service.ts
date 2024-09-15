@@ -3,6 +3,8 @@ import { UsersService } from "../user/user.service";
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from "./dto/signin.dto";
 import { SignUpDto } from "./dto/signup.dto";
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class AuthService {
 
@@ -16,7 +18,8 @@ export class AuthService {
         message: 'User not found!',
       });
     }
-    if (user?.password !== signInDto.password) {
+    const match = await bcrypt.compare(signInDto.password, user.password);
+    if (!match) {
       throw new UnauthorizedException({
         statusCode: HttpStatus.UNAUTHORIZED,
         message: 'Incorrect email and password!',
