@@ -19,7 +19,6 @@ export class AuthController {
     signUp(@Body() signUpDto: CreateUserDto) {
         const payload = {
             name: signUpDto.name,
-            username: signUpDto.username,
             email: signUpDto.email,
             password: signUpDto.password,
 

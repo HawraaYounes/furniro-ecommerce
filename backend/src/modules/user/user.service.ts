@@ -18,7 +18,6 @@ export class UsersService {
     const user: User = new User();
     user.name = createUserDto.name;
     user.email = createUserDto.email;
-    user.username = createUserDto.username;
     user.password = createUserDto.password;
     user.roles = createUserDto.roles ?? [Role.User];
     return this.userRepository.save(user);
@@ -41,7 +40,6 @@ export class UsersService {
     const user: User = new User();
     user.name = updateUserDto.name;
     user.email = updateUserDto.email;
-    user.username = updateUserDto.username;
     user.password = updateUserDto.password;
     user.id = id;
     return this.userRepository.save(user);
