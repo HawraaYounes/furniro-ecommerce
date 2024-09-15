@@ -3,6 +3,7 @@ import {
     IsEmail,
     IsEnum,
     IsNotEmpty,
+    IsOptional,
     IsString,
     Matches,
     MinLength,
@@ -10,7 +11,8 @@ import {
   import { Role } from 'src/modules/enums/roles.enum';
 
   const passwordRegEx =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
   
   export class CreateUserDto {
     @IsString()
@@ -32,7 +34,7 @@ import {
     })
     password: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsEnum(Role, { each: true, message: 'Invalid role provided.' })
     roles?: Role[] ; // Default to Role.User if no role is provided
   }
