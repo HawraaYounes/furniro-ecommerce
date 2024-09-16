@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +22,7 @@ import { Role } from '../enums/roles.enum';
  * in our case our base URL is http://localhost:3000/user
  */
 @Controller('user')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UsersService) {}
 

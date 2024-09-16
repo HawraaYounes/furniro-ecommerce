@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Role } from '../../enums/roles.enum'; // Import the Role enum
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Unique(["email"])
@@ -13,6 +14,7 @@ export class User {
   @Column({ type: 'varchar', length: 40 })
   email: string;
 
+  @Exclude()
   @Column({ type: 'varchar' })
   password: string;
 

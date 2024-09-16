@@ -4,6 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from "./dto/signin.dto";
 import { SignUpDto } from "./dto/signup.dto";
 import * as bcrypt from 'bcrypt';
+import { plainToClass } from "class-transformer";
+import { User } from "../user/entities/user.entity";
 
 @Injectable()
 export class AuthService {
@@ -40,6 +42,6 @@ export class AuthService {
       });
     }
     const newUser = await this.usersService.createUser(payload);
-    return newUser;
+    return plainToClass(User,newUser);
   }
 }
