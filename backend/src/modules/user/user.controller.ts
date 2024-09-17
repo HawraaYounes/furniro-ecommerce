@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../enums/roles.enum';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 /**
  * whatever the string pass in controller decorator it will be appended to
@@ -21,6 +22,7 @@ import { Role } from '../enums/roles.enum';
  * passed in controller decorator.
  * in our case our base URL is http://localhost:3000/user
  */
+@ApiTags('user')
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
@@ -33,6 +35,7 @@ export class UserController {
    * POST http://localhost:3000/user
    */
   @Post()
+  @ApiBody({ type: CreateUserDto })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
