@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
+import { ResponseInterceptor } from './interceptors/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,9 @@ async function bootstrap() {
     }),
   );
 
+  // Enable global response interceptor 
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  
   const config = new DocumentBuilder()
     .setTitle('Furniro Furniture API')
     .setDescription('API documentation for the Furniro e-commerce platform')
