@@ -26,7 +26,7 @@ import { ApiBody, ApiTags } from '@nestjs/swagger';
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly userService: UsersService) { }
 
   /**
    * Post decorator represents method of request as we have used post decorator the method
@@ -37,12 +37,7 @@ export class UserController {
   @Post()
   @ApiBody({ type: CreateUserDto })
   async create(@Body() createUserDto: CreateUserDto) {
-    try {
-      return await this.userService.createUser(createUserDto);
-    } catch (error) {
-      // Let the interceptor handle the error
-     console.log("hhh",error) // Ensure this is not altering the response format
-    }
+    return await this.userService.createUser(createUserDto);
   }
 
   /**

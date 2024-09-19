@@ -29,8 +29,6 @@ export class ResponseInterceptor implements NestInterceptor {
         };
       }),
       catchError((error) => {
-        console.error("Error found:", error);
-
         // Handle errors
         const statusCode = error instanceof HttpException
           ? error.getStatus()
@@ -40,8 +38,6 @@ export class ResponseInterceptor implements NestInterceptor {
           ? (error.getResponse() as any).message || 'Error occurred'
           : 'Internal server error';
 
-        console.log("reached here");
-
         // Create and throw a custom HTTP exception
         const customError = new CustomHttpException(
           statusCode,
@@ -49,8 +45,6 @@ export class ResponseInterceptor implements NestInterceptor {
           request.url,
           null
         );
-
-        console.log("ERR VALUE:", customError.getResponse());
 
         return throwError(() => customError);
       }),

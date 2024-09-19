@@ -45,8 +45,6 @@ export async function action({ request }) {
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data)
-
     // Redirect after successful login/signup
     return redirect('/');
   } catch (error) {
