@@ -9,6 +9,7 @@ import { User } from "../user/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { USER_NOT_FOUND } from "src/constants/responses/en/user/user-not-found";
+import { INVALID_PASSWORD } from "src/constants/responses/en/user/invalid-password";
 
 @Injectable()
 export class AuthService {
@@ -22,15 +23,11 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     const user = await this.userRepository.findOneBy({email: signInDto.email});
     if (!user) {
-      console.log("user not f")
       return USER_NOT_FOUND
     }
     const match = await bcrypt.compare(signInDto.password, user.password);
     if (!match) {
-      throw new UnauthorizedException({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Incorrect email and password!',
-      });
+     return INVALID_PASSWORD;
     }
     const payload = { sub: user.id, email: user.email, roles: user.roles };
     return {
