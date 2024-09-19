@@ -1,36 +1,58 @@
-// src/interceptors/response.interceptor.ts
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { HttpException } from '@nestjs/common/exceptions/http.exception';
-import { throwError } from 'rxjs';
+import { CustomHttpException } from './custom-http-exception'; // Adjust the path as necessary
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const ctx = context.switchToHttp();
+    const response = ctx.getResponse();
+    const request = ctx.getRequest();
+
     return next.handle().pipe(
-      map((data: any) => {
-        // Handle successful responses with a standard format
+      map((res) => {
+        // Handle success response
         return {
           success: true,
-          statusCode: context.switchToHttp().getResponse().statusCode || 200,
-          message: data.message || 'Request successful',
-          path: context.switchToHttp().getRequest().url,
-          data: data.data || data,
+          statusCode: response.statusCode || HttpStatus.OK,
+          message: res?.message || 'Operation successful',
+          path: request.url,
+          data: res?.data || res, // Handle data here
         };
       }),
-      catchError((error: HttpException) => {
-        // Handle error responses with a standard format
-        const statusCode = error.getStatus();
-        const response = error.getResponse();
+      catchError((error) => {
+        console.error("Error found:", error);
 
-        return throwError(() => ({
-          success: false,
+        // Handle errors
+        const statusCode = error instanceof HttpException
+          ? error.getStatus()
+          : HttpStatus.INTERNAL_SERVER_ERROR;
+
+        const message = error instanceof HttpException
+          ? (error.getResponse() as any).message || 'Error occurred'
+          : 'Internal server error';
+
+        console.log("reached here");
+
+        // Create and throw a custom HTTP exception
+        const customError = new CustomHttpException(
           statusCode,
-          message: response['message'] || 'An error occurred',
-          path: context.switchToHttp().getRequest().url,
-          data: null,
-        }));
+          message,
+          request.url,
+          null
+        );
+
+        console.log("ERR VALUE:", customError.getResponse());
+
+        return throwError(() => customError);
       }),
     );
   }

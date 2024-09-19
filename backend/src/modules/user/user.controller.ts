@@ -36,8 +36,13 @@ export class UserController {
    */
   @Post()
   @ApiBody({ type: CreateUserDto })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    try {
+      return await this.userService.createUser(createUserDto);
+    } catch (error) {
+      // Let the interceptor handle the error
+     console.log("hhh",error) // Ensure this is not altering the response format
+    }
   }
 
   /**
