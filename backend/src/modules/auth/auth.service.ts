@@ -6,19 +6,24 @@ import { SignUpDto } from "./dto/signup.dto";
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from "class-transformer";
 import { User } from "../user/entities/user.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { USER_NOT_FOUND } from "src/constants/responses/en/user/user-not-found";
 
 @Injectable()
 export class AuthService {
 
-  constructor(private usersService: UsersService, private jwtService: JwtService) { }
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>
+  ) { }
 
   async signIn(signInDto: SignInDto) {
-    const user = await this.usersService.findOneBy(signInDto.email);
+    const user = await this.userRepository.findOneBy({email: signInDto.email});
     if (!user) {
-      throw new NotFoundException({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'User not found!',
-      });
+      console.log("user not f")
+      return USER_NOT_FOUND
     }
     const match = await bcrypt.compare(signInDto.password, user.password);
     if (!match) {
@@ -42,6 +47,6 @@ export class AuthService {
       });
     }
     const newUser = await this.usersService.createUser(payload);
-    return plainToClass(User,newUser);
+    return plainToClass(User, newUser);
   }
 }
