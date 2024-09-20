@@ -20,7 +20,6 @@ export class ResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((res) => {
         // Handle success response
-        console.log("RESSSS",res)
         return {
           success: true,
           statusCode: res.statusCode || HttpStatus.OK,
