@@ -9,7 +9,8 @@ import { User } from "../user/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { USER_NOT_FOUND } from "src/constants/responses/en/user/user-not-found";
-import { INVALID_PASSWORD } from "src/constants/responses/en/user/invalid-password";
+import { INVALID_PASSWORD } from "src/constants/responses/en/auth/invalid-password";
+import { LOGIN_SUCCESS } from "src/constants/responses/en/auth/login-success";
 
 @Injectable()
 export class AuthService {
@@ -21,17 +22,19 @@ export class AuthService {
   ) { }
 
   async signIn(signInDto: SignInDto) {
-    const user = await this.userRepository.findOneBy({email: signInDto.email});
+    const user = await this.userRepository.findOneBy({ email: signInDto.email });
     if (!user) {
       return USER_NOT_FOUND
     }
     const match = await bcrypt.compare(signInDto.password, user.password);
     if (!match) {
-     return INVALID_PASSWORD;
+      return INVALID_PASSWORD;
     }
     const payload = { sub: user.id, email: user.email, roles: user.roles };
+    const access_token = await await this.jwtService.signAsync(payload);
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      ...LOGIN_SUCCESS,
+      data: { access_token }, 
     };
   }
 
