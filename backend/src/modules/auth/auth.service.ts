@@ -11,12 +11,14 @@ import { Repository } from "typeorm";
 import { USER_NOT_FOUND } from "src/constants/responses/en/user/user-not-found";
 import { INVALID_PASSWORD } from "src/constants/responses/en/auth/invalid-password";
 import { LOGIN_SUCCESS } from "src/constants/responses/en/auth/login-success";
+import { SIGNUP_SUCCESS } from "src/constants/responses/en/auth/signup-success";
+import { EMAIL_ALREADY_REGISTERED } from "src/constants/responses/en/auth/email-already-registered";
+import { Role } from "../enums/roles.enum";
 
 @Injectable()
 export class AuthService {
 
   constructor(
-    private usersService: UsersService,
     private jwtService: JwtService,
     @InjectRepository(User) private readonly userRepository: Repository<User>
   ) { }
@@ -31,22 +33,31 @@ export class AuthService {
       return INVALID_PASSWORD;
     }
     const payload = { sub: user.id, email: user.email, roles: user.roles };
-    const access_token = await await this.jwtService.signAsync(payload);
+    const access_token =  await this.jwtService.signAsync(payload);
     return {
       ...LOGIN_SUCCESS,
-      data: { access_token }, 
+      data: { access_token },
     };
   }
 
   async signUp(payload: SignUpDto) {
-    const user = await this.usersService.findOneBy(payload.email);
-    if (user) {
-      throw new ConflictException({
-        statusCode: HttpStatus.CONFLICT,
-        message: 'Email address is already registered. Please use a different email or log in.',
-      });
+    const isEmailRegistered = await this.userRepository.findOneBy({email:payload.email});
+    if (isEmailRegistered) {
+      return EMAIL_ALREADY_REGISTERED; 
     }
-    const newUser = await this.usersService.createUser(payload);
-    return plainToClass(User, newUser);
+    
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(payload.password, salt);
+
+    const user: User = new User();
+    user.name = payload.name;
+    user.email = payload.email;
+    user.password = hashPassword;
+    user.roles = payload.roles ?? [Role.User];
+    const newUser=await this.userRepository.save(user);
+    return {
+      ...SIGNUP_SUCCESS,
+      data: plainToClass(User, newUser),
+    };
   }
 }
