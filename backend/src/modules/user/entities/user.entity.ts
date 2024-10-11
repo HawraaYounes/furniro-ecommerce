@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { Role } from '../../enums/roles.enum'; // Import the Role enum
+import { Role } from '../../enums/roles.enum'; 
 import { Exclude } from 'class-transformer';
 
 @Entity()

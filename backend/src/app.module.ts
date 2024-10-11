@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { User } from './modules/user/entities/user.entity';
 import { AuthModule } from './modules/auth/auth.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { RedisOptions } from './redis-options';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { AuthModule } from './modules/auth/auth.module';
       synchronize: true,
       //logging: true,
     }),
+    CacheModule.register(RedisOptions),
     UserModule,AuthModule
   ],
   controllers: [AppController],
