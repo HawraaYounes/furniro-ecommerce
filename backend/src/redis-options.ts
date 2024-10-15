@@ -1,18 +1,19 @@
 import { CacheModuleAsyncOptions } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-store'; // Ensure you install this
+import { redisStore } from 'cache-manager-redis-store';
 
 export const RedisOptions: CacheModuleAsyncOptions = {
-  isGlobal: true, // This makes the cache globally available
+  isGlobal: true,
   useFactory: async () => {
     const store = await redisStore({
       socket: {
-        host: 'localhost', // Replace with your Redis host if needed
-        port: 6379,        // Replace with your Redis port if needed
+        host: 'localhost',
+        port: 6379,
       },
     });
     return {
-      store: store,  // Use store directly, no need to wrap in a function
-      ttl: 600,      // Time-to-live for cached items (optional)
+      store: () => store,
+      ttl: 600, // time-to-live in seconds, adjust as needed
     };
   },
+ 
 };

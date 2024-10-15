@@ -21,7 +21,7 @@ import { RedisOptions } from './redis-options';
       synchronize: true,
       //logging: true,
     }),
-    CacheModule.register(RedisOptions),
+    CacheModule.registerAsync(RedisOptions),
     UserModule,AuthModule
   ],
   controllers: [AppController],

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { CustomHttpException } from './custom-http-exception'; // Adjust the path as necessary
+import { CustomHttpException } from './custom-http-exception'; 
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
