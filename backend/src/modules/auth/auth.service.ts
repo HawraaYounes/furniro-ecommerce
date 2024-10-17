@@ -32,7 +32,7 @@ export class AuthService {
     if (!match) {
       return INVALID_PASSWORD;
     }
-    const payload = { sub: user.id, email: user.email, roles: user.roles };
+    const payload = { id: user.id, email: user.email, roles: user.roles };
     const access_token =  await this.jwtService.signAsync(payload);
     return {
       ...LOGIN_SUCCESS,
@@ -53,6 +53,7 @@ export class AuthService {
     user.name = payload.name;
     user.email = payload.email;
     user.password = hashPassword;
+    user.isActive= true;
     user.roles = payload.roles ?? [Role.User];
     const newUser=await this.userRepository.save(user);
     return {

@@ -14,6 +14,9 @@ export class User {
   @Column({ type: 'varchar', length: 40 })
   email: string;
 
+  @Column()
+  isActive: boolean;
+
   @Exclude()
   @Column({ type: 'varchar' })
   password: string;

@@ -29,7 +29,7 @@ export class UsersService {
 
     return {
       ...USER_CREATED,
-      data: newUser,  // Attaching the newly created user data
+      data: newUser,  
     };
   }
 
