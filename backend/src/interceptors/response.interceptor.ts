@@ -45,7 +45,6 @@ export class ResponseInterceptor implements NestInterceptor {
           request.url,
           null
         );
-
         return throwError(() => customError);
       }),
     );

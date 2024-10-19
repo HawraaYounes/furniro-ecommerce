@@ -46,7 +46,7 @@ export class UserController {
    * GET http://localhost:3000/user
    */
   @Get()
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
   findAll() {
     return this.userService.findAllUser();
   }

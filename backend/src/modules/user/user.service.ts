@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { Role } from '../enums/roles.enum';
 import * as bcrypt from 'bcrypt';
 import { USER_CREATED } from 'src/constants/responses/en/user/user-created';
+import { USERS_RETRIEVED } from 'src/constants/responses/en/user/users-retrieved';
 
 @Injectable()
 export class UsersService {
@@ -25,28 +26,37 @@ export class UsersService {
     user.email = createUserDto.email;
     user.password = hashPassword;
     user.roles = createUserDto.roles ?? [Role.User];
-    const newUser=await this.userRepository.save(user);
+    const newUser = await this.userRepository.save(user);
 
     return {
       ...USER_CREATED,
-      data: newUser,  
+      data: newUser,
     };
   }
 
-//TODO: UPDATE Function Response 
-  findAllUser(): Promise<User[]> {
-    return this.userRepository.find();
+  async getUserById(userId: number): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id: userId } });
   }
-//TODO: UPDATE Function Response 
+
+  //TODO: UPDATE Function Response 
+  async findAllUser() {
+    const users = await this.userRepository.find();
+    return {
+      ...USERS_RETRIEVED,
+      data: users,
+    };
+  }
+
+  //TODO: UPDATE Function Response 
   viewUser(id: number): Promise<User> {
     return this.userRepository.findOneBy({ id });
   }
-//TODO: UPDATE Function Response 
+  //TODO: UPDATE Function Response 
   findOneBy(email: string): Promise<User> {
     return this.userRepository.findOneBy({ email });
   }
 
-//TODO: UPDATE Function Response 
+  //TODO: UPDATE Function Response 
   updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user: User = new User();
     user.name = updateUserDto.name;
@@ -56,7 +66,7 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-//TODO: UPDATE Function Response 
+  //TODO: UPDATE Function Response 
   removeUser(id: number): Promise<{ affected?: number }> {
     return this.userRepository.delete(id);
   }
