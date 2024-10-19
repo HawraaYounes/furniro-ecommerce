@@ -1,11 +1,17 @@
-import { Form, Link, useSearchParams } from "react-router-dom";
+import { Form, Link, useSearchParams, useActionData } from "react-router-dom";
 import Input from "../../components/Input";
 import styles from "../../style";
 import Button from "../../components/Button";
 
-const LoginForm = () => {
+const AuthForm = ({ setFlashMessage }) => {
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
+  const actionData = useActionData(); // Use this to get error messages from the action
+
+  // Set error flash message if the action data contains an error
+  if (actionData && actionData.message) {
+    setFlashMessage({ message: actionData.message, type: "error" });
+  }
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -14,7 +20,7 @@ const LoginForm = () => {
           {isLogin ? "Log In" : "Create New Account"}
         </h2>
         <div className={`grid grid-cols-1 gap-4 ${!isLogin ? 'md:grid-cols-2' : ''}`}>
-          {!isLogin && <Input label="Name" name="name" placeholder="John Doe"/>}
+          {!isLogin && <Input label="Name" name="name" placeholder="John Doe" />}
           <Input label="Email" name="email" placeholder="johndoe@gmail.com" />
           <Input
             label="Password"
@@ -32,7 +38,7 @@ const LoginForm = () => {
           )}
         </div>
 
-        <Button label={isLogin? "LOGIN": "SIGN UP"} type="submit" />
+        <Button label={isLogin ? "LOGIN" : "SIGN UP"} type="submit" />
         <Link
           to={`?mode=${isLogin ? "signup" : "login"}`}
           className="block mt-4 text-blue-600 hover:underline"
@@ -46,4 +52,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default AuthForm;
