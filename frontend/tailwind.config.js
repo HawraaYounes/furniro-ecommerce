@@ -7,11 +7,11 @@ export default {
       colors: {
         primary: "#ffffff", // White
         secondary: "#fff3e3", // Light Peach
-        accent: "#B88E2F", // Golden Brown
-        danger: "#E97171", // Light Red
-        success: "#2EC1AC", // Teal Green
+        accent: "#B88E2F", // Golden Brown (warnings)
+        danger: "#E97171", // Light Red (errors)
+        success: "#2EC189", // Teal Green (success messages)
         light: "#FAF3EA", // Off White
-        graydarkest: "#333333", // Dark Gray
+        graydarkest: "#333333", // Darkest Gray (informational messages)
         graydarker: "#666666", // Darker Gray
         graydark: "#898989", // Medium Gray
         gray: "#9F9F9F",
