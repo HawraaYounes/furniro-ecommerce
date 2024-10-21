@@ -6,12 +6,7 @@ import Button from "../../components/Button";
 const AuthForm = ({ setFlashMessage }) => {
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
-  const actionData = useActionData(); // Use this to get error messages from the action
 
-  // Set error flash message if the action data contains an error
-  if (actionData && actionData.message) {
-    setFlashMessage({ message: actionData.message, type: "error" });
-  }
 
   return (
     <div className="flex items-center justify-center w-full">
