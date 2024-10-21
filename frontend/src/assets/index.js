@@ -10,6 +10,12 @@ import failIcon from "./icons/fail.svg"
 import bedroomImg from "./images/bedroom.png";
 import livingImg from "./images/living.png";
 import diningImg from "./images/dining.png";
+import greenBubbles from "./images/green-bubbles.png";
+import redBubbles from "./images/red-bubbles.png";
+import grayBubbles from "./images/gray-bubbles.png";
+import yellowBubbles from "./images/yellow-bubbles.png";
+
+
 
 export {
   userAlertIcon,
@@ -20,6 +26,10 @@ export {
   successIcon,
   warningIcon,
   failIcon,
+  greenBubbles,
+  redBubbles,
+  grayBubbles,
+  yellowBubbles,
   bedroomImg,
   livingImg,
   diningImg,
