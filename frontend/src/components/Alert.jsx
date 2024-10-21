@@ -38,14 +38,14 @@ const Alert = ({ type, message, description, duration = 5000 }) => {
   }
 
   return (
-    <div className={`flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md relative max-w-[500px] mx-5`}>
+    <div className={`flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md relative max-w-[500px] mx-5 justify-between`}>
       <div className="absolute top-[-40px] mb-3">
         <img src={icon} alt={`${type} icon` } className="w-[78px] h-[78px]"/> 
       </div>
-      <div className={`bottom-0 absolute `}>
-        <img src={redBubbles} alt="bubbles" className=""/>
+      <div className={`bottom-0 absolute left-0 overflow-hidden`}>
+        <img src={redBubbles} alt="bubbles"/>
       </div>
-      <div className="text-left py-9">
+      <div className="text-left py-9 block">
         <p className="text-[34px] ">{message}</p>
         {description && <p className="text-[14px] font-light">{description}</p>}
       </div>
