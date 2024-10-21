@@ -5,10 +5,10 @@ import { failIcon, questionIcon, successIcon, warningIcon } from "../assets";
 const Alert = ({ type, message, description, duration = 5000 }) => {
   const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), duration);
-    return () => clearTimeout(timer); // Cleanup timer
-  }, [duration]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setVisible(false), duration);
+  //   return () => clearTimeout(timer); // Cleanup timer
+  // }, [duration]);
 
   if (!visible) return null;
 
@@ -38,13 +38,13 @@ const Alert = ({ type, message, description, duration = 5000 }) => {
   }
 
   return (
-    <div className={`flex ${styles.title} font-[34px] w-1/2 items-center p-4 rounded-lg ${bgColor} text-white shadow-md`}>
+    <div className={`flex font-poppins w-1/2 py-7 rounded-[32px] ${bgColor} text-white shadow-md`}>
       <div className="mr-4 text-2xl">
-        <img src={icon} alt={`${type} icon`} /> {/* Use img tag to render icons */}
+        <img src={icon} alt={`${type} icon` } className="w-[78px] h-[78px]"/> {/* Use img tag to render icons */}
       </div>
-      <div>
-        <p className="font-bold text-lg">{message}</p>
-        {description && <p className="text-sm">{description}</p>}
+      <div className="text-left">
+        <p className="text-[34px]">{message}</p>
+        {description && <p className="text-[14px]">{description}</p>}
       </div>
     </div>
   );

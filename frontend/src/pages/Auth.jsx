@@ -5,13 +5,13 @@ import Alert from "../components/Alert";
 import AuthForm from "../sections/auth/AuthForm";
 
 const Auth = () => {
-  const [flashMessage, setFlashMessage] = useState({ message: "", type: "" });
+  const [flashMessage, setFlashMessage] = useState({ message: "", description:"", type: "" });
   const actionData = useActionData(); // Get the error or message returned from the action
 
   // If there's an error message from the action, display it
   useEffect(() => {
     if (actionData?.message) {
-      setFlashMessage({ message: actionData.message, type: "error" });
+      setFlashMessage({ message: actionData.message, description: actionData.description, type: "error" });
     }
   }, [actionData]);
 
@@ -19,7 +19,7 @@ const Auth = () => {
     <>
       <Nav />
       {flashMessage.message && (
-        <Alert type={flashMessage.type} message={flashMessage.message} />
+        <Alert type={flashMessage.type} message={flashMessage.message} description={flashMessage.description}/>
       )}
       <AuthForm setFlashMessage={setFlashMessage} />
     </>
@@ -51,7 +51,7 @@ export async function action({ request }) {
     const confirmPassword = data.get("confirmPassword");
 
     if (authData.password !== confirmPassword) {
-      return json({ message: "Passwords do not match!" }, { status: 422 });
+      return json({ message: "OOps!" , description:"Passwords do not match. Please ensure that the new password and confirm password fields are identical."}, { status: 422 });
     }
 
     authData.name = name;
