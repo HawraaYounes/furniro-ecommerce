@@ -44,7 +44,7 @@ const Alert = ({ type, message, description, duration = 5000 }) => {
 
   return (
     <div
-      className={`relative flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md max-w-[600px] mx-5 justify-between items-end `}
+      className={`relative flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md max-w-[600px] mx-5 justify-between items-center`}
     >
       {/* Icon container */}
       <div className="mb-3">
@@ -54,18 +54,16 @@ const Alert = ({ type, message, description, duration = 5000 }) => {
           className="w-[78px] h-[78px] absolute top-[-40px]"
         />
       </div>
-
       {/* Bubbles image */}
-      <div className="absolute">
+      <div className="absolute bottom-0 left-0">
         <img
           src={redBubbles}
           alt="bubbles"
-          className=" bottom-0 left-0 rounded-[32px]"
+          className="rounded-[32px]"
         />
       </div>
-
       {/* Text container */}
-      <div className="text-left py-4 px-6">
+      <div className="text-left py-4 px-6 ml-[90px]"> {/* Adjusted margin to make space for the icon */}
         <p className="text-[24px]">{message}</p>
         {description && <p className="text-[14px] font-light max-w-">{description}</p>}
       </div>
