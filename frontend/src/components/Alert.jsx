@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
-import styles from "../style";
-import { failIcon, questionIcon, redBubbles, successIcon, warningIcon } from "../assets";
+import {
+  failIcon,
+  questionIcon,
+  redBubbles,
+  successIcon,
+  warningIcon,
+} from "../assets";
 
 const Alert = ({ type, message, description, duration = 5000 }) => {
   const [visible, setVisible] = useState(true);
@@ -18,36 +23,51 @@ const Alert = ({ type, message, description, duration = 5000 }) => {
   switch (type) {
     case "success":
       bgColor = "bg-success";
-      icon = successIcon; 
+      icon = successIcon;
       break;
     case "error":
       bgColor = "bg-danger";
-      icon = failIcon; 
+      icon = failIcon;
       break;
     case "warning":
       bgColor = "bg-accent";
-      icon = warningIcon; 
+      icon = warningIcon;
       break;
     case "info":
       bgColor = "bg-gray";
-      icon = questionIcon; 
+      icon = questionIcon;
       break;
     default:
       bgColor = "bg-light";
-      icon = questionIcon; 
+      icon = questionIcon;
   }
 
   return (
-    <div className={`flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md relative max-w-[500px] mx-5 justify-between`}>
-      <div className="absolute top-[-40px] mb-3">
-        <img src={icon} alt={`${type} icon` } className="w-[78px] h-[78px]"/> 
+    <div
+      className={`relative flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md max-w-[600px] mx-5 justify-between items-end `}
+    >
+      {/* Icon container */}
+      <div className="mb-3">
+        <img
+          src={icon}
+          alt={`${type} icon`}
+          className="w-[78px] h-[78px] absolute top-[-40px]"
+        />
       </div>
-      <div className={`bottom-0 absolute left-0 overflow-hidden`}>
-        <img src={redBubbles} alt="bubbles"/>
+
+      {/* Bubbles image */}
+      <div className="absolute">
+        <img
+          src={redBubbles}
+          alt="bubbles"
+          className=" bottom-0 left-0 rounded-[32px]"
+        />
       </div>
-      <div className="text-left py-9 block">
-        <p className="text-[34px] ">{message}</p>
-        {description && <p className="text-[14px] font-light">{description}</p>}
+
+      {/* Text container */}
+      <div className="text-left py-4 px-6">
+        <p className="text-[24px]">{message}</p>
+        {description && <p className="text-[14px] font-light max-w-">{description}</p>}
       </div>
     </div>
   );
