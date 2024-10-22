@@ -51,7 +51,7 @@ export async function action({ request }) {
     const confirmPassword = data.get("confirmPassword");
 
     if (authData.password !== confirmPassword) {
-      return json({ message: "OOps!" , description:"Passwords do not match. Ensure that password and confirm password fields are identical."}, { status: 422 });
+      return json({ message: "OOps!" , description:"Password and Confirm Password fields should be identical."}, { status: 422 });
     }
 
     authData.name = name;
