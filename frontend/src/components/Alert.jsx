@@ -64,7 +64,7 @@ const Alert = ({ type, message, description, duration = 5000 }) => {
       </div>
       {/* Bubbles image */}
       <div className="absolute bottom-0 left-0 ">
-        <img src={bubbleImg} alt="bubbles" className="rounded-[32px]" />
+        <img src={bubbleImg} alt="bubbles" className="rounded-bl-[32px]" />
       </div>
       {/* Text container */}
       <div className="text-left py-4 px-6 ml-[90px]">
