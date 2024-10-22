@@ -3,6 +3,9 @@ import { useActionData } from "react-router-dom";
 import Nav from "../components/Nav";
 import Alert from "../components/Alert";
 import AuthForm from "../sections/auth/AuthForm";
+import { json, redirect } from "react-router-dom";
+import axios from "axios";
+import { ALERT_TYPES, alertTypes } from "../constants";
 
 const Auth = () => {
   const [flashMessage, setFlashMessage] = useState({
@@ -18,11 +21,12 @@ const Auth = () => {
       setFlashMessage({
         message: actionData.message,
         description: actionData.description,
-        type: "error",
+        type: ALERT_TYPES.WARNING,
       });
     }
   }, [actionData]);
 
+  console.log("FLASH MESSAGE",flashMessage)
   return (
     <>
       <Nav />
@@ -40,8 +44,7 @@ const Auth = () => {
 
 export default Auth;
 
-import { json, redirect } from "react-router-dom";
-import axios from "axios";
+
 
 export async function action({ request }) {
   const data = await request.formData();
@@ -65,6 +68,7 @@ export async function action({ request }) {
       return json(
         {
           message: "OOps!",
+          type: alertTypes.success,
           description:
             "Password and Confirm Password fields should be identical.",
         },
@@ -91,12 +95,11 @@ export async function action({ request }) {
   } catch (error) {
     const errorMessage =
       error.response?.data?.message || "An unexpected error occurred!";
-    const statusCode = error.response?.status || 500;
+    
 
     // Return the error message to be handled by the component
     return json(
-      { message: "OOps!", description: errorMessage },
-      { status: statusCode }
+      { message: "OOps!", description: errorMessage , type:"warning"}
     );
   }
 }
