@@ -52,7 +52,7 @@ const Alert = ({ type, message, description, duration = 5000 }) => {
 
   return (
     <div
-      className={`relative flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md max-w-[400px] mx-5 justify-between items-center py-4 pl-4`}
+      className={`relative flex font-poppins w-1/2 rounded-[32px] ${bgColor} text-white shadow-md max-w-[400px] mx-5 justify-normal items-center py-4 pl-4`}
     >
       {/* Icon container */}
       <div className="mb-3">

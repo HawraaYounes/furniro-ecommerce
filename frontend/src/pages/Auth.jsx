@@ -5,13 +5,21 @@ import Alert from "../components/Alert";
 import AuthForm from "../sections/auth/AuthForm";
 
 const Auth = () => {
-  const [flashMessage, setFlashMessage] = useState({ message: "", description:"", type: "" });
+  const [flashMessage, setFlashMessage] = useState({
+    message: "",
+    description: "",
+    type: "",
+  });
   const actionData = useActionData(); // Get the error or message returned from the action
 
   // If there's an error message from the action, display it
   useEffect(() => {
     if (actionData?.message) {
-      setFlashMessage({ message: actionData.message, description: actionData.description, type: "error" });
+      setFlashMessage({
+        message: actionData.message,
+        description: actionData.description,
+        type: "error",
+      });
     }
   }, [actionData]);
 
@@ -19,7 +27,11 @@ const Auth = () => {
     <>
       <Nav />
       {flashMessage.message && (
-        <Alert type={flashMessage.type} message={flashMessage.message} description={flashMessage.description}/>
+        <Alert
+          type={flashMessage.type}
+          message={flashMessage.message}
+          description={flashMessage.description}
+        />
       )}
       <AuthForm setFlashMessage={setFlashMessage} />
     </>
@@ -27,7 +39,6 @@ const Auth = () => {
 };
 
 export default Auth;
-
 
 import { json, redirect } from "react-router-dom";
 import axios from "axios";
@@ -51,7 +62,14 @@ export async function action({ request }) {
     const confirmPassword = data.get("confirmPassword");
 
     if (authData.password !== confirmPassword) {
-      return json({ message: "OOps!" , description:"Password and Confirm Password fields should be identical."}, { status: 422 });
+      return json(
+        {
+          message: "OOps!",
+          description:
+            "Password and Confirm Password fields should be identical.",
+        },
+        { status: 422 }
+      );
     }
 
     authData.name = name;
@@ -71,11 +89,14 @@ export async function action({ request }) {
     // On successful login/signup, redirect to the home page
     return redirect("/");
   } catch (error) {
-    const errorMessage = error.response?.data?.message || "An unexpected error occurred!";
+    const errorMessage =
+      error.response?.data?.message || "An unexpected error occurred!";
     const statusCode = error.response?.status || 500;
 
     // Return the error message to be handled by the component
-    return json({ message: errorMessage }, { status: statusCode });
+    return json(
+      { message: "OOps!", description: errorMessage },
+      { status: statusCode }
+    );
   }
 }
-
