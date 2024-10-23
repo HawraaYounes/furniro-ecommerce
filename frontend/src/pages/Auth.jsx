@@ -21,12 +21,11 @@ const Auth = () => {
       setFlashMessage({
         message: actionData.message,
         description: actionData.description,
-        type: ALERT_TYPES.WARNING,
+        type: ALERT_TYPES.ERROR,
       });
     }
   }, [actionData]);
 
-  console.log("FLASH MESSAGE",flashMessage)
   return (
     <>
       <Nav />
