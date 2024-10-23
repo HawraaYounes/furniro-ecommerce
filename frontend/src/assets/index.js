@@ -6,6 +6,7 @@ import questionIcon from "./icons/question.svg"
 import successIcon from "./icons/success.svg"
 import warningIcon from "./icons/warning.svg"
 import failIcon from "./icons/fail.svg"
+import closeIcon from "./icons/close.svg"
 
 import bedroomImg from "./images/bedroom.png";
 import livingImg from "./images/living.png";
@@ -26,6 +27,7 @@ export {
   successIcon,
   warningIcon,
   failIcon,
+  closeIcon,
   greenBubbles,
   redBubbles,
   grayBubbles,
