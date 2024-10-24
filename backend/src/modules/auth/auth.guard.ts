@@ -52,7 +52,6 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('User is not active.');
       }
       
-      // You may also assign the user object to the request for further use
       request['userDetails'] = user;
 
     } catch (error) {

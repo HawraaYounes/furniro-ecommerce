@@ -74,7 +74,6 @@ export const categories = [
   },
 ];
 
-// alertTypes.js
 
 export const ALERT_TYPES = {
   SUCCESS: "success",

@@ -38,7 +38,6 @@ export class UsersService {
     return this.userRepository.findOne({ where: { id: userId } });
   }
 
-  //TODO: UPDATE Function Response 
   async findAllUser() {
     const users = await this.userRepository.find();
     return {
