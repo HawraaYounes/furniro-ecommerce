@@ -3,31 +3,30 @@ import { alertTypes } from "../constants";
 import { closeIcon } from "../assets";
 
 
-const Alert = ({ type, message, description, duration = 5000 }) => {
+const Alert = ({ type, message, description, duration = 4000 }) => {
   const [visible, setVisible] = useState(true);
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => setVisible(false), duration);
-  //   return () => clearTimeout(timer); // Cleanup timer
-  // }, [duration]);
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(false), duration);
+    return () => clearTimeout(timer); // Cleanup timer
+  }, [duration]);
 
   if (!visible) return null;
   const { bgColor, icon, bubbleImg } = alertTypes[type];
   const handleClose = () => {
-    setVisible(false);  // Close the alert when X is clicked
+    setVisible(false);  
   };
 
   return (
     <div className="fixed right-5 bottom-5 z-50 w-full max-w-[400px] "> {/* Set width and max-width */}
       <div
-        className={`relative flex font-poppins w-auto rounded-[32px] ${bgColor} text-white shadow-md justify-normal items-center py-4 pl-4`}
+        className={`relative flex font-poppins w-auto rounded-[32px] ${bgColor} text-white shadow-md justify-normal items-center `}
       >
-        {/* Close button */}
         <button 
           onClick={handleClose} 
-          className="absolute top-2 right-2 text-white text-[20px] font-bold cursor-pointer"
+          className="absolute top-2 right-2 text-white text-[20px] font-bold cursor-pointer py-2 px-4"
         >
-         <img src={closeIcon} alt="close-icon" className="w-6 h-6"/>
+         <img src={closeIcon} alt="close-icon" className="w-6 h-6 "/>
         </button>
 
         <div className="mb-3">
