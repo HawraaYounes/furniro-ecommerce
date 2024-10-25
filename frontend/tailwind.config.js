@@ -19,7 +19,8 @@ export default {
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
-        montserrat: ["Montserrat", "sans-serif"], // Added Montserrat
+        montserrat: ["Montserrat", "sans-serif"], 
+        abhaya: ["Abhaya Libre", "serif"],
       },
     },
     screens: {
