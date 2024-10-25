@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useActionData } from "react-router-dom";
-import Nav from "../components/Nav";
 import Alert from "../components/Alert";
 import AuthForm from "../sections/auth/AuthForm";
 import { json, redirect } from "react-router-dom";
@@ -28,7 +27,6 @@ const Auth = () => {
 
   return (
     <>
-      <Nav />
       {flashMessage.message && (
         <Alert
           type={flashMessage.type}
