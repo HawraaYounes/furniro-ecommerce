@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Auth, { action as authAction } from "./pages/Auth";
 import RootLayout from "./components/Root";
 import ErrorPage from "./pages/ErrorPage";
+import Shop from "./pages/Shop";
+import ProductDetails from "./pages/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
         path: "/auth",
         element: <Auth />,
         action: authAction,
+      },
+      {
+        path: "/shop",
+        element: <Shop />,
+      },
+      {
+        path: "/shop/:productId",
+        element: <ProductDetails />,
       },
     ],
   },
