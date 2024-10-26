@@ -8,7 +8,7 @@ const Nav = () => {
       <ul className="list-none hidden sm:flex flex-row gap-10 ">
         {navLinks.map((link) => (
           <li key={link.id} className="font-poppins text-black font-medium ">
-            <NavLink to={link.to} >{link.title}</NavLink>
+            <NavLink to={link.to} className={({isActive})=>isActive? 'text-accent underline': undefined}>{link.title}</NavLink>
           </li>
         ))}
       </ul>
