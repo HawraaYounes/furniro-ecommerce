@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { navIcons, navLinks } from "../constants";
 
 const Nav = () => {
@@ -8,7 +8,7 @@ const Nav = () => {
       <ul className="list-none hidden sm:flex flex-row gap-10 ">
         {navLinks.map((link) => (
           <li key={link.id} className="font-poppins text-black font-medium ">
-            {link.title}
+            <NavLink to={link.to} >{link.title}</NavLink>
           </li>
         ))}
       </ul>

@@ -19,20 +19,25 @@ export const navLinks = [
   {
     id: "home",
     title: "Home",
+    to: "/",
   },
   {
     id: "shop",
     title: "Shop",
+    to: "/shop",
   },
   {
     id: "about",
     title: "About",
+    to: "/about",
   },
   {
     id: "contact",
     title: "Contact",
+    to: "/contact",
   },
 ];
+
 export const navIcons = [
   {
     id: "user",
