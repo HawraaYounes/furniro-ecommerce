@@ -6,8 +6,9 @@ import RootLayout from "./components/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import Shop from "./pages/Shop";
 import ProductDetails from "./pages/ProductDetails";
-import { Provider } from 'react-redux'
+import { Provider } from "react-redux";
 import store from "./store/store";
+import CommonBannerLayout from "./components/BannerLayout";
 
 const router = createBrowserRouter([
   {
@@ -16,20 +17,26 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+      
+        element: <CommonBannerLayout/>,
+        children: [
+          {
+            path: "shop",
+            element: <Shop />,
+          },
+        ],
+      },
+      {
         index: true,
         element: <Home />,
       },
       {
-        path: "/auth",
+        path: "auth",
         element: <Auth />,
         action: authAction,
       },
       {
-        path: "/shop",
-        element: <Shop />,
-      },
-      {
-        path: "/shop/:productId",
+        path: "shop/:productId",
         element: <ProductDetails />,
       },
     ],
