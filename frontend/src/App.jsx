@@ -6,6 +6,8 @@ import RootLayout from "./components/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import Shop from "./pages/Shop";
 import ProductDetails from "./pages/ProductDetails";
+import { Provider } from 'react-redux'
+import store from "./store/store";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +37,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
 }
 
 export default App;
