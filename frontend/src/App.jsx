@@ -17,12 +17,15 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-      
-        element: <CommonBannerLayout/>,
+        element: <CommonBannerLayout />,
         children: [
           {
             path: "shop",
             element: <Shop />,
+          },
+          {
+            path: "shop/:productId",
+            element: <ProductDetails />,
           },
         ],
       },
@@ -34,10 +37,6 @@ const router = createBrowserRouter([
         path: "auth",
         element: <Auth />,
         action: authAction,
-      },
-      {
-        path: "shop/:productId",
-        element: <ProductDetails />,
       },
     ],
   },

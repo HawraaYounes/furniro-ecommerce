@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { arrowRightIcon } from "../assets";
+import { arrowRightIcon, banner } from "../assets";
 
 const CommonBannerLayout = () => {
   const bannerData = useSelector((state) => state.banner);
@@ -11,7 +11,7 @@ const CommonBannerLayout = () => {
       {bannerData.title && (
         <div
           style={{
-            backgroundImage: `url(${bannerData.backgroundImage})`,
+            backgroundImage: `url(${banner})`,
           }}
           className=" w-full h-80 bg-cover bg-center bg-no-repeat font-poppins"
         >
@@ -27,7 +27,7 @@ const CommonBannerLayout = () => {
                   className="inline w-5 h-5 font-thin"
                 />
               </span>
-              {bannerData.subtitle}
+              {bannerData.title}
             </p>
           </div>
         </div>
