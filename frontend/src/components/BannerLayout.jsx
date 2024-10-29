@@ -13,7 +13,7 @@ const CommonBannerLayout = () => {
           style={{
             backgroundImage: `url(${banner})`,
           }}
-          className=" w-full h-80 bg-cover bg-center bg-no-repeat font-poppins"
+          className=" w-full h-56 md:h-80 bg-cover bg-center bg-no-repeat font-poppins"
         >
           <div className="flex flex-col justify-center items-center h-full">
             <h1 className="text-5xl font-medium text-black mb-2">
