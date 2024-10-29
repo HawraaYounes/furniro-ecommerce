@@ -2,7 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Auth, { action as authAction } from "./pages/Auth";
-import RootLayout from "./components/Root";
+import RootLayout from "./components/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import Shop from "./pages/Shop";
 import ProductDetails from "./pages/ProductDetails";
@@ -11,10 +11,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        index: true,
         element: <Home />,
       },
       {
