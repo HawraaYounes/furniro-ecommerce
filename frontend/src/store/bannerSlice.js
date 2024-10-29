@@ -1,4 +1,3 @@
-// src/store/bannerSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const bannerSlice = createSlice({
