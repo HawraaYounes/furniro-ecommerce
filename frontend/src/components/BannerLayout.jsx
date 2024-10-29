@@ -23,8 +23,8 @@ const CommonBannerLayout = () => {
             <h1 className="text-5xl font-medium text-black mb-2">
               {bannerData.title}
             </h1>
-            <p className="">
-              <span className="font-bold">
+            <p className="font-light">
+              <span className="font-medium">
                 Home <img src={arrowRightIcon} className="inline w-5 h-5 font-thin" />
               </span>
               {bannerData.subtitle}
