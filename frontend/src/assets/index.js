@@ -7,6 +7,8 @@ import successIcon from "./icons/success.svg"
 import warningIcon from "./icons/warning.svg"
 import failIcon from "./icons/fail.svg"
 import closeIcon from "./icons/close.svg"
+import arrowRightIcon from "./icons/arrow-right.svg"
+
 
 import bedroomImg from "./images/bedroom.png";
 import livingImg from "./images/living.png";
@@ -15,7 +17,7 @@ import greenBubbles from "./images/green-bubbles.png";
 import redBubbles from "./images/red-bubbles.png";
 import grayBubbles from "./images/gray-bubbles.png";
 import yellowBubbles from "./images/yellow-bubbles.png";
-
+import banner from "./images/banner.png";
 
 
 export {
@@ -28,6 +30,7 @@ export {
   warningIcon,
   failIcon,
   closeIcon,
+  arrowRightIcon,
   greenBubbles,
   redBubbles,
   grayBubbles,
@@ -35,4 +38,5 @@ export {
   bedroomImg,
   livingImg,
   diningImg,
+  banner,
 };
