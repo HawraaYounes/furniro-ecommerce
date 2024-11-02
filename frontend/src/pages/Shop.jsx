@@ -1,18 +1,14 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setBannerData, clearBannerData } from "../store/bannerSlice";
-import { banner } from "../assets";
+import ProductCard from "../components/ProductCard";
 
-const products = [
-  { id: 1, title: "Modern Sofa" },
-  { id: 2, title: "Wooden Dining Table" },
-  { id: 3, title: "King Size Bed" },
-];
 
 const Shop = () => {
   const dispatch = useDispatch();
-
+  const products=useLoaderData();
+ 
   useEffect(() => {
     dispatch(
       setBannerData({
@@ -30,7 +26,7 @@ const Shop = () => {
       <ul>
         {products.map((product) => (
           <li key={product.id}>
-            <Link to={`/shop/${product.id}`}>{product.title}</Link>
+            <Link to={`/shop/${product.id}`}><ProductCard product={product}/></Link>
           </li>
         ))}
       </ul>
