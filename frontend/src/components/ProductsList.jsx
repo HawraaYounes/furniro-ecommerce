@@ -1,4 +1,3 @@
-// src/components/ProductList.js
 import React from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
@@ -6,7 +5,7 @@ import styles from "../style";
 
 const ProductList = ({ products }) => {
   return (
-    <div className={`${styles.paddingX}`}>
+    <div className={`${styles.paddingX} px-14`}>
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
           <li key={product.id} className="overflow-hidden">
