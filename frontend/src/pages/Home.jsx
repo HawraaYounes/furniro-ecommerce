@@ -24,7 +24,7 @@ const Home = () => {
 
 export const fetchProductsLoader = async () => {
   const response = await fetch(
-    "https://dummyjson.com/products?limit=8&skip=10&select=title,price"
+    "https://dummyjson.com/products?limit=8&skip=10"
   );
   if (!response.ok) {
     throw json({ message: "Could not fetch products" }, { status: 500 });
