@@ -28,10 +28,11 @@ const Home = () => {
 
 export const fetchProductsLoader = async () => {
   const response = await fetch(
-    "https://dummyjson.com/products?limit=10&skip=10&select=title,price"
+    "https://dummyjson.com/productsddd?limit=10&skip=10&select=title,price"
   );
   if (!response.ok) {
-    console.log("failed");
+    console.log("response status: ", response.status)
+    throw { status: 500, message: "Failed to fetch products" };
   } else {
     return response;
   }
