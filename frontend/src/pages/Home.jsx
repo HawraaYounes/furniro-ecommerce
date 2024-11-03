@@ -1,12 +1,11 @@
 import React from "react";
 import Hero from "../sections/home/Hero";
 import Categories from "../sections/home/Categories";
-import { Link, useLoaderData } from "react-router-dom";
+import { json, Link, useLoaderData } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
 const Home = () => {
   const data = useLoaderData();
-  console.log("PRODUCTS IN HOME", data.products);
   return (
     <>
       <div className=" bg-hero-pattern bg-no-repeat bg-cover bg-center ">
@@ -28,11 +27,10 @@ const Home = () => {
 
 export const fetchProductsLoader = async () => {
   const response = await fetch(
-    "https://dummyjson.com/productsddd?limit=10&skip=10&select=title,price"
+    "https://dummyjson.com/products?limit=10&skip=10&select=title,price"
   );
   if (!response.ok) {
-    console.log("response status: ", response.status)
-    throw { status: 500, message: "Failed to fetch products" };
+    throw json({ message: "Could not fetch products" }, { status: 500 });
   } else {
     return response;
   }

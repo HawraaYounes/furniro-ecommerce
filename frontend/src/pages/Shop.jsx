@@ -7,7 +7,7 @@ import ProductCard from "../components/ProductCard";
 
 const Shop = () => {
   const dispatch = useDispatch();
-  const products=useLoaderData();
+  const data=useLoaderData();
  
   useEffect(() => {
     dispatch(
@@ -24,7 +24,7 @@ const Shop = () => {
     <div>
       <h1>Shop Page</h1>
       <ul>
-        {products.map((product) => (
+        {data.products.map((product) => (
           <li key={product.id}>
             <Link to={`/shop/${product.id}`}><ProductCard product={product}/></Link>
           </li>
