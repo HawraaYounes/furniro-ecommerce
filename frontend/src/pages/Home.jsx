@@ -4,6 +4,7 @@ import Categories from "../sections/home/Categories";
 import { json, Link, useLoaderData } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import ProductList from "../components/ProductsList";
+import styles from "../style";
 
 const Home = () => {
   const data = useLoaderData();
@@ -13,14 +14,17 @@ const Home = () => {
         <Hero />
       </div>
       <Categories />
-      <ProductList products={data.products}/>
+      <div>
+        <p className={`${styles.heading} mb-8`}>Our Products</p>
+        <ProductList products={data.products} />
+      </div>
     </>
   );
 };
 
 export const fetchProductsLoader = async () => {
   const response = await fetch(
-    "https://dummyjson.com/products?limit=10&skip=10&select=title,price"
+    "https://dummyjson.com/products?limit=8&skip=10&select=title,price"
   );
   if (!response.ok) {
     throw json({ message: "Could not fetch products" }, { status: 500 });
