@@ -1,5 +1,5 @@
 import React from "react";
-import { chair } from "../assets"; // Assuming chair is a placeholder image
+import { chair } from "../assets"; 
 import styles from "../style";
 
 const ProductCard = ({ product }) => {
@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
     <div className="overflow-hidden shadow-md hover:shadow-lg bg-[#F4F5F7] text-left h-[450px]">
       <div
         className="img-div h-2/3 w-full bg-cover bg-center"
-        style={{ backgroundImage: `url(${chair})` }} // Set the background image here
+        style={{ backgroundImage: `url(${chair})` }} 
       />
       <div className="pt-4 pl-4 pb-7">
         <h3 className="font-semibold font-poppins text-lg text-gray-800">
