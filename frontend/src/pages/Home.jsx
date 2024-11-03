@@ -3,6 +3,7 @@ import Hero from "../sections/home/Hero";
 import Categories from "../sections/home/Categories";
 import { json, Link, useLoaderData } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import ProductList from "../components/ProductsList";
 
 const Home = () => {
   const data = useLoaderData();
@@ -12,15 +13,7 @@ const Home = () => {
         <Hero />
       </div>
       <Categories />
-      <ul>
-        {data.products.map((product) => (
-          <li key={product.id}>
-            <Link to={`/shop/${product.id}`}>
-              <ProductCard product={product} />
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <ProductList products={data.products}/>
     </>
   );
 };

@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setBannerData, clearBannerData } from "../store/bannerSlice";
 import ProductCard from "../components/ProductCard";
+import ProductList from "../components/ProductsList";
 
 
 const Shop = () => {
@@ -22,14 +23,7 @@ const Shop = () => {
 
   return (
     <div>
-      <h1>Shop Page</h1>
-      <ul>
-        {data.products.map((product) => (
-          <li key={product.id}>
-            <Link to={`/shop/${product.id}`}><ProductCard product={product}/></Link>
-          </li>
-        ))}
-      </ul>
+      <ProductList products={data.products}/>
     </div>
   );
 };
