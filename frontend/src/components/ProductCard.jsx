@@ -1,13 +1,18 @@
-import { useLoaderData } from "react-router-dom";
+import React from "react";
+import { chair } from "../assets"; // Assuming chair is a placeholder image
 
 const ProductCard = ({ product }) => {
-  
   return (
-    <div>
+    <div className="overflow-hidden shadow-md hover:shadow-lg">
       <div
-        className={`bg-[url('${product.thumbnail}')] bg-cover bg-center h-72 w-48 rounded-lg`}
-      >
-        <p>{product.title}</p>
+        className="img-div h-64 w-full bg-cover bg-center"
+        style={{ backgroundImage: `url(${chair})` }} // Set the background image here
+      />
+      <div className="p-4">
+        <h3 className="font-medium text-lg text-gray-800">{product.title}</h3>
+        <p className="text-gray-700 font-semibold mt-2">
+          Rp {product.price.toLocaleString()}
+        </p>
       </div>
     </div>
   );
