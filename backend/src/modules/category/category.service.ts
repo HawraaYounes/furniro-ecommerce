@@ -16,6 +16,7 @@ import { CATEGORY_ALREADY_EXISTS } from 'src/constants/responses/en/category/cat
 import { CATEGORY_FOUND } from 'src/constants/responses/en/category/category-found';
 import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
 import { CATEGORY_UPDATED } from 'src/constants/responses/en/category/category-updated';
+import { CATEGORY_DELETED } from 'src/constants/responses/en/category/category-deleted';
 
 @Injectable()
 export class CategoryService {
@@ -32,15 +33,13 @@ export class CategoryService {
             if (existingCategory) { // Check for duplicate category name
                 return CATEGORY_ALREADY_EXISTS;
             }
-            // Create and save the new category
-            const category = this.categoryRepository.create(payload);
+            const category = this.categoryRepository.create(payload); // Create and save the new category
             const savedCategory = await this.categoryRepository.save(category);
             return {
                 ...CATEGORY_CREATED,
                 data: savedCategory,
             };
         } catch (error) {
-            // Handle unexpected errors
             return INTERNAL_SERVER_ERROR;
         }
     }
@@ -79,7 +78,7 @@ export class CategoryService {
             return INTERNAL_SERVER_ERROR;  // Handle unexpected errors
         }
     }
-    
+
     async update(id: number, payload: UpdateCategoryDto) {
         try {
             const existingCategory = await this.categoryRepository.findOne({ where: { id } });
@@ -87,7 +86,6 @@ export class CategoryService {
                 return CATEGORY_NOT_FOUND;
             }
             await this.categoryRepository.update(id, payload);
-            
             // Fetch the updated category
             const updatedCategory = await this.findOne({ id });
             return {
@@ -98,9 +96,18 @@ export class CategoryService {
             return INTERNAL_SERVER_ERROR;
         }
     }
-    
 
-    async remove(params: DeleteCategoryParamsDto): Promise<void> {
-        await this.categoryRepository.delete(params.id);
+    async delete(params: DeleteCategoryParamsDto) {
+        try {
+            const existingCategory = await this.categoryRepository.findOne({ where: { id: params.id } });
+            if (!existingCategory) { // Category Not Found
+                return CATEGORY_NOT_FOUND;
+            }
+            await this.categoryRepository.delete(params.id);
+            return CATEGORY_DELETED; // Successfully deleted
+        } catch (error) {
+            return INTERNAL_SERVER_ERROR
+        }
     }
+    
 }

@@ -36,7 +36,7 @@ export class CategoryController {
     }
 
     @Delete(':id')
-    remove(@Param('id') params: DeleteCategoryParamsDto): Promise<void> {
-        return this.categoryService.remove(params);
+    delete(@Param('id') params: DeleteCategoryParamsDto){
+        return this.categoryService.delete(params);
     }
 }
