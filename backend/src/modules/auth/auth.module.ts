@@ -9,16 +9,19 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
 import { jwtConstants } from 'src/constants';
 import { RolesGuard } from './roles.guard';
+import { CategoryModule } from '../category/category.module';
 
 @Module({
   imports: [
-    UserModule,
+
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '1d' },
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User]), 
+    UserModule,
+    CategoryModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -27,11 +30,11 @@ import { RolesGuard } from './roles.guard';
       useClass: AuthGuard,
     },
     {
-      provide: APP_GUARD,  
+      provide: APP_GUARD,
       useClass: RolesGuard,
     },
     AuthService
   ],
   exports: [AuthService]
 })
-export class AuthModule {}
+export class AuthModule { }
