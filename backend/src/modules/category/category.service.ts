@@ -45,21 +45,18 @@ export class CategoryService {
     async findAll() {
         try {
             const categories = await this.categoryRepository.find();
-            if (!categories || categories.length === 0) {// Case 1: Check if no categories are found
+            if (!categories || categories.length === 0) {// Check if no categories are found
                 return {
                     message: "No categories found.",
                     data: []
                 };
             }
-            return { // Case 2: Successfully found categories
+            return { // Successfully found categories
                 ...CATEGORIES_RETRIEVED,
                 data: categories
             };
         } catch (error) {
-            throw new HttpException( // Case 3: Handle unexpected errors
-                'An error occurred while retrieving categories.',
-                STATUS_INTERNAL_SERVER_ERROR
-            );
+            return INTERNAL_SERVER_ERROR;
         }
     }
 
