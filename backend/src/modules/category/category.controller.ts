@@ -70,6 +70,19 @@ export class CategoryController {
     }
 
     @Put(':id')
+    @ApiOperation({ summary: 'Update a specific category by ID' })
+    @ApiResponse({
+        status: 200,
+        description: 'The category has been successfully updated.',
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'The category with the given ID was not found.',
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error.',
+    })
     update(
         @Param() params: UpdateCategoryParamsDto, 
         @Body() updateCategoryDto: UpdateCategoryDto
