@@ -1,14 +1,15 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Public } from "./public-strategy";
 import { SignInDto } from "./dto/signin.dto";
 import { SignUpDto } from "./dto/signup.dto";
-import { ApiBadRequestResponse, ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import { ApiBody, ApiTags, ApiOperation, ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiUnauthorizedResponse } from "@nestjs/swagger";
 
 @ApiTags('auth')
 @Controller("auth")
 export class AuthController {
     constructor(private authService: AuthService) { }
+
     @Public()
     @ApiBody({ type: SignInDto })
     @ApiOkResponse({
@@ -26,6 +27,7 @@ export class AuthController {
     @ApiInternalServerErrorResponse({
         description: 'Unexpected error occurred during sign-in.',
     })
+    @ApiOperation({ summary: 'Log in a user' })
     @Post("login")
     signIn(@Body() body: SignInDto) {
         return this.authService.signIn(body);
@@ -34,7 +36,7 @@ export class AuthController {
     @Public()
     @ApiBody({ type: SignUpDto })
     @ApiCreatedResponse({
-        description: 'User successfully Signed Up.',
+        description: 'User successfully signed up.',
     })
     @ApiConflictResponse({
         description: 'When the email is already taken.',
@@ -45,6 +47,7 @@ export class AuthController {
     @ApiInternalServerErrorResponse({
         description: 'Unexpected error occurred while processing the signup.',
     })
+    @ApiOperation({ summary: 'Register a new user' })
     @Post("signup")
     signUp(@Body() body: SignUpDto) {
         return this.authService.signUp(body);
