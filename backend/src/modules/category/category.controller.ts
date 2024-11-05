@@ -51,6 +51,20 @@ export class CategoryController {
     }
 
     @Get(':id')
+    @ApiOperation({ summary: 'Retrieve a specific category by ID' })
+    @ApiResponse({
+        status: 200,
+        description: 'The category has been successfully retrieved.',
+        type: Category,
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'The category with the given ID was not found.',
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error.',
+    })
     async findOne(@Param() params: FindCategoryParamsDto){
         return this.categoryService.findOne(params);
     }

@@ -65,7 +65,7 @@ export class CategoryService {
                 where: { id: params.id },
             });
             if (!category) { // Category Not Found
-                return CATEGORY_FOUND;
+                return CATEGORY_NOT_FOUND;
             }
             return { // Category Found
                 ...CATEGORY_FOUND,
