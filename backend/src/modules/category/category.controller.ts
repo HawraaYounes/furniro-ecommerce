@@ -33,6 +33,19 @@ export class CategoryController {
     }
 
     @Get()
+    @ApiOperation({ summary: 'Retrieve all categories' })
+    @ApiResponse({
+        status: 200,
+        description: 'The categories have been successfully retrieved.',
+    })
+    @ApiResponse({
+        status: 204,
+        description: 'No categories found.',
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error.',
+    })
     findAll(){
         return this.categoryService.findAll();
     }
