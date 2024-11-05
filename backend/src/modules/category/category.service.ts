@@ -1,6 +1,6 @@
 // src/category/category.service.ts
 
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './category.entity';
@@ -9,7 +9,6 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FindCategoryParamsDto } from './dto/get-category.dto';
 import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
 import { CATEGORIES_RETRIEVED } from 'src/constants/responses/en/category/categories-retrieved';
-import { STATUS_INTERNAL_SERVER_ERROR } from 'src/constants/codes/status-codes';
 import { CATEGORY_CREATED } from 'src/constants/responses/en/category/category-created';
 import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
 import { CATEGORY_ALREADY_EXISTS } from 'src/constants/responses/en/category/category-exists';
