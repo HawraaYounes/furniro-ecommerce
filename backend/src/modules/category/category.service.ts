@@ -6,15 +6,16 @@ import { Repository } from 'typeorm';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { FindCategoryParamsDto } from './dto/get-category.dto';
 
 @Injectable()
 export class CategoryService {
     constructor(
         @InjectRepository(Category)
         private categoryRepository: Repository<Category>,
-    ) {}
+    ) { }
 
-    create(payload:CreateCategoryDto): Promise<Category> {
+    create(payload: CreateCategoryDto): Promise<Category> {
         const category = this.categoryRepository.create(payload);
         return this.categoryRepository.save(category);
     }
@@ -23,13 +24,13 @@ export class CategoryService {
         return this.categoryRepository.find();
     }
 
-    findOne(id: number): Promise<Category> {
-        return this.categoryRepository.findOne({ where: { id } });
+    findOne(params: FindCategoryParamsDto): Promise<Category> {
+        return this.categoryRepository.findOne({ where: { id: params.id } });
     }
 
     async update(id: number, payload: UpdateCategoryDto): Promise<Category> {
         await this.categoryRepository.update(id, payload);
-        return this.findOne(id);
+        return this.findOne({ id });
     }
 
     async remove(id: number): Promise<void> {

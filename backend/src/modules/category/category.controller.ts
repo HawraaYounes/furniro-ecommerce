@@ -5,6 +5,7 @@ import { CategoryService } from './category.service';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto, UpdateCategoryParamsDto } from './dto/update-category.dto';
+import { FindCategoryParamsDto } from './dto/get-category.dto';
 
 @Controller('categories')
 export class CategoryController {
@@ -21,8 +22,8 @@ export class CategoryController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number): Promise<Category> {
-        return this.categoryService.findOne(id);
+    async findOne(@Param() params: FindCategoryParamsDto): Promise<Category> {
+        return this.categoryService.findOne(params);
     }
 
     @Put(':id')
