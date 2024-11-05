@@ -13,7 +13,7 @@ export class CategoryController {
     constructor(private readonly categoryService: CategoryService) { }
 
     @Post()
-    create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
+    create(@Body() createCategoryDto: CreateCategoryDto){
         return this.categoryService.create(createCategoryDto);
     }
 

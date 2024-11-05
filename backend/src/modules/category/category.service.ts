@@ -10,6 +10,9 @@ import { FindCategoryParamsDto } from './dto/get-category.dto';
 import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
 import { CATEGORIES_RETRIEVED } from 'src/constants/responses/en/category/categories-retrieved';
 import { STATUS_INTERNAL_SERVER_ERROR } from 'src/constants/codes/status-codes';
+import { CATEGORY_CREATED } from 'src/constants/responses/en/category/category-created';
+import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
+import { CATEGORY_ALREADY_EXISTS } from 'src/constants/responses/en/category/category-exists';
 
 @Injectable()
 export class CategoryService {
@@ -18,29 +21,42 @@ export class CategoryService {
         private categoryRepository: Repository<Category>,
     ) { }
 
-    async create(payload: CreateCategoryDto): Promise<Category> {
-        const category = this.categoryRepository.create(payload);
-        return await this.categoryRepository.save(category);
+    async create(payload: CreateCategoryDto) {
+        try {
+            const existingCategory = await this.categoryRepository.findOne({
+                where: { name: payload.name },
+            });
+            if (existingCategory) { // Check for duplicate category name
+                return CATEGORY_ALREADY_EXISTS;
+            }
+            // Create and save the new category
+            const category = this.categoryRepository.create(payload);
+            const savedCategory = await this.categoryRepository.save(category);
+            return {
+                ...CATEGORY_CREATED,
+                data: savedCategory,
+            };
+        } catch (error) {
+            // Handle unexpected errors
+            return INTERNAL_SERVER_ERROR;
+        }
     }
 
     async findAll() {
         try {
             const categories = await this.categoryRepository.find();
-            // Case 1: Check if no categories are found
-            if (!categories || categories.length === 0) {
+            if (!categories || categories.length === 0) {// Case 1: Check if no categories are found
                 return {
                     message: "No categories found.",
                     data: []
                 };
             }
-            // Case 2: Successfully found categories
-            return {
+            return { // Case 2: Successfully found categories
                 ...CATEGORIES_RETRIEVED,
                 data: categories
             };
         } catch (error) {
-            // Case 3: Handle unexpected errors
-            throw new HttpException(
+            throw new HttpException( // Case 3: Handle unexpected errors
                 'An error occurred while retrieving categories.',
                 STATUS_INTERNAL_SERVER_ERROR
             );
