@@ -1,6 +1,7 @@
 //SUCCESS CODES
 export const STATUS_OK = 200;
 export const STATUS_CREATED = 201;
+export const STATUS_NO_CONTENT = 204; 
 
 //ERROR CODES
 export const STATUS_UNAUTHORIZED = 401;

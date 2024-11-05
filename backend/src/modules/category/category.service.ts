@@ -16,6 +16,7 @@ import { CATEGORY_FOUND } from 'src/constants/responses/en/category/category-fou
 import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
 import { CATEGORY_UPDATED } from 'src/constants/responses/en/category/category-updated';
 import { CATEGORY_DELETED } from 'src/constants/responses/en/category/category-deleted';
+import { NO_CATEGORIES_FOUND } from 'src/constants/responses/en/category/no-categories-found';
 
 @Injectable()
 export class CategoryService {
@@ -47,10 +48,7 @@ export class CategoryService {
         try {
             const categories = await this.categoryRepository.find();
             if (!categories || categories.length === 0) {// Check if no categories are found
-                return {
-                    message: "No categories found.",
-                    data: []
-                };
+                return NO_CATEGORIES_FOUND;
             }
             return { // Successfully found categories
                 ...CATEGORIES_RETRIEVED,
