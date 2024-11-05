@@ -8,6 +8,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FindCategoryParamsDto } from './dto/get-category.dto';
 import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
+import { CATEGORIES_RETRIEVED } from 'src/constants/responses/en/category/categories-retrieved';
 
 @Injectable()
 export class CategoryService {
@@ -16,13 +17,17 @@ export class CategoryService {
         private categoryRepository: Repository<Category>,
     ) { }
 
-    create(payload: CreateCategoryDto): Promise<Category> {
+    async create(payload: CreateCategoryDto): Promise<Category> {
         const category = this.categoryRepository.create(payload);
-        return this.categoryRepository.save(category);
+        return await this.categoryRepository.save(category);
     }
 
-    findAll(): Promise<Category[]> {
-        return this.categoryRepository.find();
+    async findAll() {
+        const categories = await this.categoryRepository.find();
+        return {
+            ...CATEGORIES_RETRIEVED,
+            data: categories
+        }
     }
 
     findOne(params: FindCategoryParamsDto): Promise<Category> {
