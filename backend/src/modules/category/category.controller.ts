@@ -23,7 +23,7 @@ export class CategoryController {
     }
 
     @Get(':id')
-    async findOne(@Param() params: FindCategoryParamsDto): Promise<Category> {
+    async findOne(@Param() params: FindCategoryParamsDto){
         return this.categoryService.findOne(params);
     }
 
@@ -31,7 +31,7 @@ export class CategoryController {
     update(
         @Param() params: UpdateCategoryParamsDto, 
         @Body() updateCategoryDto: UpdateCategoryDto
-    ): Promise<Category> {
+    ) {
         return this.categoryService.update(params.id, updateCategoryDto);
     }
 

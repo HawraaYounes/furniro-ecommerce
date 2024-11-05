@@ -14,6 +14,8 @@ import { CATEGORY_CREATED } from 'src/constants/responses/en/category/category-c
 import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
 import { CATEGORY_ALREADY_EXISTS } from 'src/constants/responses/en/category/category-exists';
 import { CATEGORY_FOUND } from 'src/constants/responses/en/category/category-found';
+import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
+import { CATEGORY_UPDATED } from 'src/constants/responses/en/category/category-updated';
 
 @Injectable()
 export class CategoryService {
@@ -77,11 +79,26 @@ export class CategoryService {
             return INTERNAL_SERVER_ERROR;  // Handle unexpected errors
         }
     }
-
-    async update(id: number, payload: UpdateCategoryDto): Promise<Category> {
-        await this.categoryRepository.update(id, payload);
-        return this.findOne({ id });
+    
+    async update(id: number, payload: UpdateCategoryDto) {
+        try {
+            const existingCategory = await this.categoryRepository.findOne({ where: { id } });
+            if (!existingCategory) { // Category Not Found
+                return CATEGORY_NOT_FOUND;
+            }
+            await this.categoryRepository.update(id, payload);
+            
+            // Fetch the updated category
+            const updatedCategory = await this.findOne({ id });
+            return {
+                ...CATEGORY_UPDATED,
+                data: updatedCategory.data,
+            };
+        } catch (error) {
+            return INTERNAL_SERVER_ERROR;
+        }
     }
+    
 
     async remove(params: DeleteCategoryParamsDto): Promise<void> {
         await this.categoryRepository.delete(params.id);
