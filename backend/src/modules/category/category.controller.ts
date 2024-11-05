@@ -7,8 +7,8 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto, UpdateCategoryParamsDto } from './dto/update-category.dto';
 import { FindCategoryParamsDto } from './dto/get-category.dto';
 import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+@ApiTags('category')
 @Controller('categories')
 export class CategoryController {
     constructor(private readonly categoryService: CategoryService) { }
