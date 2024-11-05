@@ -13,6 +13,7 @@ import { STATUS_INTERNAL_SERVER_ERROR } from 'src/constants/codes/status-codes';
 import { CATEGORY_CREATED } from 'src/constants/responses/en/category/category-created';
 import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
 import { CATEGORY_ALREADY_EXISTS } from 'src/constants/responses/en/category/category-exists';
+import { CATEGORY_FOUND } from 'src/constants/responses/en/category/category-found';
 
 @Injectable()
 export class CategoryService {
@@ -60,8 +61,21 @@ export class CategoryService {
         }
     }
 
-    findOne(params: FindCategoryParamsDto): Promise<Category> {
-        return this.categoryRepository.findOne({ where: { id: params.id } });
+    async findOne(params: FindCategoryParamsDto) {
+        try {
+            const category = await this.categoryRepository.findOne({
+                where: { id: params.id },
+            });
+            if (!category) { // Category Not Found
+                return CATEGORY_FOUND;
+            }
+            return { // Category Found
+                ...CATEGORY_FOUND,
+                data: category,
+            };
+        } catch (error) {
+            return INTERNAL_SERVER_ERROR;  // Handle unexpected errors
+        }
     }
 
     async update(id: number, payload: UpdateCategoryDto): Promise<Category> {
