@@ -91,6 +91,19 @@ export class CategoryController {
     }
 
     @Delete(':id')
+    @ApiOperation({ summary: 'Delete a specific category by ID' })
+    @ApiResponse({
+        status: 200,
+        description: 'The category has been successfully deleted.',
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'The category with the given ID was not found.',
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error.',
+    })
     delete(@Param('id') params: DeleteCategoryParamsDto){
         return this.categoryService.delete(params);
     }
