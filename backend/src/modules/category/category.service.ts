@@ -7,6 +7,7 @@ import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FindCategoryParamsDto } from './dto/get-category.dto';
+import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -33,7 +34,7 @@ export class CategoryService {
         return this.findOne({ id });
     }
 
-    async remove(id: number): Promise<void> {
-        await this.categoryRepository.delete(id);
+    async remove(params: DeleteCategoryParamsDto): Promise<void> {
+        await this.categoryRepository.delete(params.id);
     }
 }

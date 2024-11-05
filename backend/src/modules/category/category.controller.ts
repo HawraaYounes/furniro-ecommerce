@@ -6,6 +6,7 @@ import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto, UpdateCategoryParamsDto } from './dto/update-category.dto';
 import { FindCategoryParamsDto } from './dto/get-category.dto';
+import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
 
 @Controller('categories')
 export class CategoryController {
@@ -35,7 +36,7 @@ export class CategoryController {
     }
 
     @Delete(':id')
-    remove(@Param('id') id: number): Promise<void> {
-        return this.categoryService.remove(id);
+    remove(@Param('id') params: DeleteCategoryParamsDto): Promise<void> {
+        return this.categoryService.remove(params);
     }
 }
