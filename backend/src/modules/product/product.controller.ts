@@ -4,6 +4,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
+import { Public } from '../auth/public-strategy';
 
 @Controller('products')
 export class ProductController {
@@ -15,12 +16,14 @@ export class ProductController {
         return response;
     }
 
+    @Public()
     @Get()
     async findAll() {
         const response = await this.productService.findAll();
         return response;
     }
 
+    @Public()
     @Get(':id')
     async findOne(@Param() params: FindProductParamsDto) {
         const response = await this.productService.findOne(params);
