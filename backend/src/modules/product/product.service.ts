@@ -3,10 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { FindProductParamsDto } from './dto/find-product.dto';
-import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Product } from './product.entity';
 import { ProductImage } from './product-image.entity';
 import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
@@ -16,6 +12,10 @@ import { PRODUCT_NOT_FOUND } from 'src/constants/responses/en/product/product-no
 import { PRODUCT_UPDATED } from 'src/constants/responses/en/product/product-updated';
 import { PRODUCT_DELETED } from 'src/constants/responses/en/product/product-deleted';
 import { NO_PRODUCTS_FOUND } from 'src/constants/responses/en/product/no-products-found';
+import { CreateProductDto } from './dto/create-product.dto';
+import { FindProductParamsDto } from './dto/find-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { DeleteProductParamsDto } from './dto/delete-product.dto';
 
 @Injectable()
 export class ProductService {
