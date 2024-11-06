@@ -7,10 +7,15 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
-import { PRODUCTS_RETRIEVED, PRODUCT_CREATED, PRODUCT_NOT_FOUND, PRODUCT_UPDATED, PRODUCT_DELETED,  NO_PRODUCTS_FOUND } from 'src/constants/responses/en/product';
 import { Product } from './product.entity';
 import { ProductImage } from './product-image.entity';
 import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
+import { PRODUCT_CREATED } from 'src/constants/responses/en/product/product-created';
+import { PRODUCTS_RETRIEVED } from 'src/constants/responses/en/product/products-retrieved';
+import { PRODUCT_NOT_FOUND } from 'src/constants/responses/en/product/product-not-found';
+import { PRODUCT_UPDATED } from 'src/constants/responses/en/product/product-updated';
+import { PRODUCT_DELETED } from 'src/constants/responses/en/product/product-deleted';
+import { NO_PRODUCTS_FOUND } from 'src/constants/responses/en/product/no-products-found';
 
 @Injectable()
 export class ProductService {
