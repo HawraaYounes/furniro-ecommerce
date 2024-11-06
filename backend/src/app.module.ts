@@ -10,6 +10,7 @@ import { RedisOptions } from './redis-options';
 import { Category } from './modules/category/category.entity';
 import { Product } from './modules/product/product.entity';
 import { ProductImage } from './modules/product/product-image.entity';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { ProductImage } from './modules/product/product-image.entity';
       //logging: true,
     }),
     CacheModule.registerAsync(RedisOptions),
-    UserModule,AuthModule
+    UserModule,AuthModule, ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],
