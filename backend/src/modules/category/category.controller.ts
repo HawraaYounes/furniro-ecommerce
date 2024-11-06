@@ -8,6 +8,7 @@ import { UpdateCategoryDto, UpdateCategoryParamsDto } from './dto/update-categor
 import { FindCategoryParamsDto } from './dto/get-category.dto';
 import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from '../auth/public-strategy';
 @ApiTags('category')
 @Controller('categories')
 export class CategoryController {
@@ -46,6 +47,7 @@ export class CategoryController {
         status: 500,
         description: 'Internal server error.',
     })
+    @Public()
     findAll(){
         return this.categoryService.findAll();
     }
@@ -65,6 +67,7 @@ export class CategoryController {
         status: 500,
         description: 'Internal server error.',
     })
+    @Public()
     async findOne(@Param() params: FindCategoryParamsDto){
         return this.categoryService.findOne(params);
     }
