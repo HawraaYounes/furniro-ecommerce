@@ -16,6 +16,8 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
+import { Category } from '../category/category.entity';
+import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
 
 @Injectable()
 export class ProductService {
@@ -25,11 +27,22 @@ export class ProductService {
     @InjectRepository(ProductImage)
     private productImageRepository: Repository<ProductImage>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,  
   ) {}
 
   async create(payload: CreateProductDto) {
     try {
-      const product = this.productRepository.create(payload);
+      const category = await this.categoryRepository.findOne({ where: { id: payload.category_id } });
+      if (!category) {
+          return CATEGORY_NOT_FOUND;
+      }
+
+      // Create the product and assign the category
+      const product = this.productRepository.create({
+          ...payload,
+          category, 
+      });
       const savedProduct = await this.productRepository.save(product);
 
       // Clear products cache on new product creation
@@ -40,6 +53,7 @@ export class ProductService {
         data: savedProduct,
       };
     } catch (error) {
+      console.log(error)
       return INTERNAL_SERVER_ERROR;
     }
   }

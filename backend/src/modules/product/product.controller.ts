@@ -12,6 +12,7 @@ export class ProductController {
 
     @Post()
     async create(@Body() payload: CreateProductDto) {
+        console.log("Received payload controller:", payload);
         const response = await this.productService.create(payload);
         return response;
     }
