@@ -1,6 +1,6 @@
 // src/category/category.controller.ts
 
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -107,7 +107,7 @@ export class CategoryController {
         status: 500,
         description: 'Internal server error.',
     })
-    delete(@Param('id') params: DeleteCategoryParamsDto){
+    delete(@Param() params: DeleteCategoryParamsDto){
         return this.categoryService.delete(params);
     }
 }
