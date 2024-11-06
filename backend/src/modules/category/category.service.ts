@@ -1,8 +1,8 @@
-// src/category/category.service.ts
-
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -20,91 +20,136 @@ import { NO_CATEGORIES_FOUND } from 'src/constants/responses/en/category/no-cate
 
 @Injectable()
 export class CategoryService {
-    constructor(
-        @InjectRepository(Category)
-        private categoryRepository: Repository<Category>,
-    ) { }
+  constructor(
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
-    async create(payload: CreateCategoryDto) {
-        try {
-            const existingCategory = await this.categoryRepository.findOne({
-                where: { name: payload.name },
-            });
-            if (existingCategory) { // Check for duplicate category name
-                return CATEGORY_ALREADY_EXISTS;
-            }
-            const category = this.categoryRepository.create(payload); // Create and save the new category
-            const savedCategory = await this.categoryRepository.save(category);
-            return {
-                ...CATEGORY_CREATED,
-                data: savedCategory,
-            };
-        } catch (error) {
-            return INTERNAL_SERVER_ERROR;
-        }
-    }
+  async create(payload: CreateCategoryDto) {
+    try {
+      const existingCategory = await this.categoryRepository.findOne({
+        where: { name: payload.name },
+      });
+      if (existingCategory) {
+        return CATEGORY_ALREADY_EXISTS;
+      }
+      const category = this.categoryRepository.create(payload);
+      const savedCategory = await this.categoryRepository.save(category);
 
-    async findAll() {
-        try {
-            const categories = await this.categoryRepository.find();
-            if (!categories || categories.length === 0) {// Check if no categories are found
-                return NO_CATEGORIES_FOUND;
-            }
-            return { // Successfully found categories
-                ...CATEGORIES_RETRIEVED,
-                data: categories
-            };
-        } catch (error) {
-            return INTERNAL_SERVER_ERROR;
-        }
-    }
+      // Clear categories cache on new category creation
+      await this.cacheManager.del('categories');
 
-    async findOne(params: FindCategoryParamsDto) {
-        try {
-            const category = await this.categoryRepository.findOne({
-                where: { id: params.id },
-            });
-            if (!category) { // Category Not Found
-                return CATEGORY_NOT_FOUND;
-            }
-            return { // Category Found
-                ...CATEGORY_FOUND,
-                data: category,
-            };
-        } catch (error) {
-            return INTERNAL_SERVER_ERROR;  // Handle unexpected errors
-        }
+      return {
+        ...CATEGORY_CREATED,
+        data: savedCategory,
+      };
+    } catch (error) {
+      return INTERNAL_SERVER_ERROR;
     }
+  }
 
-    async update(id: number, payload: UpdateCategoryDto) {
-        try {
-            const existingCategory = await this.categoryRepository.findOne({ where: { id } });
-            if (!existingCategory) { // Category Not Found
-                return CATEGORY_NOT_FOUND;
-            }
-            await this.categoryRepository.update(id, payload);
-            // Fetch the updated category
-            const updatedCategory = await this.findOne({ id });
-            return {
-                ...CATEGORY_UPDATED,
-                data: updatedCategory.data,
-            };
-        } catch (error) {
-            return INTERNAL_SERVER_ERROR;
-        }
-    }
+  async findAll() {
+    try {
+      const cachedCategories = await this.cacheManager.get('categories');
+      if (cachedCategories) {
+        return {
+          ...CATEGORIES_RETRIEVED,
+          data: cachedCategories,
+        };
+      }
 
-    async delete(params: DeleteCategoryParamsDto) {
-        try {
-            const existingCategory = await this.categoryRepository.findOne({ where: { id: params.id } });
-            if (!existingCategory) { // Category Not Found
-                return CATEGORY_NOT_FOUND;
-            }
-            await this.categoryRepository.delete(params.id);
-            return CATEGORY_DELETED; // Successfully deleted
-        } catch (error) {
-            return INTERNAL_SERVER_ERROR
-        }
+      const categories = await this.categoryRepository.find();
+      if (!categories || categories.length === 0) {
+        return NO_CATEGORIES_FOUND;
+      }
+
+      // Cache the categories data for 10 minutes
+      await this.cacheManager.set('categories', categories, 600);
+
+      return {
+        ...CATEGORIES_RETRIEVED,
+        data: categories,
+      };
+    } catch (error) {
+      return INTERNAL_SERVER_ERROR;
     }
-    
+  }
+
+  async findOne(params: FindCategoryParamsDto) {
+    try {
+      const cacheKey = `category:${params.id}`;
+      const cachedCategory = await this.cacheManager.get(cacheKey);
+      if (cachedCategory) {
+        return {
+          ...CATEGORY_FOUND,
+          data: cachedCategory,
+        };
+      }
+
+      const category = await this.categoryRepository.findOne({
+        where: { id: params.id },
+      });
+      if (!category) {
+        return CATEGORY_NOT_FOUND;
+      }
+
+      // Cache the individual category for 10 minutes
+      await this.cacheManager.set(cacheKey, category, 600);
+
+      return {
+        ...CATEGORY_FOUND,
+        data: category,
+      };
+    } catch (error) {
+      return INTERNAL_SERVER_ERROR;
+    }
+  }
+
+  async update(id: number, payload: UpdateCategoryDto) {
+    try {
+      const existingCategory = await this.categoryRepository.findOne({
+        where: { id },
+      });
+      if (!existingCategory) {
+        return CATEGORY_NOT_FOUND;
+      }
+
+      await this.categoryRepository.update(id, payload);
+
+      // Invalidate the cache for the updated category and categories list
+      await this.cacheManager.del(`category:${id}`);
+      await this.cacheManager.del('categories');
+
+      // Fetch the updated category
+      const updatedCategory = await this.findOne({ id });
+      return {
+        ...CATEGORY_UPDATED,
+        data: updatedCategory.data,
+      };
+    } catch (error) {
+      return INTERNAL_SERVER_ERROR;
+    }
+  }
+
+  async delete(params: DeleteCategoryParamsDto) {
+    try {
+      const existingCategory = await this.categoryRepository.findOne({
+        where: { id: params.id },
+      });
+      if (!existingCategory) {
+        return CATEGORY_NOT_FOUND;
+      }
+
+      await this.categoryRepository.delete(params.id);
+
+      // Invalidate the cache for the deleted category and categories list
+      await this.cacheManager.del(`category:${params.id}`);
+      await this.cacheManager.del('categories');
+
+      return CATEGORY_DELETED;
+    } catch (error) {
+      return INTERNAL_SERVER_ERROR;
+    }
+  }
 }
