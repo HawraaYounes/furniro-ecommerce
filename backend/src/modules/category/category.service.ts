@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Category } from './category.entity';
@@ -108,19 +108,31 @@ export class CategoryService {
 
   async update(id: number, payload: UpdateCategoryDto) {
     try {
+      // Check if the category exists
       const existingCategory = await this.categoryRepository.findOne({
         where: { id },
       });
       if (!existingCategory) {
         return CATEGORY_NOT_FOUND;
       }
-
+  
+      // Check if a category with the new name already exists (and it's not the same category being updated)
+      if (payload.name) {
+        const categoryWithSameName = await this.categoryRepository.findOne({
+          where: { name: payload.name, id: Not(id) },
+        });
+        if (categoryWithSameName) {
+          return CATEGORY_ALREADY_EXISTS;
+        }
+      }
+  
+      // Update the category
       await this.categoryRepository.update(id, payload);
-
+  
       // Invalidate the cache for the updated category and categories list
       await this.cacheManager.del(`category:${id}`);
       await this.cacheManager.del('categories');
-
+  
       // Fetch the updated category
       const updatedCategory = await this.findOne({ id });
       return {
@@ -128,9 +140,11 @@ export class CategoryService {
         data: updatedCategory.data,
       };
     } catch (error) {
+      console.log(error);
       return INTERNAL_SERVER_ERROR;
     }
   }
+  
 
   async delete(params: DeleteCategoryParamsDto) {
     try {
