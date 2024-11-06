@@ -8,6 +8,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RedisOptions } from './redis-options';
 import { Category } from './modules/category/category.entity';
+import { Product } from './modules/product/product.entity';
+import { ProductImage } from './modules/product/product-image.entity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { Category } from './modules/category/category.entity';
       port: 5432,
       password: 'postgres',
       username: 'postgres',
-      entities: [User,Category],
+      entities: [User,Category, Product, ProductImage],
       database: 'furniro-db',
       synchronize: true,
       //logging: true,
