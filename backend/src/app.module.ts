@@ -11,22 +11,40 @@ import { Category } from './modules/category/category.entity';
 import { ProductModule } from './modules/product/product.module';
 import { Product } from './modules/product/entities/product.entity';
 import { ProductImage } from './modules/product/entities/product-image.entity';
+import { DataSource } from 'typeorm';
+import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver } from 'typeorm-transactional';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      password: 'postgres',
-      username: 'postgres',
-      entities: [User,Category, Product, ProductImage],
-      database: 'furniro-db',
-      synchronize: true,
-      //logging: true,
+    TypeOrmModule.forRootAsync({
+      useFactory() {
+        return {
+          type: 'postgres',
+          host: 'localhost',
+          port: 5432,
+          username: 'postgres',
+          password: 'postgres',
+          database: 'furniro-db',
+          entities: [User, Category, Product, ProductImage],
+          synchronize: true,
+          // logging: true,
+        };
+      },
+      async dataSourceFactory(options) {
+        if (!options) throw new Error('Invalid options passed');
+        const dataSource = new DataSource(options);
+        
+        // Initialize transactional context
+        initializeTransactionalContext({ storageDriver: StorageDriver.ASYNC_LOCAL_STORAGE });
+
+        // Add the data source for transactional handling
+        return addTransactionalDataSource(dataSource);
+      },
     }),
     CacheModule.registerAsync(RedisOptions),
-    UserModule,AuthModule, ProductModule
+    UserModule,
+    AuthModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

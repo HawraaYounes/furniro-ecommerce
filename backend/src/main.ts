@@ -3,8 +3,10 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
 import { ResponseInterceptor } from './interceptors/response.interceptor';
+import { initializeTransactionalContext, StorageDriver } from 'typeorm-transactional';
 
 async function bootstrap() {
+  initializeTransactionalContext({ storageDriver: StorageDriver.ASYNC_LOCAL_STORAGE }); // Initialize context
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS with specific options
