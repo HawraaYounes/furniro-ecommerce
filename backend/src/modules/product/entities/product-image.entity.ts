@@ -9,6 +9,9 @@ export class ProductImage {
     @Column()
     url: string;
 
+    @Column()
+    isFeatured: boolean;
+
     @ManyToOne(() => Product, (product) => product.images, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'product_id' })
     product: Product;

@@ -8,9 +8,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RedisOptions } from './redis-options';
 import { Category } from './modules/category/category.entity';
-import { Product } from './modules/product/product.entity';
-import { ProductImage } from './modules/product/product-image.entity';
 import { ProductModule } from './modules/product/product.module';
+import { Product } from './modules/product/entities/product.entity';
+import { ProductImage } from './modules/product/entities/product-image.entity';
 
 @Module({
   imports: [
