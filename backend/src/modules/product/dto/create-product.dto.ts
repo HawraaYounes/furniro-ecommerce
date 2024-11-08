@@ -1,25 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, IsArray, ArrayMinSize, Validate, IsOptional, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, ValidateNested, ArrayNotEmpty } from 'class-validator';
+import { Type } from 'class-transformer';
 
 class ImageDto {
   @IsNotEmpty()
   @IsString()
-  url: string;
-
-  @IsOptional()
-  @IsBoolean()
-  isFeatured?: boolean;  // isFeatured can be optional, but only one image can have this set to true
-}
-
-class AtMostOneFeaturedImage {
-  // Custom validation to ensure at most one image is featured
-  validate(images: ImageDto[]): boolean {
-    const featuredCount = images.filter((image) => image.isFeatured === true).length;
-    return featuredCount <= 1;  // Only allow at most one image with isFeatured = true
-  }
-
-  defaultMessage() {
-    return 'Only one image can be marked as featured';
-  }
+  isFeatured: boolean;
 }
 
 export class CreateProductDto {
@@ -35,9 +20,9 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
-  @IsArray()
-  @ArrayMinSize(1, { message: 'At least one image is required' })  // Ensure at least one image
-  @Validate(AtMostOneFeaturedImage, { message: 'Only one image can be marked as featured' })  // Custom validation for featured images
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => ImageDto)
   images: ImageDto[];
 
   @IsNotEmpty()
