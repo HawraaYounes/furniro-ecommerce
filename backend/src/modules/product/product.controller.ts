@@ -1,20 +1,28 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles, BadRequestException } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Public } from '../auth/public-strategy';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('products')
 export class ProductController {
     constructor(private readonly productService: ProductService) { }
 
-    @Post()
-    async create(@Body() payload: CreateProductDto) {
-        console.log("Received payload controller:", payload);
-        const response = await this.productService.create(payload);
-        return response;
+    @Post('create')
+    @UseInterceptors(
+      FileFieldsInterceptor([{ name: 'images', maxCount: 10 }]) // 'images' is the field name for multiple files
+    )
+    async create(
+      @Body() payload: CreateProductDto,
+      @UploadedFiles() files: { images?: Express.Multer.File[] }
+    ) {
+      if (!files || !files.images || files.images.length === 0) {
+        throw new BadRequestException('At least one image is required');
+      }
+      return this.productService.create(payload, files.images);
     }
 
     @Public()
