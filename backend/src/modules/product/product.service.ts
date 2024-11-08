@@ -18,6 +18,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Category } from '../category/category.entity';
 import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ProductService {
@@ -31,29 +32,44 @@ export class ProductService {
     private readonly categoryRepository: Repository<Category>,  
   ) {}
 
+  @Transactional()
   async create(payload: CreateProductDto) {
     try {
       const category = await this.categoryRepository.findOne({ where: { id: payload.category_id } });
       if (!category) {
-          return CATEGORY_NOT_FOUND;
+        return CATEGORY_NOT_FOUND;
       }
-
+  
       // Create the product and assign the category
       const product = this.productRepository.create({
-          ...payload,
-          category, 
+        ...payload,
+        category,
       });
       const savedProduct = await this.productRepository.save(product);
-
+  
+      // Create the product images
+      const productImages = payload.images.map((image) => {
+        // Ensure the image has a URL and is correctly marked as featured
+        const productImage = this.productImageRepository.create({
+          url: image.url,  // The URL of the image
+          isFeatured: image.isFeatured || false,  // Default to false if not provided
+          product: savedProduct,  // Associate the image with the product
+        });
+        return productImage;
+      });
+  
+      // Save the product images to the database
+      await this.productImageRepository.save(productImages);
+  
       // Clear products cache on new product creation
       await this.cacheManager.del('products');
-
+  
       return {
         ...PRODUCT_CREATED,
         data: savedProduct,
       };
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return INTERNAL_SERVER_ERROR;
     }
   }
