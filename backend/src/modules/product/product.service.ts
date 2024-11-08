@@ -68,7 +68,7 @@ export class ProductService {
         };
       }
 
-      const products = await this.productRepository.find({ relations: ['images'] });
+      const products = await this.productRepository.find({ relations: ['images','category'] });
       if (!products || products.length === 0) {
         return NO_PRODUCTS_FOUND;
       }
@@ -98,7 +98,7 @@ export class ProductService {
 
       const product = await this.productRepository.findOne({
         where: { id: params.id },
-        relations: ['images'],
+        relations: ['images','category'],
       });
       if (!product) {
         return PRODUCT_NOT_FOUND;
