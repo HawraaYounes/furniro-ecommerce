@@ -15,14 +15,12 @@ export class ProductController {
     @UseInterceptors(FilesInterceptor('images')) // Handle multiple files
     async addProduct(
       @Body() createProductDto: CreateProductDto,
-      @UploadedFiles() files: Array<Express.Multer.File>
+      @UploadedFiles() images: Array<Express.Multer.File>
     ) {
-        console.log("dto:   ",createProductDto)
-        console.log("files:    ",files)
       // Assuming files are uploaded and URLs are generated (for demonstration)
-      const imageUrls = files.map(file => ({
-        url: `/uploads/products/${file.filename}`,  // Adjust this as per actual file URL/path
-        isFeatured: false, // Adjust as per your requirement
+      const imageUrls = images.map(file => ({
+        url: `/uploads/products/${file.originalname}`, 
+        isFeatured: false, 
       }));
       
       createProductDto.images = imageUrls;
