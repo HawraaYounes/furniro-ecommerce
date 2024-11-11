@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 
 class ProductImageDto {
   @IsString()
-  URL: string;
+  url: string;
 
   @IsBoolean()
   isFeatured: boolean;
@@ -27,7 +27,7 @@ export class CreateProductDto {
   @IsNumber()
   price: number;
 
-  @IsArray()
+ 
   @ValidateNested({ each: true })
   @Type(() => ProductImageDto)
   images: ProductImageDto[];
