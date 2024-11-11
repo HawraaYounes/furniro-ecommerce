@@ -13,6 +13,7 @@ import { Product } from './modules/product/entities/product.entity';
 import { ProductImage } from './modules/product/entities/product-image.entity';
 import { DataSource } from 'typeorm';
 import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver } from 'typeorm-transactional';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -42,6 +43,9 @@ import { initializeTransactionalContext, addTransactionalDataSource, StorageDriv
       },
     }),
     CacheModule.registerAsync(RedisOptions),
+    MulterModule.register({
+      dest: './uploads',
+    }),
     UserModule,
     AuthModule,
     ProductModule,
