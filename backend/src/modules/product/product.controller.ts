@@ -5,24 +5,29 @@ import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Public } from '../auth/public-strategy';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('products')
 export class ProductController {
     constructor(private readonly productService: ProductService) { }
 
-    @Post('create')
-    @UseInterceptors(
-      FileFieldsInterceptor([{ name: 'images', maxCount: 10 }]) // 'images' is the field name for multiple files
-    )
-    async create(
-      @Body() payload: CreateProductDto,
-      @UploadedFiles() files: { images?: Express.Multer.File[] }
+    @Post()
+    @UseInterceptors(FilesInterceptor('images')) // Handle multiple files
+    async addProduct(
+      @Body() createProductDto: CreateProductDto,
+      @UploadedFiles() files: Array<Express.Multer.File>
     ) {
-      if (!files || !files.images || files.images.length === 0) {
-        throw new BadRequestException('At least one image is required');
-      }
-      return this.productService.create(payload, files.images);
+        console.log("dto:   ",createProductDto)
+        console.log("files:    ",files)
+      // Assuming files are uploaded and URLs are generated (for demonstration)
+      const imageUrls = files.map(file => ({
+        url: `/uploads/products/${file.filename}`,  // Adjust this as per actual file URL/path
+        isFeatured: false, // Adjust as per your requirement
+      }));
+      
+      createProductDto.images = imageUrls;
+  
+      return this.productService.createProduct(createProductDto);
     }
 
     @Public()
