@@ -14,6 +14,8 @@ import { ProductImage } from './modules/product/entities/product-image.entity';
 import { DataSource } from 'typeorm';
 import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver } from 'typeorm-transactional';
 import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -44,7 +46,16 @@ import { MulterModule } from '@nestjs/platform-express';
     }),
     CacheModule.registerAsync(RedisOptions),
     MulterModule.register({
-      dest: './uploads',
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadPath = join(__dirname, '..', '..', 'uploads', 'products');
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, uniqueSuffix + '-' + file.originalname);
+        },
+      }),
     }),
     UserModule,
     AuthModule,
