@@ -1,9 +1,12 @@
-import { IsNotEmpty, IsNumber, IsString, ValidateNested, ArrayNotEmpty } from 'class-validator';
+// create-product.dto.ts
+import { IsNotEmpty, IsString, IsNumber, IsArray, ValidateNested, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class ImageDto {
-  @IsNotEmpty()
+class ProductImageDto {
   @IsString()
+  URL: string;
+
+  @IsBoolean()
   isFeatured: boolean;
 }
 
@@ -14,18 +17,18 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsNumber()
-  price: number;
+  category_id: number;
 
   @IsNotEmpty()
   @IsString()
   description: string;
 
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => ImageDto)
-  images: ImageDto[];
-
   @IsNotEmpty()
   @IsNumber()
-  category_id: number;
+  price: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductImageDto)
+  images: ProductImageDto[];
 }
