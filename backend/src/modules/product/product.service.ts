@@ -1,4 +1,4 @@
-import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cache } from 'cache-manager';
@@ -19,7 +19,7 @@ import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Category } from '../category/category.entity';
 import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
 import { Transactional } from 'typeorm-transactional';
-import { FileUploadService } from '../common/file-upload.service';
+
 
 @Injectable()
 export class ProductService {
@@ -31,37 +31,44 @@ export class ProductService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,  
-    private readonly fileUploadService: FileUploadService,
+  
   ) {}
 
   @Transactional()
-  async create(payload: CreateProductDto, files: Express.Multer.File[]) {
-    // Validate exactly one featured image in payload
-    const featuredCount = payload.images.filter(image => image.isFeatured).length;
-    if (featuredCount !== 1) {
-      throw new BadRequestException('Exactly one image must be marked as featured');
+
+  async createProduct(createProductDto: CreateProductDto): Promise<Product> {
+    const { name, price, description, category_id, images } = createProductDto;
+  
+    // Validate category existence
+    const category = await this.categoryRepository.findOne({ where: { id: category_id } });
+    if (!category) {
+      throw new NotFoundException('Category not found');
     }
-
-    // Upload files and get paths
-    const uploadedImages = await this.fileUploadService.handleFileUploads(files);
-
-    // Create product and save
-    const product = this.productRepository.create({ ...payload });
+  
+    // Create and save the product entity
+    const product = this.productRepository.create({
+      name,
+      price,
+      description,
+      category,
+    });
+  
     const savedProduct = await this.productRepository.save(product);
-
-    // Map uploaded images with metadata and save
-    const productImages = uploadedImages.map((fileData, index) => {
-      const imageMeta = payload.images[index];
-      return this.productImageRepository.create({
-        url: fileData.filePath,
-        isFeatured: imageMeta.isFeatured,
+  
+    // Attach images
+    const productImages = images.map((imageData) => {
+      const productImage = this.productImageRepository.create({
+        ...imageData,
         product: savedProduct,
       });
+      return productImage;
     });
-
+  
     await this.productImageRepository.save(productImages);
-
-    return { message: 'Product created successfully', data: savedProduct };
+  
+    savedProduct.images = productImages;
+  
+    return savedProduct;
   }
 
   async findAll() {
