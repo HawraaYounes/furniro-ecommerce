@@ -17,6 +17,7 @@ export class ProductController {
       @Body() createProductDto: CreateProductDto,
       @UploadedFiles() images: Array<Express.Multer.File>
     ) {
+        console.log("IMAGES",images)
       // Assuming files are uploaded and URLs are generated (for demonstration)
       const imageUrls = images.map(file => ({
         url: `/uploads/products/${file.originalname}`, 

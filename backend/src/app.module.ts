@@ -47,10 +47,7 @@ import { join } from 'path';
     CacheModule.registerAsync(RedisOptions),
     MulterModule.register({
       storage: diskStorage({
-        destination: (req, file, cb) => {
-          const uploadPath = join(__dirname, '..', '..', 'uploads', 'products');
-          cb(null, uploadPath);
-        },
+        destination: './uploads/products',
         filename: (req, file, cb) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, uniqueSuffix + '-' + file.originalname);
