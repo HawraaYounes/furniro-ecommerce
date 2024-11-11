@@ -35,7 +35,6 @@ export class ProductService {
   ) {}
 
   @Transactional()
-
   async createProduct(createProductDto: CreateProductDto): Promise<Product> {
     const { name, price, description, category_id, images } = createProductDto;
   
