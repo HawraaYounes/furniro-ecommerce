@@ -6,7 +6,7 @@ export const RedisOptions: CacheModuleAsyncOptions = {
   useFactory: async () => {
     const store = await redisStore({
       socket: {
-        host: 'localhost',
+        host: '127.0.0.1',
         port: 6379,
       },
     });

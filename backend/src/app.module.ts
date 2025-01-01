@@ -12,7 +12,7 @@ import { ProductModule } from './modules/product/product.module';
 import { Product } from './modules/product/entities/product.entity';
 import { ProductImage } from './modules/product/entities/product-image.entity';
 import { DataSource } from 'typeorm';
-import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver } from 'typeorm-transactional';
+import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver, getDataSourceByName } from 'typeorm-transactional';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { join } from 'path';
@@ -41,7 +41,7 @@ import { join } from 'path';
         initializeTransactionalContext({ storageDriver: StorageDriver.ASYNC_LOCAL_STORAGE });
 
         // Add the data source for transactional handling
-        return addTransactionalDataSource(dataSource);
+        return getDataSourceByName('default') || addTransactionalDataSource(new DataSource(options));
       },
     }),
     CacheModule.registerAsync(RedisOptions),
