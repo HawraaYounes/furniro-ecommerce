@@ -5,9 +5,20 @@ import { Category } from '../category/category.entity';
 import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { ProductImage } from './entities/product-image.entity';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Product, ProductImage, Category])],
+    imports: [TypeOrmModule.forFeature([Product, ProductImage, Category]),
+    MulterModule.register({
+        storage: diskStorage({
+          destination: './uploads/products',
+          filename: (req, file, cb) => {
+            const filename = `${Date.now()}-${file.originalname}`;
+            cb(null, filename);
+          },
+        }),
+      }),],
     controllers: [ProductController],
     providers: [ProductService],
 })
