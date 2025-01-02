@@ -6,27 +6,35 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Public } from '../auth/public-strategy';
 import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('products')
 export class ProductController {
     constructor(private readonly productService: ProductService) { }
 
     @Post()
-    @UseInterceptors(FilesInterceptor('images')) // Handle multiple files
-    async addProduct(
+    @UseInterceptors(
+      FilesInterceptor('images', 10, {
+        storage: diskStorage({
+          destination: './uploads/products',
+          filename: (req, file, callback) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+            const ext = extname(file.originalname);
+            callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+          },
+        }),
+      }),
+    )
+    async createProduct(
       @Body() createProductDto: CreateProductDto,
-      @UploadedFiles() images: Array<Express.Multer.File>
+      @UploadedFiles() files: Express.Multer.File[],
     ) {
-        console.log("IMAGES",images)
-      // Assuming files are uploaded and URLs are generated (for demonstration)
-      const imageUrls = images.map(file => ({
-        url: `/uploads/products/${file.originalname}`, 
-        isFeatured: false, 
-      }));
-      
-      createProductDto.images = imageUrls;
+      if (files.length === 0) {
+        throw new Error('At least one image must be uploaded.');
+      }
   
-      return this.productService.createProduct(createProductDto);
+      return this.productService.createProduct(createProductDto, files);
     }
 
     @Public()
