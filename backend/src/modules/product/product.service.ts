@@ -35,39 +35,32 @@ export class ProductService {
   ) {}
 
   @Transactional()
-  async createProduct(createProductDto: CreateProductDto): Promise<Product> {
-    const { name, price, description, category_id, images } = createProductDto;
-  
-    // Validate category existence
-    const category = await this.categoryRepository.findOne({ where: { id: category_id } });
-    if (!category) {
-      throw new NotFoundException('Category not found');
-    }
-  
-    // Create and save the product entity
-    const product = this.productRepository.create({
-      name,
-      price,
-      description,
-      category,
+  async createProduct(dto: CreateProductDto, files: Express.Multer.File[]) {
+    const category = await this.categoryRepository.findOne({
+      where: { id: dto.category_id },
     });
-  
-    const savedProduct = await this.productRepository.save(product);
-  
-    // Attach images
-    const productImages = images.map((imageData) => {
-      const productImage = this.productImageRepository.create({
-        ...imageData,
-        product: savedProduct,
+    try {
+      const product = this.productRepository.create({
+        name: dto.name,
+        description: dto.description,
+        price: dto.price,
+        category: category
       });
-      return productImage;
-    });
   
-    await this.productImageRepository.save(productImages);
+      const savedProduct = await this.productRepository.save(product);
+      const images = files.map((file) => ({
+        url: file.path,
+        product: savedProduct,
+        isFeatured: false
+      }));
   
-    savedProduct.images = productImages;
+      await this.productImageRepository.save(images);
   
-    return savedProduct;
+      return savedProduct;
+    } catch (error) {
+      console.log("ERROR:",error)
+    }
+   
   }
 
   async findAll() {
@@ -137,7 +130,7 @@ export class ProductService {
         return PRODUCT_NOT_FOUND;
       }
 
-      await this.productRepository.update(id, payload);
+     // await this.productRepository.update(id, payload);
 
       // Invalidate the cache for the updated product and products list
       await this.cacheManager.del(`product:${id}`);
