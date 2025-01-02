@@ -56,11 +56,13 @@ export class ProductService {
   
       await this.productImageRepository.save(images);
   
-      return savedProduct;
+      return {
+        ...PRODUCT_CREATED,
+        data: savedProduct, 
+      };
     } catch (error) {
       console.log("ERROR:",error)
     }
-   
   }
 
   async findAll() {
