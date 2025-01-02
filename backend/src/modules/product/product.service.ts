@@ -17,7 +17,6 @@ import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Category } from '../category/category.entity';
-import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
 import { Transactional } from 'typeorm-transactional';
 
 

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { CreateProductDto } from './create-product.dto';
 
 
