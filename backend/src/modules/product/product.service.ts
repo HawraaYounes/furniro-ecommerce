@@ -50,7 +50,6 @@ export class ProductService {
       const images = files.map((file) => ({
         url: file.path,
         product: savedProduct,
-        isFeatured: false
       }));
   
       await this.productImageRepository.save(images);

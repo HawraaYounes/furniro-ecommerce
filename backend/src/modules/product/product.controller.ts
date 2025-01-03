@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
@@ -33,10 +33,9 @@ export class ProductController {
       if (files.length === 0) {
         throw new Error('At least one image must be uploaded.');
       }
-  
       return this.productService.createProduct(createProductDto, files);
     }
-
+    
     @Public()
     @Get()
     async findAll() {
