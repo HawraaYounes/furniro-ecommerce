@@ -16,7 +16,7 @@ const Home = () => {
       <Categories />
       <div>
         <p className={`${styles.heading} mb-8`}>Our Products</p>
-        <ProductList products={data.products} />
+        <ProductList products={data.data} />
       </div>
     </>
   );
@@ -24,7 +24,7 @@ const Home = () => {
 
 export const fetchProductsLoader = async () => {
   const response = await fetch(
-    "https://dummyjson.com/products?limit=8&skip=10"
+    "http://localhost:3000/products"
   );
   if (!response.ok) {
     throw json({ message: "Could not fetch products" }, { status: 500 });
