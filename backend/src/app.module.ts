@@ -13,12 +13,15 @@ import { Product } from './modules/product/entities/product.entity';
 import { ProductImage } from './modules/product/entities/product-image.entity';
 import { DataSource } from 'typeorm';
 import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver, getDataSourceByName } from 'typeorm-transactional';
-import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads/products'), // Path to the static files
+      serveRoot: '/productImage', // The route prefix for accessing the files
+    }),
     TypeOrmModule.forRootAsync({
       useFactory() {
         return {

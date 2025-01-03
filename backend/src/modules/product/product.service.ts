@@ -48,7 +48,7 @@ export class ProductService {
   
       const savedProduct = await this.productRepository.save(product);
       const images = files.map((file) => ({
-        url: file.path,
+        url: file.filename,
         product: savedProduct,
       }));
   
@@ -78,12 +78,21 @@ export class ProductService {
         return NO_PRODUCTS_FOUND;
       }
 
+     // const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Ensure this is set in your .env
+      const updatedProducts = products.map(product => ({
+        ...product,
+        images: product.images.map(image => ({
+          ...image,
+          url: `http://localhost:3000/productImage/${image.url}`, // Adjust 'filename' to match your image entity's field
+        })),
+      }));
+
       // Cache the products data for 10 minutes
       await this.cacheManager.set('products', products, 600);
 
       return {
         ...PRODUCTS_RETRIEVED,
-        data: products,
+        data: updatedProducts,
       };
     } catch (error) {
       return INTERNAL_SERVER_ERROR;

@@ -7,7 +7,7 @@ const ProductList = ({ products }) => {
   console.log("PRODUCTS",products)
   return (
     <div className={`${styles.paddingX} px-14`}>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <ul className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {products.map((product) => (
           <li key={product.id} className="overflow-hidden">
             <Link to={`/shop/${product.id}`}>
