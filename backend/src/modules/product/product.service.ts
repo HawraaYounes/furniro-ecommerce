@@ -53,6 +53,9 @@ export class ProductService {
       }));
   
       await this.productImageRepository.save(images);
+
+       // Invalidate cached products data
+       await this.cacheManager.del('products');
   
       return {
         ...PRODUCT_CREATED,
