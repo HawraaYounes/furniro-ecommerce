@@ -4,7 +4,6 @@ import ProductCard from "./ProductCard";
 import styles from "../style";
 
 const ProductList = ({ products }) => {
-  console.log("PRODUCTS",products)
   return (
     <div className={`${styles.paddingX} px-14`}>
       <ul className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
