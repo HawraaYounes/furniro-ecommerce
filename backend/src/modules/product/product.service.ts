@@ -91,8 +91,7 @@ export class ProductService {
       }));
 
       // Cache the products data for 10 minutes
-      await this.cacheManager.set('products', products, 600);
-
+      await this.cacheManager.set('products', updatedProducts, 600);
       return {
         ...PRODUCTS_RETRIEVED,
         data: updatedProducts,
