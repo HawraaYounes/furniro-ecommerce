@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-const Button = ({label}) => {
+const Button = ({ label, variant = 'hero', ...props }) => {
+  const buttonStyle = 
+    variant === 'hero' 
+      ? "font-poppins bg-[#B88E2F] text-white py-5 px-12 md:py-[25px] md:px-[72px] md:mt-10 mt-1 font-semibold"
+      : "font-poppins bg-white text-[#B88E2F] border-2 border-[#B88E2F] py-3 px-8 md:py-[15px] md:px-[50px] md:mt-5 mt-1 font-semibold";
+
   return (
-    <button className="font-poppins bg-[#B88E2F] text-white py-5 px-12 md:py-[25px] md:px-[72px] md:mt-10 mt-1 font-semibold ">{label}</button>
-  )
-}
+    <button className={`${buttonStyle}`} {...props}>
+      {label}
+    </button>
+  );
+};
 
-export default Button
+export default Button;
