@@ -1,10 +1,10 @@
 import React from "react";
 import Hero from "../sections/home/Hero";
 import Categories from "../sections/home/Categories";
-import { json, Link, useLoaderData } from "react-router-dom";
-import ProductCard from "../components/ProductCard";
+import { json, useLoaderData } from "react-router-dom";
 import ProductList from "../components/ProductsList";
 import styles from "../style";
+import Button from "../components/Button";
 
 const Home = () => {
   const data = useLoaderData();
@@ -17,6 +17,7 @@ const Home = () => {
       <div>
         <p className={`${styles.heading} mb-8`}>Our Products</p>
         <ProductList products={data.data} />
+        <Button label="Show More" variant="secondary"/>
       </div>
     </>
   );

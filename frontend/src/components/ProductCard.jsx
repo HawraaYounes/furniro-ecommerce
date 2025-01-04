@@ -4,7 +4,7 @@ import styles from "../style";
 
 const ProductCard = ({ product }) => {
   return (
-    <div className="overflow-hidden shadow-md hover:shadow-lg bg-[#F4F5F7] text-left h-[400px] mb-5">
+    <div className="overflow-hidden shadow-md hover:shadow-lg bg-[#F4F5F7] text-left h-[400px] ">
       <div
         className="img-div h-2/3 w-full bg-cover bg-center"
         style={{ backgroundImage: `url(${product.images[0].url})` }} 
