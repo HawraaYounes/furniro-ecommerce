@@ -13,7 +13,6 @@ const Hero = () => {
           Explore our latest designs, crafted for modern living. Discover comfort and style for your home.
         </p>
         <Button label="BUY NOW" variant="hero"/>
-        {/* <button className="bg-[#B88E2F] text-white py-2 px-4 md:py-[25px] md:px-[72px] md:mt-10 mt-1 font-bold ">BUY NOW</button> */}
       </div>
     </div>
   );
