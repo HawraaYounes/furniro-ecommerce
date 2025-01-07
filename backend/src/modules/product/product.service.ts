@@ -18,6 +18,8 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Category } from '../category/category.entity';
 import { Transactional } from 'typeorm-transactional';
+import { buildResponse } from 'src/common/utils/response-builder';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 
 @Injectable()
@@ -66,40 +68,59 @@ export class ProductService {
     }
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
+    const { page, limit } = paginationDto;
+  
     try {
-      const cachedProducts = await this.cacheManager.get('products');
-      if (cachedProducts) {
-        return {
-          ...PRODUCTS_RETRIEVED,
-          data: cachedProducts,
-        };
+      const cacheKey = `products:page:${page}:limit:${limit}`;
+      const cachedProducts = await this.cacheManager.get<Product[]>(cacheKey);
+  
+      if (cachedProducts && Array.isArray(cachedProducts)) {
+        return buildResponse(PRODUCTS_RETRIEVED, cachedProducts, {
+          page,
+          limit,
+          total: cachedProducts.length,
+          pageCount: Math.ceil(cachedProducts.length / limit),
+        });
       }
-
-      const products = await this.productRepository.find({ relations: ['images','category'] });
-      if (!products || products.length === 0) {
-        return NO_PRODUCTS_FOUND;
+  
+      const [products, total] = await this.productRepository.findAndCount({
+        relations: ['images', 'category'],
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+  
+      if (products.length === 0) {
+        return buildResponse(NO_PRODUCTS_FOUND, [], {
+          page,
+          limit,
+          total: 0,
+          pageCount: 0,
+        });
       }
-
-     // const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Ensure this is set in your .env
-      const updatedProducts = products.map(product => ({
+  
+      const updatedProducts = products.map((product) => ({
         ...product,
-        images: product.images.map(image => ({
+        images: product.images.map((image) => ({
           ...image,
-          url: `http://localhost:3000/productImage/${image.url}`, // Adjust 'filename' to match your image entity's field
+          url: `http://localhost:3000/productImage/${image.url}`,
         })),
       }));
-
-      // Cache the products data for 10 minutes
-      await this.cacheManager.set('products', updatedProducts, 600);
-      return {
-        ...PRODUCTS_RETRIEVED,
-        data: updatedProducts,
-      };
+  
+      // Cache the paginated response
+      await this.cacheManager.set(cacheKey, updatedProducts, 600);
+  
+      return buildResponse(PRODUCTS_RETRIEVED, updatedProducts, {
+        page,
+        limit,
+        total,
+        pageCount: Math.ceil(total / limit),
+      });
     } catch (error) {
-      return INTERNAL_SERVER_ERROR;
+      return buildResponse(INTERNAL_SERVER_ERROR, null);
     }
   }
+  
 
   async findOne(params: FindProductParamsDto) {
     try {
