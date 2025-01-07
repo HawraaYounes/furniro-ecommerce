@@ -14,18 +14,20 @@ import { CustomHttpException } from './custom-http-exception';
 export class ResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
-    const response = ctx.getResponse();
     const request = ctx.getRequest();
 
     return next.handle().pipe(
       map((res) => {
         // Handle success response
+        const { statusCode, message, data, meta } = res; // Destructure `meta` from the service response
+
         return {
           success: true,
-          statusCode: res.statusCode || HttpStatus.OK,
-          message: res?.message || 'Operation successful',
+          statusCode: statusCode || HttpStatus.OK,
+          message: message || 'Operation successful',
           path: request.url,
-          data: res?.data || null, // Handle data here
+          data: data || null, // Handle data
+          ...(meta && { meta }), // Include `meta` if it exists
         };
       }),
       catchError((error) => {
@@ -50,3 +52,4 @@ export class ResponseInterceptor implements NestInterceptor {
     );
   }
 }
+
