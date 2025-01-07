@@ -20,6 +20,7 @@ import { Category } from '../category/category.entity';
 import { Transactional } from 'typeorm-transactional';
 import { buildResponse } from 'src/common/utils/response-builder';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
 
 
 @Injectable()
@@ -31,51 +32,57 @@ export class ProductService {
     private productImageRepository: Repository<ProductImage>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>,  
-  
+    private readonly categoryRepository: Repository<Category>
   ) {}
 
   @Transactional()
   async createProduct(dto: CreateProductDto, files: Express.Multer.File[]) {
-    const category = await this.categoryRepository.findOne({
-      where: { id: dto.category_id },
-    });
     try {
+      const category = await this.categoryRepository.findOne({
+        where: { id: dto.category_id },
+      });
+
+      if (!category) {
+        return CATEGORY_NOT_FOUND;
+      }
+
       const product = this.productRepository.create({
         name: dto.name,
         description: dto.description,
         price: dto.price,
-        category: category
+        category,
       });
-  
+
       const savedProduct = await this.productRepository.save(product);
+
       const images = files.map((file) => ({
         url: file.filename,
         product: savedProduct,
       }));
-  
+
       await this.productImageRepository.save(images);
 
-       // Invalidate cached products data
-       await this.cacheManager.del('products');
-  
+      // Invalidate cached products list
+      await this.invalidateProductsCache();
+
       return {
         ...PRODUCT_CREATED,
-        data: savedProduct, 
+        data: savedProduct,
       };
     } catch (error) {
-      console.log("ERROR:",error)
+      console.error('Error in createProduct:', error);
+      return INTERNAL_SERVER_ERROR;
     }
   }
 
   async findAll(paginationDto: PaginationDto) {
     const { page, limit } = paginationDto;
-  
+    const cacheKey = `products`;
+
     try {
-      const cacheKey = `products:page:${page}:limit:${limit}`;
+      // Check cache
       const cachedProducts = await this.cacheManager.get<Product[]>(cacheKey);
-  
-      if (cachedProducts && Array.isArray(cachedProducts)) {
+      if (cachedProducts) {
         return buildResponse(PRODUCTS_RETRIEVED, cachedProducts, {
           page,
           limit,
@@ -83,13 +90,14 @@ export class ProductService {
           pageCount: Math.ceil(cachedProducts.length / limit),
         });
       }
-  
+
+      // Fetch data from database
       const [products, total] = await this.productRepository.findAndCount({
         relations: ['images', 'category'],
         skip: (page - 1) * limit,
         take: limit,
       });
-  
+
       if (products.length === 0) {
         return buildResponse(NO_PRODUCTS_FOUND, [], {
           page,
@@ -98,7 +106,7 @@ export class ProductService {
           pageCount: 0,
         });
       }
-  
+
       const updatedProducts = products.map((product) => ({
         ...product,
         images: product.images.map((image) => ({
@@ -106,10 +114,10 @@ export class ProductService {
           url: `http://localhost:3000/productImage/${image.url}`,
         })),
       }));
-  
-      // Cache the paginated response
-      await this.cacheManager.set(cacheKey, updatedProducts, 600);
-  
+
+      // Cache the paginated products
+      await this.cacheManager.set(cacheKey, updatedProducts, 600 );
+
       return buildResponse(PRODUCTS_RETRIEVED, updatedProducts, {
         page,
         limit,
@@ -117,15 +125,17 @@ export class ProductService {
         pageCount: Math.ceil(total / limit),
       });
     } catch (error) {
+      console.error('Error in findAll:', error);
       return buildResponse(INTERNAL_SERVER_ERROR, null);
     }
   }
-  
 
   async findOne(params: FindProductParamsDto) {
+    const cacheKey = `product:${params.id}`;
+
     try {
-      const cacheKey = `product:${params.id}`;
-      const cachedProduct = await this.cacheManager.get(cacheKey);
+      // Check cache
+      const cachedProduct = await this.cacheManager.get<Product>(cacheKey);
       if (cachedProduct) {
         return {
           ...PRODUCTS_RETRIEVED,
@@ -133,22 +143,25 @@ export class ProductService {
         };
       }
 
+      // Fetch data from database
       const product = await this.productRepository.findOne({
         where: { id: params.id },
-        relations: ['images','category'],
+        relations: ['images', 'category'],
       });
+
       if (!product) {
         return PRODUCT_NOT_FOUND;
       }
 
-      // Cache the individual product for 10 minutes
-      await this.cacheManager.set(cacheKey, product, 600);
+      // Update cache
+      await this.cacheManager.set(cacheKey, product,  600 );
 
       return {
         ...PRODUCTS_RETRIEVED,
         data: product,
       };
     } catch (error) {
+      console.error('Error in findOne:', error);
       return INTERNAL_SERVER_ERROR;
     }
   }
@@ -158,23 +171,25 @@ export class ProductService {
       const existingProduct = await this.productRepository.findOne({
         where: { id },
       });
+
       if (!existingProduct) {
         return PRODUCT_NOT_FOUND;
       }
 
-     // await this.productRepository.update(id, payload);
+      // Update the product
+      await this.productRepository.update(id, payload);
 
-      // Invalidate the cache for the updated product and products list
-      await this.cacheManager.del(`product:${id}`);
-      await this.cacheManager.del('products');
+      // Invalidate cache
+      await this.invalidateProductCache(id);
 
-      // Fetch the updated product
+      // Fetch updated product
       const updatedProduct = await this.findOne({ id });
       return {
         ...PRODUCT_UPDATED,
         data: updatedProduct.data,
       };
     } catch (error) {
+      console.error('Error in update:', error);
       return INTERNAL_SERVER_ERROR;
     }
   }
@@ -184,18 +199,19 @@ export class ProductService {
       const existingProduct = await this.productRepository.findOne({
         where: { id: params.id },
       });
+
       if (!existingProduct) {
         return PRODUCT_NOT_FOUND;
       }
 
       await this.productRepository.delete(params.id);
 
-      // Invalidate the cache for the deleted product and products list
-      await this.cacheManager.del(`product:${params.id}`);
-      await this.cacheManager.del('products');
+      // Invalidate cache
+      await this.invalidateProductCache(params.id);
 
       return PRODUCT_DELETED;
     } catch (error) {
+      console.error('Error in delete:', error);
       return INTERNAL_SERVER_ERROR;
     }
   }
@@ -205,6 +221,7 @@ export class ProductService {
       const product = await this.productRepository.findOne({
         where: { id: productId },
       });
+
       if (!product) {
         return PRODUCT_NOT_FOUND;
       }
@@ -212,13 +229,30 @@ export class ProductService {
       const productImage = this.productImageRepository.create({ url, product });
       const savedImage = await this.productImageRepository.save(productImage);
 
-      // Invalidate the product cache to update with the new image
-      await this.cacheManager.del(`product:${productId}`);
-      await this.cacheManager.del('products');
+      // Invalidate cache
+      await this.invalidateProductCache(productId);
 
       return savedImage;
     } catch (error) {
+      console.error('Error in addImage:', error);
       return INTERNAL_SERVER_ERROR;
     }
   }
+
+  /**
+   * Helper method to invalidate product-related cache.
+   */
+  private async invalidateProductCache(productId: number) {
+    await this.cacheManager.del(`product:${productId}`);
+    await this.cacheManager.del('products');
+  }
+
+  /**
+   * Helper method to invalidate all products cache.
+   */
+  private async invalidateProductsCache() {
+    // Consider using a pattern-based cache invalidation approach if supported
+    await this.cacheManager.del('products');
+  }
 }
+
