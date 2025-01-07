@@ -8,7 +8,6 @@ import ProductList from "../components/ProductsList";
 const Shop = () => {
   const dispatch = useDispatch();
   const data=useLoaderData();
-  console.log("DATA",data.data)
   useEffect(() => {
     dispatch(
       setBannerData({
@@ -21,7 +20,7 @@ const Shop = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="mt-10">
       <ProductList products={data.data}/>
     </div>
   );
