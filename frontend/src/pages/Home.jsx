@@ -25,12 +25,14 @@ const Home = () => {
   );
 };
 
-export const fetchProductsLoader = async () => {
-  const response = await fetch("http://localhost:3000/products");
+export const fetchProductsLoader = async ({ request, limit }) => {
+  const page = new URL(request.url).searchParams.get("page") || 1;
+  const response = await fetch(`http://localhost:3000/products?page=${page}&limit=${limit}`);
   if (!response.ok) {
     throw json({ message: "Could not fetch products" }, { status: 500 });
-  } else {
-    return response;
   }
+  console.log(response)
+  return response.json();
 };
+
 export default Home;

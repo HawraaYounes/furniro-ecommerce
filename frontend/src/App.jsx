@@ -10,6 +10,10 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import CommonBannerLayout from "./components/BannerLayout";
 
+// Define the custom loader for the Home page with limit set to 8
+const homeLoader = ({ request }) => fetchProductsLoader({ request, limit: 8 });
+// Define the custom loader for the Shop page with limit set to 16
+const shopLoader = ({ request }) => fetchProductsLoader({ request, limit: 16 });
 
 const router = createBrowserRouter([
   {
@@ -25,7 +29,7 @@ const router = createBrowserRouter([
           {
             path: "shop",
             element: <Shop />,
-            loader: fetchProductsLoader,
+            loader: shopLoader,
 
           },
           {
@@ -37,7 +41,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        loader: fetchProductsLoader,
+        loader: homeLoader,
       },
       {
         path: "auth",
