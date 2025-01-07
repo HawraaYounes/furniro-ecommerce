@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
@@ -8,6 +8,7 @@ import { Public } from '../auth/public-strategy';
 import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('products')
 export class ProductController {
@@ -38,9 +39,8 @@ export class ProductController {
     
     @Public()
     @Get()
-    async findAll() {
-        const response = await this.productService.findAll();
-        return response;
+    async findAll(@Query() paginationDto: PaginationDto) {
+      return this.productService.findAll(paginationDto);
     }
 
     @Public()
