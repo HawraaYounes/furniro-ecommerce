@@ -77,12 +77,13 @@ export class ProductService {
 
   async findAll(paginationDto: PaginationDto) {
     const { page, limit } = paginationDto;
-    const cacheKey = `products`;
-
+    const cacheKey = `products:page=${page}:limit=${limit}`;
+  
     try {
       // Check cache
       const cachedProducts = await this.cacheManager.get<Product[]>(cacheKey);
       if (cachedProducts) {
+        console.log("PRODUCTS ARE IN CACHE");
         return buildResponse(PRODUCTS_RETRIEVED, cachedProducts, {
           page,
           limit,
@@ -90,14 +91,15 @@ export class ProductService {
           pageCount: Math.ceil(cachedProducts.length / limit),
         });
       }
-
+      console.log("PRODUCTS ARE NOT IN CACHE");
+  
       // Fetch data from database
       const [products, total] = await this.productRepository.findAndCount({
         relations: ['images', 'category'],
         skip: (page - 1) * limit,
         take: limit,
       });
-
+  
       if (products.length === 0) {
         return buildResponse(NO_PRODUCTS_FOUND, [], {
           page,
@@ -106,7 +108,7 @@ export class ProductService {
           pageCount: 0,
         });
       }
-
+  
       const updatedProducts = products.map((product) => ({
         ...product,
         images: product.images.map((image) => ({
@@ -114,10 +116,10 @@ export class ProductService {
           url: `http://localhost:3000/productImage/${image.url}`,
         })),
       }));
-
+  
       // Cache the paginated products
-      await this.cacheManager.set(cacheKey, updatedProducts, 600 );
-
+      await this.cacheManager.set(cacheKey, updatedProducts, 600);
+  
       return buildResponse(PRODUCTS_RETRIEVED, updatedProducts, {
         page,
         limit,
@@ -129,6 +131,7 @@ export class ProductService {
       return buildResponse(INTERNAL_SERVER_ERROR, null);
     }
   }
+  
 
   async findOne(params: FindProductParamsDto) {
     const cacheKey = `product:${params.id}`;
@@ -251,8 +254,9 @@ export class ProductService {
    * Helper method to invalidate all products cache.
    */
   private async invalidateProductsCache() {
-    // Consider using a pattern-based cache invalidation approach if supported
-    await this.cacheManager.del('products');
+    const keys = await this.cacheManager.store.keys('products:*');
+    await Promise.all(keys.map((key) => this.cacheManager.del(key)));
   }
+  
 }
 
