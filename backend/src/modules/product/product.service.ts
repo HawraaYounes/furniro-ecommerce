@@ -5,7 +5,6 @@ import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
-import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -17,6 +16,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ConfigService } from '@nestjs/config';
 import { CategoryResponses } from 'src/constants/responses/en/categories.responses';
 import { ProductResponses } from 'src/constants/responses/en/products.responses';
+import { CommonResponses } from 'src/constants/responses/en/common-responses';
 
 
 @Injectable()
@@ -68,7 +68,7 @@ export class ProductService {
       };
     } catch (error) {
       console.error('Error in createProduct:', error);
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
@@ -125,7 +125,7 @@ export class ProductService {
       });
     } catch (error) {
       console.error('Error in findAll:', error);
-      return buildResponse(INTERNAL_SERVER_ERROR, null);
+      return buildResponse(CommonResponses.INTERNAL_SERVER_ERROR, null);
     }
   }
 
@@ -162,7 +162,7 @@ export class ProductService {
       };
     } catch (error) {
       console.error('Error in findOne:', error);
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
@@ -190,7 +190,7 @@ export class ProductService {
       };
     } catch (error) {
       console.error('Error in update:', error);
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
@@ -212,7 +212,7 @@ export class ProductService {
       return ProductResponses.PRODUCT_DELETED;
     } catch (error) {
       console.error('Error in delete:', error);
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
@@ -235,7 +235,7 @@ export class ProductService {
       return savedImage;
     } catch (error) {
       console.error('Error in addImage:', error);
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 

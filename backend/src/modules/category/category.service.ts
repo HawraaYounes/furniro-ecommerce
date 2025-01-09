@@ -8,9 +8,9 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FindCategoryParamsDto } from './dto/get-category.dto';
 import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
-import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
 import { ConfigService } from '@nestjs/config';
 import { CategoryResponses } from 'src/constants/responses/en/categories.responses';
+import { CommonResponses } from 'src/constants/responses/en/common-responses';
 
 @Injectable()
 export class CategoryService {
@@ -40,7 +40,7 @@ export class CategoryService {
         data: savedCategory,
       };
     } catch (error) {
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
@@ -67,7 +67,7 @@ export class CategoryService {
         data: categories,
       };
     } catch (error) {
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
@@ -97,7 +97,7 @@ export class CategoryService {
         data: category,
       };
     } catch (error) {
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
@@ -136,7 +136,7 @@ export class CategoryService {
       };
     } catch (error) {
       console.log(error);
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
   
@@ -158,7 +158,7 @@ export class CategoryService {
 
       return CategoryResponses.CATEGORY_DELETED;
     } catch (error) {
-      return INTERNAL_SERVER_ERROR;
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 }
