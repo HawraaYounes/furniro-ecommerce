@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from 'src/constants';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from './public-strategy';
@@ -13,6 +12,7 @@ import { Cache } from 'cache-manager';
 import { Inject } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { UsersService } from '../user/user.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private userService: UsersService,
+    private configService: ConfigService, // Inject ConfigService
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -39,21 +40,19 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: jwtConstants.secret,
-      });
+      const secret = this.configService.get<string>('JWT_SECRET'); // Get secret dynamically
+      const payload = await this.jwtService.verifyAsync(token, { secret });
 
-      // Assign the payload to request object
+      // Assign the payload to the request object
       request['user'] = payload;
 
-      // Check if user exists and is active using cache or DB
+      // Check if the user exists and is active using cache or DB
       const user = await this.getUserFromCacheOrDB(payload.id);
-      if ( !user.isActive) {
+      if (!user.isActive) {
         throw new UnauthorizedException('User is not active.');
       }
-      
-      request['userDetails'] = user;
 
+      request['userDetails'] = user;
     } catch (error) {
       console.log(error);
       throw new UnauthorizedException();
@@ -82,7 +81,7 @@ export class AuthGuard implements CanActivate {
     }
 
     // Cache the user object in Redis with an expiration time (e.g., 10 minutes)
-    await this.cacheManager.set(`user:${userId}`, user,  600 );
+    await this.cacheManager.set(`user:${userId}`, user, 600);
 
     return user;
   }
