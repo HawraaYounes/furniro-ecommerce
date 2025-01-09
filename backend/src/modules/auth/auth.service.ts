@@ -9,11 +9,8 @@ import { User } from "../user/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { USER_NOT_FOUND } from "src/constants/responses/en/user/user-not-found";
-import { INVALID_PASSWORD } from "src/constants/responses/en/auth/invalid-password";
-import { LOGIN_SUCCESS } from "src/constants/responses/en/auth/login-success";
-import { SIGNUP_SUCCESS } from "src/constants/responses/en/auth/signup-success";
-import { EMAIL_ALREADY_REGISTERED } from "src/constants/responses/en/auth/email-already-registered";
 import { Role } from "../enums/roles.enum";
+import { AuthResponses } from "src/constants/responses/en/auth.responses";
 
 @Injectable()
 export class AuthService {
@@ -31,12 +28,12 @@ export class AuthService {
     }
     const match = await bcrypt.compare(signInDto.password, user.password);
     if (!match) {
-      return INVALID_PASSWORD;
+      return AuthResponses.INVALID_PASSWORD;
     }
     const payload = { id: user.id, email: user.email, roles: user.roles };
     const access_token =  await this.jwtService.signAsync(payload);
     return {
-      ...LOGIN_SUCCESS,
+      ...AuthResponses.LOGIN_SUCCESS,
       data: { access_token },
     };
     } catch (error) {
@@ -48,7 +45,7 @@ export class AuthService {
   async signUp(payload: SignUpDto) {
     const isEmailRegistered = await this.userRepository.findOneBy({email:payload.email});
     if (isEmailRegistered) {
-      return EMAIL_ALREADY_REGISTERED; 
+      return AuthResponses.EMAIL_ALREADY_REGISTERED; 
     }
     
     const salt = await bcrypt.genSalt();
@@ -62,7 +59,7 @@ export class AuthService {
     user.roles = payload.roles ?? [Role.User];
     const newUser=await this.userRepository.save(user);
     return {
-      ...SIGNUP_SUCCESS,
+      ...AuthResponses.SIGNUP_SUCCESS,
       data: plainToClass(User, newUser),
     };
   }
