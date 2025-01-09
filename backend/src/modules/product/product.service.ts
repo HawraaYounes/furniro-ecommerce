@@ -6,12 +6,6 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
 import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
-import { PRODUCT_CREATED } from 'src/constants/responses/en/product/product-created';
-import { PRODUCTS_RETRIEVED } from 'src/constants/responses/en/product/products-retrieved';
-import { PRODUCT_NOT_FOUND } from 'src/constants/responses/en/product/product-not-found';
-import { PRODUCT_UPDATED } from 'src/constants/responses/en/product/product-updated';
-import { PRODUCT_DELETED } from 'src/constants/responses/en/product/product-deleted';
-import { NO_PRODUCTS_FOUND } from 'src/constants/responses/en/product/no-products-found';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -22,6 +16,7 @@ import { buildResponse } from 'src/common/utils/response-builder';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ConfigService } from '@nestjs/config';
 import { CategoryResponses } from 'src/constants/responses/en/categories.responses';
+import { ProductResponses } from 'src/constants/responses/en/products.responses';
 
 
 @Injectable()
@@ -68,7 +63,7 @@ export class ProductService {
       await this.invalidateProductsCache();
 
       return {
-        ...PRODUCT_CREATED,
+        ...ProductResponses.PRODUCT_CREATED,
         data: savedProduct,
       };
     } catch (error) {
@@ -86,7 +81,7 @@ export class ProductService {
       const cachedProducts = await this.cacheManager.get<Product[]>(cacheKey);
       if (cachedProducts) {
         console.log("PRODUCTS ARE IN CACHE");
-        return buildResponse(PRODUCTS_RETRIEVED, cachedProducts, {
+        return buildResponse(ProductResponses.PRODUCTS_RETRIEVED, cachedProducts, {
           page,
           limit,
           total: cachedProducts.length,
@@ -103,7 +98,7 @@ export class ProductService {
       });
 
       if (products.length === 0) {
-        return buildResponse(NO_PRODUCTS_FOUND, [], {
+        return buildResponse(ProductResponses.NO_PRODUCTS_FOUND, [], {
           page,
           limit,
           total: 0,
@@ -122,7 +117,7 @@ export class ProductService {
       // Cache the paginated products
       await this.cacheManager.set(cacheKey, updatedProducts, this.configService.get<number>('CACHE_TTL'));
 
-      return buildResponse(PRODUCTS_RETRIEVED, updatedProducts, {
+      return buildResponse(ProductResponses.PRODUCTS_RETRIEVED, updatedProducts, {
         page,
         limit,
         total,
@@ -143,7 +138,7 @@ export class ProductService {
       const cachedProduct = await this.cacheManager.get<Product>(cacheKey);
       if (cachedProduct) {
         return {
-          ...PRODUCTS_RETRIEVED,
+          ...ProductResponses.PRODUCTS_RETRIEVED,
           data: cachedProduct,
         };
       }
@@ -155,14 +150,14 @@ export class ProductService {
       });
 
       if (!product) {
-        return PRODUCT_NOT_FOUND;
+        return ProductResponses.PRODUCT_NOT_FOUND;
       }
 
       // Update cache
       await this.cacheManager.set(cacheKey, product, this.configService.get<number>('CACHE_TTL'));
 
       return {
-        ...PRODUCTS_RETRIEVED,
+        ...ProductResponses.PRODUCTS_RETRIEVED,
         data: product,
       };
     } catch (error) {
@@ -178,7 +173,7 @@ export class ProductService {
       });
 
       if (!existingProduct) {
-        return PRODUCT_NOT_FOUND;
+        return ProductResponses.PRODUCT_NOT_FOUND;
       }
 
       // Update the product
@@ -190,7 +185,7 @@ export class ProductService {
       // Fetch updated product
       const updatedProduct = await this.findOne({ id });
       return {
-        ...PRODUCT_UPDATED,
+        ...ProductResponses.PRODUCT_UPDATED,
         data: updatedProduct.data,
       };
     } catch (error) {
@@ -206,7 +201,7 @@ export class ProductService {
       });
 
       if (!existingProduct) {
-        return PRODUCT_NOT_FOUND;
+        return ProductResponses.PRODUCT_NOT_FOUND;
       }
 
       await this.productRepository.delete(params.id);
@@ -214,7 +209,7 @@ export class ProductService {
       // Invalidate cache
       await this.invalidateProductCache(params.id);
 
-      return PRODUCT_DELETED;
+      return ProductResponses.PRODUCT_DELETED;
     } catch (error) {
       console.error('Error in delete:', error);
       return INTERNAL_SERVER_ERROR;
@@ -228,7 +223,7 @@ export class ProductService {
       });
 
       if (!product) {
-        return PRODUCT_NOT_FOUND;
+        return ProductResponses.PRODUCT_NOT_FOUND;
       }
 
       const productImage = this.productImageRepository.create({ url, product });
