@@ -24,7 +24,8 @@ export class AuthService {
   ) { }
 
   async signIn(signInDto: SignInDto) {
-    const user = await this.userRepository.findOneBy({ email: signInDto.email });
+    try {
+      const user = await this.userRepository.findOneBy({ email: signInDto.email });
     if (!user) {
       return USER_NOT_FOUND
     }
@@ -38,6 +39,10 @@ export class AuthService {
       ...LOGIN_SUCCESS,
       data: { access_token },
     };
+    } catch (error) {
+      console.log("LOGIN ERROR",error)
+    }
+    
   }
 
   async signUp(payload: SignUpDto) {
