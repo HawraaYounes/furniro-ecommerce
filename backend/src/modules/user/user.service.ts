@@ -6,8 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Role } from '../enums/roles.enum';
 import * as bcrypt from 'bcrypt';
-import { USER_CREATED } from 'src/constants/responses/en/user/user-created';
-import { USERS_RETRIEVED } from 'src/constants/responses/en/user/users-retrieved';
+import { UserResponses } from 'src/constants/responses/en/users.responses';
 
 @Injectable()
 export class UsersService {
@@ -29,7 +28,7 @@ export class UsersService {
     const newUser = await this.userRepository.save(user);
 
     return {
-      ...USER_CREATED,
+      ...UserResponses.USER_CREATED,
       data: newUser,
     };
   }
@@ -41,7 +40,7 @@ export class UsersService {
   async findAllUser() {
     const users = await this.userRepository.find();
     return {
-      ...USERS_RETRIEVED,
+      ...UserResponses.USERS_RETRIEVED,
       data: users,
     };
   }

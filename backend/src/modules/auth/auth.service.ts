@@ -8,9 +8,9 @@ import { plainToClass } from "class-transformer";
 import { User } from "../user/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { USER_NOT_FOUND } from "src/constants/responses/en/user/user-not-found";
 import { Role } from "../enums/roles.enum";
 import { AuthResponses } from "src/constants/responses/en/auth.responses";
+import { UserResponses } from "src/constants/responses/en/users.responses";
 
 @Injectable()
 export class AuthService {
@@ -24,7 +24,7 @@ export class AuthService {
     try {
       const user = await this.userRepository.findOneBy({ email: signInDto.email });
     if (!user) {
-      return USER_NOT_FOUND
+      return UserResponses.USER_NOT_FOUND;
     }
     const match = await bcrypt.compare(signInDto.password, user.password);
     if (!match) {
