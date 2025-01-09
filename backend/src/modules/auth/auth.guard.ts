@@ -81,7 +81,7 @@ export class AuthGuard implements CanActivate {
     }
 
     // Cache the user object in Redis with an expiration time (e.g., 10 minutes)
-    await this.cacheManager.set(`user:${userId}`, user, 600);
+    await this.cacheManager.set(`user:${userId}`, user, this.configService.get<number>('CACHE_TTL'));
 
     return user;
   }

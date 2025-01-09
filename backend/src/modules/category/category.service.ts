@@ -17,6 +17,7 @@ import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category
 import { CATEGORY_UPDATED } from 'src/constants/responses/en/category/category-updated';
 import { CATEGORY_DELETED } from 'src/constants/responses/en/category/category-deleted';
 import { NO_CATEGORIES_FOUND } from 'src/constants/responses/en/category/no-categories-found';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CategoryService {
@@ -24,6 +25,7 @@ export class CategoryService {
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private configService: ConfigService
   ) {}
 
   async create(payload: CreateCategoryDto) {
@@ -65,7 +67,7 @@ export class CategoryService {
       }
 
       // Cache the categories data for 10 minutes
-      await this.cacheManager.set('categories', categories, 600);
+      await this.cacheManager.set('categories', categories, );
 
       return {
         ...CATEGORIES_RETRIEVED,
@@ -95,7 +97,7 @@ export class CategoryService {
       }
 
       // Cache the individual category for 10 minutes
-      await this.cacheManager.set(cacheKey, category, 600);
+      await this.cacheManager.set(cacheKey, category, this.configService.get<number>('CACHE_TTL') );
 
       return {
         ...CATEGORY_FOUND,

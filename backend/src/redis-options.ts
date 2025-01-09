@@ -14,7 +14,7 @@ export const RedisOptions: CacheModuleAsyncOptions = {
     });
     return {
       store: () => store,
-      ttl: 600, // time-to-live in seconds, adjust as needed
+      ttl: configService.get<number>('CACHE_TTL'), // time-to-live in seconds, adjust as needed
     };
   },
  
