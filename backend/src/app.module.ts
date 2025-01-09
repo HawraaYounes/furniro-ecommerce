@@ -15,9 +15,14 @@ import { DataSource } from 'typeorm';
 import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver, getDataSourceByName } from 'typeorm-transactional';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Makes ConfigModule available globally
+      envFilePath: '.env', // Specify the path to your .env file
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads/products'), // Path to the static files
       serveRoot: '/productImage', // The route prefix for accessing the files
