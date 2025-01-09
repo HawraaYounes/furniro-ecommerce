@@ -15,7 +15,7 @@ import { DataSource } from 'typeorm';
 import { initializeTransactionalContext, addTransactionalDataSource, StorageDriver, getDataSourceByName } from 'typeorm-transactional';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -28,19 +28,18 @@ import { ConfigModule } from '@nestjs/config';
       serveRoot: '/productImage', // The route prefix for accessing the files
     }),
     TypeOrmModule.forRootAsync({
-      useFactory() {
-        return {
-          type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          username: 'postgres',
-          password: 'postgres',
-          database: 'furniro-db',
-          entities: [User, Category, Product, ProductImage],
-          synchronize: true,
-          // logging: true,
-        };
-      },
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('DB_HOST'),
+        port: parseInt(configService.get('DB_PORT')),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [User, Category, Product, ProductImage],
+        synchronize: true,
+        // logging: true,
+      }),
       async dataSourceFactory(options) {
         if (!options) throw new Error('Invalid options passed');
         const dataSource = new DataSource(options);
