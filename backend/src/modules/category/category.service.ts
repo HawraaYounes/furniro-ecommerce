@@ -8,16 +8,9 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FindCategoryParamsDto } from './dto/get-category.dto';
 import { DeleteCategoryParamsDto } from './dto/delete-category.dto';
-import { CATEGORIES_RETRIEVED } from 'src/constants/responses/en/category/categories-retrieved';
-import { CATEGORY_CREATED } from 'src/constants/responses/en/category/category-created';
 import { INTERNAL_SERVER_ERROR } from 'src/constants/responses/en/common/internal-server-error';
-import { CATEGORY_ALREADY_EXISTS } from 'src/constants/responses/en/category/category-exists';
-import { CATEGORY_FOUND } from 'src/constants/responses/en/category/category-found';
-import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
-import { CATEGORY_UPDATED } from 'src/constants/responses/en/category/category-updated';
-import { CATEGORY_DELETED } from 'src/constants/responses/en/category/category-deleted';
-import { NO_CATEGORIES_FOUND } from 'src/constants/responses/en/category/no-categories-found';
 import { ConfigService } from '@nestjs/config';
+import { CategoryResponses } from 'src/constants/responses/en/categories.responses';
 
 @Injectable()
 export class CategoryService {
@@ -34,7 +27,7 @@ export class CategoryService {
         where: { name: payload.name },
       });
       if (existingCategory) {
-        return CATEGORY_ALREADY_EXISTS;
+        return CategoryResponses.CATEGORY_ALREADY_EXISTS;
       }
       const category = this.categoryRepository.create(payload);
       const savedCategory = await this.categoryRepository.save(category);
@@ -43,7 +36,7 @@ export class CategoryService {
       await this.cacheManager.del('categories');
 
       return {
-        ...CATEGORY_CREATED,
+        ...CategoryResponses.CATEGORY_CREATED,
         data: savedCategory,
       };
     } catch (error) {
@@ -56,21 +49,21 @@ export class CategoryService {
       const cachedCategories = await this.cacheManager.get('categories');
       if (cachedCategories) {
         return {
-          ...CATEGORIES_RETRIEVED,
+          ...CategoryResponses.CATEGORIES_RETRIEVED,
           data: cachedCategories,
         };
       }
 
       const categories = await this.categoryRepository.find();
       if (!categories || categories.length === 0) {
-        return NO_CATEGORIES_FOUND;
+        return CategoryResponses.NO_CATEGORIES_FOUND;
       }
 
       // Cache the categories data for 10 minutes
       await this.cacheManager.set('categories', categories, );
 
       return {
-        ...CATEGORIES_RETRIEVED,
+        ...CategoryResponses.CATEGORIES_RETRIEVED,
         data: categories,
       };
     } catch (error) {
@@ -84,7 +77,7 @@ export class CategoryService {
       const cachedCategory = await this.cacheManager.get(cacheKey);
       if (cachedCategory) {
         return {
-          ...CATEGORY_FOUND,
+          ...CategoryResponses.CATEGORY_FOUND,
           data: cachedCategory,
         };
       }
@@ -93,14 +86,14 @@ export class CategoryService {
         where: { id: params.id },
       });
       if (!category) {
-        return CATEGORY_NOT_FOUND;
+        return CategoryResponses.CATEGORY_NOT_FOUND;
       }
 
       // Cache the individual category for 10 minutes
       await this.cacheManager.set(cacheKey, category, this.configService.get<number>('CACHE_TTL') );
 
       return {
-        ...CATEGORY_FOUND,
+        ...CategoryResponses.CATEGORY_FOUND,
         data: category,
       };
     } catch (error) {
@@ -115,7 +108,7 @@ export class CategoryService {
         where: { id },
       });
       if (!existingCategory) {
-        return CATEGORY_NOT_FOUND;
+        return CategoryResponses.CATEGORY_NOT_FOUND;
       }
   
       // Check if a category with the new name already exists (and it's not the same category being updated)
@@ -124,7 +117,7 @@ export class CategoryService {
           where: { name: payload.name, id: Not(id) },
         });
         if (categoryWithSameName) {
-          return CATEGORY_ALREADY_EXISTS;
+          return CategoryResponses.CATEGORY_ALREADY_EXISTS;
         }
       }
   
@@ -138,7 +131,7 @@ export class CategoryService {
       // Fetch the updated category
       const updatedCategory = await this.findOne({ id });
       return {
-        ...CATEGORY_UPDATED,
+        ...CategoryResponses.CATEGORY_UPDATED,
         data: updatedCategory.data,
       };
     } catch (error) {
@@ -154,7 +147,7 @@ export class CategoryService {
         where: { id: params.id },
       });
       if (!existingCategory) {
-        return CATEGORY_NOT_FOUND;
+        return CategoryResponses.CATEGORY_NOT_FOUND;
       }
 
       await this.categoryRepository.delete(params.id);
@@ -163,7 +156,7 @@ export class CategoryService {
       await this.cacheManager.del(`category:${params.id}`);
       await this.cacheManager.del('categories');
 
-      return CATEGORY_DELETED;
+      return CategoryResponses.CATEGORY_DELETED;
     } catch (error) {
       return INTERNAL_SERVER_ERROR;
     }

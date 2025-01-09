@@ -20,8 +20,8 @@ import { Category } from '../category/category.entity';
 import { Transactional } from 'typeorm-transactional';
 import { buildResponse } from 'src/common/utils/response-builder';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { CATEGORY_NOT_FOUND } from 'src/constants/responses/en/category/category-not-found';
 import { ConfigService } from '@nestjs/config';
+import { CategoryResponses } from 'src/constants/responses/en/categories.responses';
 
 
 @Injectable()
@@ -45,7 +45,7 @@ export class ProductService {
       });
 
       if (!category) {
-        return CATEGORY_NOT_FOUND;
+        return CategoryResponses.CATEGORY_NOT_FOUND;
       }
 
       const product = this.productRepository.create({
