@@ -7,9 +7,10 @@ import { ProductController } from './product.controller';
 import { ProductImage } from './entities/product-image.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { Color } from './entities/color.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Product, ProductImage, Category]),
+    imports: [TypeOrmModule.forFeature([Product, ProductImage, Category, Color]),
     MulterModule.register({
         storage: diskStorage({
           destination: './uploads/products',

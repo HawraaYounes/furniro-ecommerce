@@ -16,6 +16,7 @@ import { initializeTransactionalContext, addTransactionalDataSource, StorageDriv
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Color } from './modules/product/entities/color.entity';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, Category, Product, ProductImage],
+        entities: [User, Category, Product, ProductImage, Color],
         synchronize: true,
         // logging: true,
       }),
