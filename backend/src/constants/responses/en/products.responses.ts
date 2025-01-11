@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
+import { ApiResponse } from 'src/common/interfaces/response.interface';
 
-export const ProductResponses = {
+export const ProductResponses : Record<string, ApiResponse>= {
   NO_PRODUCTS_FOUND: {
     success: true,
     statusCode: StatusCodes.NO_CONTENT,
@@ -19,14 +20,12 @@ export const ProductResponses = {
     success: true,
     statusCode: StatusCodes.OK,
     message: 'Product successfully deleted',
-    data: null,
   },
 
   PRODUCT_ALREADY_EXISTS: {
     success: false,
     statusCode: StatusCodes.CONFLICT,
     message: 'Product with this name already exists',
-    data: null,
   },
 
   PRODUCT_FOUND: {
@@ -40,7 +39,6 @@ export const ProductResponses = {
     success: false,
     statusCode: StatusCodes.NOT_FOUND,
     message: 'Product not found',
-    data: null,
   },
 
   PRODUCT_UPDATED: {
