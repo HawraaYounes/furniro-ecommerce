@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
+import { ApiResponse } from 'src/common/interfaces/response.interface';
 
-export const CategoryResponses = {
+export const CategoryResponses : Record<string, ApiResponse>= {
   CATEGORIES_RETRIEVED: {
     success: true,
     statusCode: StatusCodes.OK,
@@ -19,14 +20,12 @@ export const CategoryResponses = {
     success: true,
     statusCode: StatusCodes.OK,
     message: 'Category deleted successfully',
-    data: null,
   },
 
   CATEGORY_ALREADY_EXISTS: {
     success: false,
     statusCode: StatusCodes.CONFLICT,
     message: 'Category with this name already exists',
-    data: null,
   },
 
   CATEGORY_FOUND: {
@@ -40,7 +39,6 @@ export const CategoryResponses = {
     success: false,
     statusCode: StatusCodes.NOT_FOUND,
     message: 'Category not found',
-    data: null,
   },
 
   CATEGORY_UPDATED: {

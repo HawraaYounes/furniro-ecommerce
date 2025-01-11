@@ -1,18 +1,17 @@
 import { StatusCodes } from 'http-status-codes';
+import { ApiResponse } from 'src/common/interfaces/response.interface';
 
-export const AuthResponses = {
+export const AuthResponses: Record<string, ApiResponse> = {
   EMAIL_ALREADY_REGISTERED: {
     success: false,
     statusCode: StatusCodes.CONFLICT,
     message: 'Email address is already registered. Please use a different email or log in.',
-    data: null,
   },
   
   INVALID_PASSWORD: {
     success: false,
     statusCode: StatusCodes.UNAUTHORIZED,
     message: 'Incorrect email and password!',
-    data: null,
   },
 
   LOGIN_SUCCESS: {
