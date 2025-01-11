@@ -26,7 +26,7 @@ export class ResponseInterceptor implements NestInterceptor {
           statusCode: statusCode || HttpStatus.OK,
           message: message || 'Operation successful',
           path: request.url,
-          data: data || null, // Handle data
+          ...(data && { data }), // Include `data` if it exists
           ...(meta && { meta }), // Include `meta` if it exists
         };
       }),
@@ -45,7 +45,6 @@ export class ResponseInterceptor implements NestInterceptor {
           statusCode,
           message,
           request.url,
-          null
         );
         return throwError(() => customError);
       }),

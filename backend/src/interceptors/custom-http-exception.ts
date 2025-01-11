@@ -5,7 +5,6 @@ export class CustomHttpException extends HttpException {
         public readonly statusCode: number,
         public readonly message: string,
         public readonly path: string,
-        public readonly data: any = null
     ) {
         super(
             {
@@ -13,7 +12,6 @@ export class CustomHttpException extends HttpException {
                 statusCode,
                 message,
                 path,
-                data
             },
             statusCode
         );
