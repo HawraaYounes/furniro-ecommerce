@@ -1,11 +1,11 @@
-interface ResponseMeta {
+export interface ResponseMeta {
     page: number;
     limit: number;
     total: number;
     pageCount: number;
   }
   
-  interface ApiResponse<T = any> {
+ export interface ApiResponse<T = any> {
     success: boolean;
     statusCode: number;
     message: string;
