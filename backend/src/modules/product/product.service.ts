@@ -11,7 +11,6 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductParamsDto } from './dto/delete-product.dto';
 import { Category } from '../category/category.entity';
 import { Transactional } from 'typeorm-transactional';
-import { buildResponse } from 'src/common/utils/response-builder';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ConfigService } from '@nestjs/config';
 import { CategoryResponses } from 'src/constants/responses/en/categories.responses';
@@ -81,12 +80,14 @@ export class ProductService {
       const cachedProducts = await this.cacheManager.get<Product[]>(cacheKey);
       if (cachedProducts) {
         console.log("PRODUCTS ARE IN CACHE");
-        return buildResponse(ProductResponses.PRODUCTS_RETRIEVED, cachedProducts, {
-          page,
-          limit,
-          total: cachedProducts.length,
-          pageCount: Math.ceil(cachedProducts.length / limit),
-        });
+        return {
+          ...ProductResponses.PRODUCTS_RETRIEVED, data: cachedProducts, meta: {
+            page,
+            limit,
+            total: cachedProducts.length,
+            pageCount: Math.ceil(cachedProducts.length / limit),
+          }
+        }
       }
       console.log("PRODUCTS ARE NOT IN CACHE");
 
@@ -98,12 +99,14 @@ export class ProductService {
       });
 
       if (products.length === 0) {
-        return buildResponse(ProductResponses.NO_PRODUCTS_FOUND, [], {
-          page,
-          limit,
-          total: 0,
-          pageCount: 0,
-        });
+        return {
+          ...ProductResponses.NO_PRODUCTS_FOUND, meta: {
+            page,
+            limit,
+            total: 0,
+            pageCount: 0,
+          }
+        };
       }
 
       const updatedProducts = products.map((product) => ({
@@ -117,15 +120,17 @@ export class ProductService {
       // Cache the paginated products
       await this.cacheManager.set(cacheKey, updatedProducts, this.configService.get<number>('CACHE_TTL'));
 
-      return buildResponse(ProductResponses.PRODUCTS_RETRIEVED, updatedProducts, {
-        page,
-        limit,
-        total,
-        pageCount: Math.ceil(total / limit),
-      });
+      return {
+        ...ProductResponses.PRODUCTS_RETRIEVED, data: updatedProducts, meta: {
+          page,
+          limit,
+          total,
+          pageCount: Math.ceil(total / limit),
+        }
+      };
     } catch (error) {
       console.error('Error in findAll:', error);
-      return buildResponse(CommonResponses.INTERNAL_SERVER_ERROR, null);
+      return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
 
