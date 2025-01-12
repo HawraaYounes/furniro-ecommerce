@@ -1,13 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Color } from '../entities/color.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateColorDto } from '../dto/create-color.dto';
 import { CommonResponses } from 'src/constants/responses/en/common-responses';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { ColorResponses } from 'src/constants/responses/en/color-responses';
 import { ConfigService } from '@nestjs/config';
+import { UpdateColorDto } from '../dto/update-color.dto';
 
 @Injectable()
 export class ColorService {
@@ -71,5 +72,46 @@ export class ColorService {
         }
     }
 
+    async update(id: number, payload: UpdateColorDto) {
+        try {
+            // Check if the color exists
+            const existingColor = await this.colorRepository.findOne({ where: { id } });
+            if (!existingColor) {
+                return ColorResponses.COLOR_NOT_FOUND;
+            }
+
+            // Check if a color with the new name or hexCode already exists (and it's not the same color being updated)
+            if (payload.name || payload.hexCode) {
+                const colorWithSameAttributes = await this.colorRepository.findOne({
+                    where: [
+                        { name: payload.name, id: Not(id) },
+                        { hexCode: payload.hexCode, id: Not(id) },
+                    ],
+                });
+                console.log("PAYLOAD",payload)
+                console.log("colorWithSameAttributes",colorWithSameAttributes)
+                if (colorWithSameAttributes) {
+                    return ColorResponses.COLOR_ALREADY_EXISTS;
+                }
+            }
+
+            // Update the color
+            await this.colorRepository.update(id, payload);
+
+            // Invalidate the cache for the updated color and colors list
+            await this.cacheManager.del(`color:${id}`);
+            await this.cacheManager.del('colors');
+
+            // Fetch the updated color
+            const updatedColor = await this.colorRepository.findOne({ where: { id } });
+            return {
+                ...ColorResponses.COLOR_UPDATED,
+                data: updatedColor,
+            };
+        } catch (error) {
+            console.error(error);
+            return CommonResponses.INTERNAL_SERVER_ERROR;
+        }
+    }
 
 }
