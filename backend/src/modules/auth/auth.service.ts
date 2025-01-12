@@ -8,7 +8,7 @@ import { plainToClass } from "class-transformer";
 import { User } from "../user/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Role } from "../enums/roles.enum";
+import { Role } from "../../common/enums/roles.enum";
 import { AuthResponses } from "src/constants/responses/en/auth.responses";
 import { UserResponses } from "src/constants/responses/en/users.responses";
 

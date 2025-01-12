@@ -7,7 +7,7 @@ import {
     Matches,
     MinLength,
 } from 'class-validator';
-import { Role } from 'src/modules/enums/roles.enum';
+import { Role } from 'src/common/enums/roles.enum';
 
 const passwordRegEx =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;

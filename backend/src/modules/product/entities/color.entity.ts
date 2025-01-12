@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product.entity";
 
 @Entity()
@@ -13,5 +13,8 @@ export class Color {
   hexCode: string; // e.g., "#FF0000"
 
   @ManyToMany(() => Product, (product) => product.colors)
+  @JoinTable({
+    name: "products_colors",
+})
   products: Product[];
 }

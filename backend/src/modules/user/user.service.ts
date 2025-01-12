@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { Role } from '../enums/roles.enum';
+import { Role } from '../../common/enums/roles.enum';
 import * as bcrypt from 'bcrypt';
 import { UserResponses } from 'src/constants/responses/en/users.responses';
 
