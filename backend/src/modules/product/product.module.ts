@@ -8,6 +8,8 @@ import { ProductImage } from './entities/product-image.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Color } from './entities/color.entity';
+import { ColorController } from './controllers/color.controller';
+import { ColorService } from './services/color.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Product, ProductImage, Category, Color]),
@@ -20,7 +22,7 @@ import { Color } from './entities/color.entity';
           },
         }),
       }),],
-    controllers: [ProductController],
-    providers: [ProductService],
+    controllers: [ProductController,ColorController],
+    providers: [ProductService,ColorService],
 })
 export class ProductModule { }
