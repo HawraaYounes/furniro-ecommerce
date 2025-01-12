@@ -79,29 +79,34 @@ export class ColorService {
             if (!existingColor) {
                 return ColorResponses.COLOR_NOT_FOUND;
             }
-
-            // Check if a color with the new name or hexCode already exists (and it's not the same color being updated)
-            if (payload.name || payload.hexCode) {
-                const colorWithSameAttributes = await this.colorRepository.findOne({
-                    where: [
-                        { name: payload.name, id: Not(id) },
-                        { hexCode: payload.hexCode, id: Not(id) },
-                    ],
+    
+            // Check if a color with the new name already exists
+            if (payload.name) {
+                const colorWithSameName = await this.colorRepository.findOne({
+                    where: { name: payload.name, id: Not(id) },
                 });
-                console.log("PAYLOAD",payload)
-                console.log("colorWithSameAttributes",colorWithSameAttributes)
-                if (colorWithSameAttributes) {
+                if (colorWithSameName) {
                     return ColorResponses.COLOR_ALREADY_EXISTS;
                 }
             }
-
+    
+            // Check if a color with the new hexCode already exists
+            if (payload.hexCode) {
+                const colorWithSameHexCode = await this.colorRepository.findOne({
+                    where: { hexCode: payload.hexCode, id: Not(id) },
+                });
+                if (colorWithSameHexCode) {
+                    return ColorResponses.COLOR_ALREADY_EXISTS;
+                }
+            }
+    
             // Update the color
             await this.colorRepository.update(id, payload);
-
+    
             // Invalidate the cache for the updated color and colors list
             await this.cacheManager.del(`color:${id}`);
             await this.cacheManager.del('colors');
-
+    
             // Fetch the updated color
             const updatedColor = await this.colorRepository.findOne({ where: { id } });
             return {
@@ -113,5 +118,6 @@ export class ColorService {
             return CommonResponses.INTERNAL_SERVER_ERROR;
         }
     }
+    
 
 }
