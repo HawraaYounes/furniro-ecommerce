@@ -26,6 +26,8 @@ export class Product {
     images: ProductImage[];
 
     @ManyToMany(() => Color, (color) => color.products, { cascade: true })
-    @JoinTable()
+    @JoinTable({
+        name: "products_colors",
+    })
     colors?: Color[];
 }
