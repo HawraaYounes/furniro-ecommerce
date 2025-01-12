@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator';
 
 export class CreateColorDto {
     @IsNotEmpty()
@@ -7,5 +7,8 @@ export class CreateColorDto {
 
     @IsOptional()
     @IsString()
+    @Matches(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+        message: 'hexCode must be a valid hexadecimal color code',
+    })
     hexCode: string;
 }
