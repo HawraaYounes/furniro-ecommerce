@@ -14,7 +14,7 @@ export class ColorService {
         @InjectRepository(Color)
         private colorRepository: Repository<Color>,
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    ) { }
+    ) {}
 
     async create(payload: CreateColorDto) {
         try {
@@ -27,15 +27,15 @@ export class ColorService {
             if (existingColor) {
                 return ColorResponses.COLOR_ALREADY_EXISTS;
             }
-            const category = this.colorRepository.create(payload);
-            const savedCategory = await this.colorRepository.save(category);
+            const color = this.colorRepository.create(payload);
+            const savedColor = await this.colorRepository.save(color);
 
             // Clear categories cache on new category creation
             await this.cacheManager.del('colors');
 
             return {
                 ...ColorResponses.COLOR_CREATED,
-                data: savedCategory,
+                data: savedColor,
             };
         } catch (error) {
             return CommonResponses.INTERNAL_SERVER_ERROR;
