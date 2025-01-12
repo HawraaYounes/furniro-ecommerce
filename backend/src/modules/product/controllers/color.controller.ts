@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Color } from "../entities/color.entity";
 import { CreateColorDto } from "../dto/create-color.dto";
@@ -26,5 +26,24 @@ export class ColorController {
     })
     create(@Body() createColorDto: CreateColorDto){
         return this.colorService.create(createColorDto);
+    }
+
+    @Get()
+    @ApiOperation({ summary: 'Retrieve all colors' })
+    @ApiResponse({
+        status: 200,
+        description: 'Successfully retrieved all colors.',
+        type: [Color],
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'No colors found.',
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error.',
+    })
+    findAll() {
+        return this.colorService.findAll();
     }
 }
