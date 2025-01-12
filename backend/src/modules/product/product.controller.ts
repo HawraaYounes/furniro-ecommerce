@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles, Query } from '@nestjs/common';
-import { ProductService } from './product.service';
+import { ProductService } from './services/product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductParamsDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
