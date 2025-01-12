@@ -24,4 +24,15 @@ export const ColorResponses: Record<string, ApiResponse> = {
         statusCode: StatusCodes.NOT_FOUND,
         message: 'No colors found',
     },
+    COLOR_UPDATED: {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Color successfully updated',
+        data: null,
+    },
+    COLOR_NOT_FOUND: {
+        success: false,
+        statusCode: StatusCodes.NOT_FOUND,
+        message: 'Color not found',
+    },
 };
