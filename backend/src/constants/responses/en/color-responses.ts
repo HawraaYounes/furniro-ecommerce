@@ -13,4 +13,15 @@ export const ColorResponses: Record<string, ApiResponse> = {
         statusCode: StatusCodes.CONFLICT,
         message: 'Color with this name or hexCode already exists',
     },
+    COLORS_RETRIEVED: {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Colors successfully retrieved',
+        data: null,
+    },
+    NO_COLORS_FOUND: {
+        success: false,
+        statusCode: StatusCodes.NOT_FOUND,
+        message: 'No colors found',
+    },
 };
