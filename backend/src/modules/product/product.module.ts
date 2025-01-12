@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Category } from '../category/category.entity';
 import { ProductService } from './services/product.service';
-import { ProductController } from './product.controller';
+import { ProductController } from './controllers/product.controller';
 import { ProductImage } from './entities/product-image.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
