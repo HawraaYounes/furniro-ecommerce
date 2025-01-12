@@ -9,6 +9,7 @@ import { Cache } from 'cache-manager';
 import { ColorResponses } from 'src/constants/responses/en/color-responses';
 import { ConfigService } from '@nestjs/config';
 import { UpdateColorDto } from '../dto/update-color.dto';
+import { DeleteColorParamsDto } from '../dto/delete-color.dto';
 
 @Injectable()
 export class ColorService {
@@ -119,5 +120,28 @@ export class ColorService {
         }
     }
     
+    async delete(params: DeleteColorParamsDto) {
+        try {
+            // Check if the color exists
+            const existingColor = await this.colorRepository.findOne({
+                where: { id: params.id },
+            });
+            if (!existingColor) {
+                return ColorResponses.COLOR_NOT_FOUND;
+            }
+    
+            // Delete the color
+            await this.colorRepository.delete(params.id);
+    
+            // Invalidate the cache for the deleted color and colors list
+            await this.cacheManager.del(`color:${params.id}`);
+            await this.cacheManager.del('colors');
+    
+            return ColorResponses.COLOR_DELETED;
+        } catch (error) {
+            console.error(error);
+            return CommonResponses.INTERNAL_SERVER_ERROR;
+        }
+    }
 
 }

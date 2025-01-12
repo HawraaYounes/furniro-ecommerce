@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Color } from "../entities/color.entity";
 import { CreateColorDto } from "../dto/create-color.dto";
 import { ColorService } from "../services/color.service";
 import { Public } from "src/modules/auth/public-strategy";
 import { UpdateColorDto } from "../dto/update-color.dto";
+import { DeleteColorParamsDto } from "../dto/delete-color.dto";
 
 @ApiTags('color')
 @Controller('colors')
@@ -70,5 +71,24 @@ export class ColorController {
     })
     update(@Param('id') id: number, @Body() updateColorDto: UpdateColorDto) {
         return this.colorService.update(id, updateColorDto);
+    }
+
+
+    @Delete(':id')
+    @ApiOperation({ summary: 'Delete a color' }) 
+    @ApiResponse({
+        status: 200,
+        description: 'The color has been successfully deleted.',
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Color not found.',
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error.',
+    })
+    delete(@Param() params: DeleteColorParamsDto) {
+        return this.colorService.delete(params);
     }
 }

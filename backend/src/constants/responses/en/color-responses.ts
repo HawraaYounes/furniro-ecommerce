@@ -35,4 +35,9 @@ export const ColorResponses: Record<string, ApiResponse> = {
         statusCode: StatusCodes.NOT_FOUND,
         message: 'Color not found',
     },
+    COLOR_DELETED: {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Color successfully deleted',
+    },
 };
