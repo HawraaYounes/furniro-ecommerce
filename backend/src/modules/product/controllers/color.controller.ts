@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Color } from "../entities/color.entity";
 import { CreateColorDto } from "../dto/create-color.dto";
 import { ColorService } from "../services/color.service";
+import { Public } from "src/modules/auth/public-strategy";
 
 @ApiTags('color')
 @Controller('colors')
@@ -43,6 +44,7 @@ export class ColorController {
         status: 500,
         description: 'Internal server error.',
     })
+    @Public()
     findAll() {
         return this.colorService.findAll();
     }
