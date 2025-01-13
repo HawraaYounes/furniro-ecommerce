@@ -31,18 +31,18 @@ const ProductDetails = () => {
             key={image.id}
             src={image.url}
             alt={product.name}
-            className={`lg:w-[76px] lg:m-4 lg:h-20 m-2 w-28 h-28 object-cover cursor-pointer ${
+            className={`lg:w-[76px] lg:h-20 m-4 w-36 h-36 object-cover cursor-pointer ${
               currentImage === image.url ? "border-2 border-black p-[2px]" : ""
             }`}
             onClick={() => setCurrentImage(image.url)} 
           />
         ))}
       </div>
-      <div className="lg:w-1/2 order-1 lg:order-2 mr-6 h-[320px] ">
+      <div className="lg:w-1/2 order-1 lg:order-2 lg:mr-6 h-[320px] ">
         <img
           src={currentImage}
           alt="Selected product"
-          className="w-full h-full object-cover mr-2"
+          className="w-full h-full object-cover lg:mr-2"
         />
       </div>
       <div className="bg-red-300 lg:w-1/2 order-3">hello</div>
