@@ -22,19 +22,19 @@ const ProductDetails = () => {
   }, [dispatch, params.productId]);
 
   return (
-    <div className={`px-24 flex flex-col lg:flex-row w-full  `}>
-        <div className="lg:w-1/6 flex flex-col items-center">
+    <div className={`px-20 flex flex-col lg:flex-row w-full  `}>
+        <div className="lg:w-1/6 flex lg:flex-col items-center order-2 lg:order-1">
         {product.images.map((image) => (
             <img
               key={image.id}
               src={image.url}
               alt={product.name}
-              className="w-[76px] m-7 h-20 object-cover "
+              className="lg:w-[76px] lg:m-4 lg:h-20 m-2 w-28 h-28 object-cover"
             />
           ))}
         </div>
-        <div className="bg-zinc-800 lg:w-1/3">helo</div>
-      <div className="bg-red-300 lg:w-1/2">hello</div>
+        <div className="bg-zinc-800 lg:w-1/2 order-1 lg:order-2">helo</div>
+      <div className="bg-red-300 lg:w-1/2 order-3">hello</div>
     </div>
   );
 };
