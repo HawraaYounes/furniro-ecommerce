@@ -4,14 +4,16 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
 import { ResponseInterceptor } from './interceptors/response.interceptor';
 import { initializeTransactionalContext, StorageDriver } from 'typeorm-transactional';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   initializeTransactionalContext({ storageDriver: StorageDriver.ASYNC_LOCAL_STORAGE }); // Initialize context
   const app = await NestFactory.create(AppModule);
-
+  const configService = app.get(ConfigService); // Get ConfigService instance
+  
   // Enable CORS with specific options
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: configService.get<string>('FRONTEND_BASE_URL'),
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
   });

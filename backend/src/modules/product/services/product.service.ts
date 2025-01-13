@@ -113,8 +113,7 @@ export class ProductService {
         ...product,
         images: product.images.map((image) => ({
           ...image,
-          url: `http://localhost:3000/productImage/${image.url}`,
-        })),
+          url: `${this.configService.get<string>('BACKEND_BASE_URL')}/productImage/${image.url}`,        })),
       }));
 
       // Cache the paginated products
