@@ -134,7 +134,6 @@ export class ProductService {
 
   async findOne(params: FindProductParamsDto) {
     const cacheKey = `product:${params.id}`;
-
     try {
       // Check cache
       const cachedProduct = await this.cacheManager.get<Product>(cacheKey);
@@ -144,29 +143,39 @@ export class ProductService {
           data: cachedProduct,
         };
       }
-
+  
       // Fetch data from database
       const product = await this.productRepository.findOne({
         where: { id: params.id },
         relations: ['images', 'category'],
       });
-
+  
       if (!product) {
         return ProductResponses.PRODUCT_NOT_FOUND;
       }
-
+  
+      // Map image URLs for the fetched product
+      const updatedProduct = {
+        ...product,
+        images: product.images.map((image) => ({
+          ...image,
+          url: `${this.configService.get<string>('BACKEND_BASE_URL')}/productImage/${image.url}`,
+        })),
+      };
+  
       // Update cache
-      await this.cacheManager.set(cacheKey, product, this.configService.get<number>('CACHE_TTL'));
-
+      await this.cacheManager.set(cacheKey, updatedProduct, this.configService.get<number>('CACHE_TTL'));
+  
       return {
         ...ProductResponses.PRODUCTS_RETRIEVED,
-        data: product,
+        data: updatedProduct,
       };
     } catch (error) {
       console.error('Error in findOne:', error);
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
+  
 
   async update(id: number, payload: UpdateProductDto) {
     try {
