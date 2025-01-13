@@ -5,7 +5,9 @@ import Auth, { action as authAction } from "./pages/Auth";
 import RootLayout from "./components/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import Shop from "./pages/Shop";
-import ProductDetails, { fetchProductDetailsLoader } from "./pages/ProductDetails";
+import ProductDetails, {
+  fetchProductDetailsLoader,
+} from "./pages/ProductDetails";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import CommonBannerLayout from "./components/BannerLayout";
@@ -24,20 +26,18 @@ const router = createBrowserRouter([
     children: [
       {
         element: <CommonBannerLayout />,
-        
         children: [
           {
             path: "shop",
             element: <Shop />,
             loader: shopLoader,
-
-          },
-          {
-            path: "shop/:productId",
-            element: <ProductDetails />,
-            loader: fetchProductDetailsLoader
           },
         ],
+      },
+      {
+        path: "shop/:productId",
+        element: <ProductDetails />,
+        loader: fetchProductDetailsLoader,
       },
       {
         index: true,
