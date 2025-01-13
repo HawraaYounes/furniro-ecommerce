@@ -33,7 +33,6 @@ export const fetchProductsLoader = async ({ request, limit }) => {
     const response = await axios.get(`${API_BASE_URL}/products`, {
       params: { page, limit }, // Axios automatically serializes query parameters
     });
-    console.log("RESPONSE DATA",response.data)
     return response.data; // Axios parses JSON for you
   } catch (error) {
     throw json(

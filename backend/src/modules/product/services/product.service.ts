@@ -79,7 +79,6 @@ export class ProductService {
       // Check cache
       const cachedProducts = await this.cacheManager.get<Product[]>(cacheKey);
       if (cachedProducts) {
-        console.log("PRODUCTS ARE IN CACHE");
         return {
           ...ProductResponses.PRODUCTS_RETRIEVED, data: cachedProducts, meta: {
             page,
@@ -89,7 +88,6 @@ export class ProductService {
           }
         }
       }
-      console.log("PRODUCTS ARE NOT IN CACHE");
 
       // Fetch data from database
       const [products, total] = await this.productRepository.findAndCount({

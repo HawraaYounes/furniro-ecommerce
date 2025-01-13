@@ -5,7 +5,7 @@ import Auth, { action as authAction } from "./pages/Auth";
 import RootLayout from "./components/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import Shop from "./pages/Shop";
-import ProductDetails from "./pages/ProductDetails";
+import ProductDetails, { fetchProductDetailsLoader } from "./pages/ProductDetails";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import CommonBannerLayout from "./components/BannerLayout";
@@ -35,6 +35,7 @@ const router = createBrowserRouter([
           {
             path: "shop/:productId",
             element: <ProductDetails />,
+            loader: fetchProductDetailsLoader
           },
         ],
       },

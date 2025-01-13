@@ -135,7 +135,6 @@ export class CategoryService {
         data: updatedCategory.data,
       };
     } catch (error) {
-      console.log(error);
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }

@@ -6,7 +6,6 @@ import Nav from "../components/Nav";
 const ErrorPage = () => {
   const error = useRouteError();
   let content;
-
   // Check for specific status or provide a generic error message
   if (error.status === 404) {
     content = <NotFoundError />;
