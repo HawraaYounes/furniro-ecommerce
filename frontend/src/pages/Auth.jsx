@@ -5,6 +5,7 @@ import AuthForm from "../sections/auth/AuthForm";
 import { json, redirect } from "react-router-dom";
 import axios from "axios";
 import { ALERT_TYPES, alertTypes } from "../constants";
+import { API_BASE_URL } from "../constants/config";
 
 const Auth = () => {
   const [flashMessage, setFlashMessage] = useState({
@@ -78,7 +79,7 @@ export async function action({ request }) {
 
   try {
     const response = await axios.post(
-      `http://localhost:3000/auth/${mode}`,
+      `${API_BASE_URL}/auth/${mode}`,
       authData,
       {
         headers: {
