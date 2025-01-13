@@ -163,7 +163,7 @@ export class ProductService {
         })),
       };
   
-      // Update cache
+      // Cache the updated product with mapped image URLs
       await this.cacheManager.set(cacheKey, updatedProduct, this.configService.get<number>('CACHE_TTL'));
   
       return {

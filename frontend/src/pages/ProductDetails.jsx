@@ -9,7 +9,7 @@ const ProductDetails = () => {
     const params = useParams();
     const dispatch = useDispatch();
     const product = useLoaderData(); // Access product data
-
+    console.log("PRODUCT DATA",product);
   useEffect(() => {
     dispatch(
       setBannerData({
@@ -46,7 +46,6 @@ const ProductDetails = () => {
       <div className="mt-4">
         <h2 className="text-xl font-semibold">Category:</h2>
         <p>{product.category.name}</p>
-        <p className="text-gray-600">{product.category.description}</p>
       </div>
     </div>
   );
