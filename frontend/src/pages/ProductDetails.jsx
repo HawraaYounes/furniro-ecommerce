@@ -45,8 +45,9 @@ const ProductDetails = () => {
           className="w-full h-full object-cover md:mr-2"
         />
       </div>
-      <div className="md:w-1/2 order-3 flex flex-col font-medium text-left md:ml-10">
-       <p className={`font-poppins text-4xl`}>{product.name}</p>
+      <div className="md:w-1/2 order-3 flex flex-col font-semibold text-left md:ml-10">
+       <p className={`font-poppins text-4xl text-wrap`}>{product.name}</p>
+       <p className="">{product.price}</p>
       </div>
     </div>
   );
