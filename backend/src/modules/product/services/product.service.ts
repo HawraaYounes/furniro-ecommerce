@@ -218,6 +218,8 @@ export class ProductService {
       await this.productRepository.delete(params.id);
 
       // Invalidate cache
+      
+      await this.invalidateProductsCache();
       await this.invalidateProductCache(params.id);
 
       return ProductResponses.PRODUCT_DELETED;

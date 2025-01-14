@@ -25,7 +25,7 @@ const ProductDetails = () => {
 
   return (
     <div className={`px-14 sm:px-16 flex flex-col sm:flex-row w-full`}>
-      <div className="sm:w-1/5 flex sm:flex-col items-center order-2 sm:order-1">
+      <div className="sm:w-1/6 flex sm:flex-col items-center order-2 sm:order-1 overflow-x-scroll no-scrollbar">
         {product.images.map((image) => (
           <img
             key={image.id}
@@ -38,16 +38,16 @@ const ProductDetails = () => {
           />
         ))}
       </div>
-      <div className="sm:w-2/5 order-1 sm:order-2 sm:mr-6 mb-4 h-[400px] sm:h-[300px]">
+      <div className="sm:w-5/12 order-1 sm:order-2 sm:mr-6 mb-4 w-full h-auto ">
         <img
           src={currentImage}
           alt="Selected product"
-          className="w-full h-full object-cover sm:mr-2 "
+          className="w-full h-auto object-cover sm:mr-5 min-sm:h-[380px] aspect-square "
         />
       </div>
-      <div className="sm:w-2/5 order-3 flex flex-col font-semibold text-left">
+      <div className="sm:w-5/12 order-3 flex flex-col font-semibold text-left">
        <p className={`font-poppins text-4xl text-wrap`}>{product.name}</p>
-       <p className="">{product.price}</p>
+       <p className="text-gray font-medium text-[24px]">$ {product.price}</p>
       </div>
     </div>
   );
