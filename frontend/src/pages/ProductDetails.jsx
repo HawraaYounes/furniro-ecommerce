@@ -24,7 +24,7 @@ const ProductDetails = () => {
   }, [dispatch, params.productId]);
 
   return (
-    <div className={`px-20 flex flex-col md:flex-row w-full  `}>
+    <div className={`px-14 md:px-20 flex flex-col md:flex-row w-full  `}>
       <div className="md:w-1/6 flex md:flex-col items-center order-2 md:order-1">
         {product.images.map((image) => (
           <img
@@ -38,11 +38,11 @@ const ProductDetails = () => {
           />
         ))}
       </div>
-      <div className="md:w-1/2 order-1 md:order-2 md:mr-6 h-[500px] md:h-[350px]">
+      <div className="md:w-1/2 order-1 md:order-2 md:mr-6 h-[450px] md:h-[350px]">
         <img
           src={currentImage}
           alt="Selected product"
-          className="w-full h-full object-cover md:mr-2"
+          className="w-full h-full object-cover md:mr-2 "
         />
       </div>
       <div className="md:w-1/2 order-3 flex flex-col font-semibold text-left md:ml-10">
