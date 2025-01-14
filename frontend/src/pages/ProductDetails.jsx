@@ -24,28 +24,28 @@ const ProductDetails = () => {
   }, [dispatch, params.productId]);
 
   return (
-    <div className={`px-14 md:px-20 flex flex-col md:flex-row w-full  `}>
-      <div className="md:w-1/6 flex md:flex-col items-center order-2 md:order-1">
+    <div className={`px-14 sm:px-16 flex flex-col sm:flex-row w-full`}>
+      <div className="sm:w-1/5 flex sm:flex-col items-center order-2 sm:order-1">
         {product.images.map((image) => (
           <img
             key={image.id}
             src={image.url}
             alt={product.name}
-            className={`md:w-[76px] md:h-20 my-4 mr-4 w-36 h-36 object-cover cursor-pointer ${
+            className={`sm:w-[76px] sm:h-20 m-3  sm:mb-3 w-32 h-32 object-cover cursor-pointer ${
               currentImage === image.url ? "border-2 border-black p-[2px]" : ""
             }`}
             onClick={() => setCurrentImage(image.url)} 
           />
         ))}
       </div>
-      <div className="md:w-1/2 order-1 md:order-2 md:mr-6 h-[450px] md:h-[350px]">
+      <div className="sm:w-2/5 order-1 sm:order-2 sm:mr-6 mb-4 h-[400px] sm:h-[300px]">
         <img
           src={currentImage}
           alt="Selected product"
-          className="w-full h-full object-cover md:mr-2 "
+          className="w-full h-full object-cover sm:mr-2 "
         />
       </div>
-      <div className="md:w-1/2 order-3 flex flex-col font-semibold text-left md:ml-10">
+      <div className="sm:w-2/5 order-3 flex flex-col font-semibold text-left">
        <p className={`font-poppins text-4xl text-wrap`}>{product.name}</p>
        <p className="">{product.price}</p>
       </div>
