@@ -46,8 +46,9 @@ const ProductDetails = () => {
         />
       </div>
       <div className="sm:w-5/12 order-3 flex flex-col font-semibold text-left">
-       <p className={`font-poppins text-4xl text-wrap`}>{product.name}</p>
-       <p className="text-gray font-medium text-[24px]">$ {product.price}</p>
+       <p className={`font-poppins text-4xl text-wrap mb-2`}>{product.name}</p>
+       <p className="text-gray font-medium text-[24px] mb-2">$ {product.price}</p>
+       <p className="font-normal text-sm font-poppins sm:w-3/4 sm:text-wrap">{product.description}</p>
       </div>
     </div>
   );
