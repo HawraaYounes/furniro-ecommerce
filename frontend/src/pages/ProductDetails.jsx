@@ -5,6 +5,7 @@ import { setBannerData, clearBannerData } from "../store/bannerSlice";
 import { API_BASE_URL } from "../constants/config";
 import axios from "axios";
 import styles from "../style";
+import StarRating from "../components/StarRating";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -55,7 +56,7 @@ const ProductDetails = () => {
         </p>
         <div className="colors-div mt-6">
           <p className="text-sm font-normal text-gray mb-2 font-poppins">Color</p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 mb-3">
             {/* Static colors for design */}
             {["#d4bf96", "#15667B", "#000000"].map((color, index) => (
               <div
@@ -65,6 +66,7 @@ const ProductDetails = () => {
               ></div>
             ))}
           </div>
+          <StarRating averageRating={4}/>
         </div>
       </div>
     </div>
