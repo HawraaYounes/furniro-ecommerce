@@ -16,7 +16,7 @@ const StarRating = ({ averageRating }) => {
         return (
           <div
             key={index}
-            className="relative w-6 h-6 flex-shrink-0"
+            className="relative w-5 h-5 flex-shrink-0"
             style={{
               backgroundImage: `url(${starEmptyIcon})`,
               backgroundSize: "cover",
