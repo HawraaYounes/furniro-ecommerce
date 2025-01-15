@@ -47,15 +47,21 @@ const ProductDetails = () => {
         />
       </div>
       <div className="sm:w-5/12 order-3 flex flex-col font-semibold text-left">
-        <p className={`font-poppins text-4xl text-wrap mb-2`}>{product.name}</p>
-        <p className="text-gray font-medium text-[24px] mb-2">
+        <p className={`font-poppins text-4xl text-wrap `}>{product.name}</p>
+        <p className="text-gray font-medium text-[24px] mb-4">
           $ {product.price}
         </p>
-        <p className="font-normal text-sm font-poppins sm:w-3/4 sm:text-wrap">
+        <div className="mb-5">
+          <StarRating averageRating={3.4} />
+        </div>
+        <p className="font-normal text-sm font-poppins sm:w-5/6 sm:text-wrap">
           {product.description}
         </p>
+        {/* colors div */}
         <div className="colors-div mt-6">
-          <p className="text-sm font-normal text-gray mb-2 font-poppins">Color</p>
+          <p className="text-sm font-normal text-gray mb-2 font-poppins">
+            Color
+          </p>
           <div className="flex gap-2 mb-3">
             {/* Static colors for design */}
             {["#d4bf96", "#15667B", "#000000"].map((color, index) => (
@@ -66,7 +72,6 @@ const ProductDetails = () => {
               ></div>
             ))}
           </div>
-          <StarRating averageRating={4}/>
         </div>
       </div>
     </div>
