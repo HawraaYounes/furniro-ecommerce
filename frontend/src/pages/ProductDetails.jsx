@@ -13,6 +13,7 @@ const ProductDetails = () => {
   const product = useLoaderData(); // Access product data
   const [currentImage, setCurrentImage] = useState(product.images[0].url); // Set first image as default
   const [selectedSize, setSelectedSize] = useState(null); // State to track selected size
+  const [selectedColor, setSelectedColor] = useState(null); // State to track selected color
 
   // Placeholder size options
   const sizeOptions = [
@@ -32,6 +33,10 @@ const ProductDetails = () => {
       dispatch(clearBannerData());
     };
   }, [dispatch, params.productId]);
+
+  const handleColorSelection = (color) => {
+    setSelectedColor(color);
+  };
 
   return (
     <div className={`px-14 sm:px-16 flex flex-col sm:flex-row w-full`}>
