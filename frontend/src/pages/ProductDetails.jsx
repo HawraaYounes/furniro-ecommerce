@@ -12,6 +12,15 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const product = useLoaderData(); // Access product data
   const [currentImage, setCurrentImage] = useState(product.images[0].url); // Set first image as default
+  const [selectedSize, setSelectedSize] = useState(null); // State to track selected size
+
+  // Placeholder size options
+  const sizeOptions = [
+    "One Size",
+    "One Seat + Couch",
+    "2 Seats + Couch",
+    "Custom Size",
+  ];
 
   useEffect(() => {
     dispatch(
@@ -57,6 +66,27 @@ const ProductDetails = () => {
         <p className="font-normal text-sm font-poppins sm:w-5/6 sm:text-wrap">
           {product.description}
         </p>
+        {/* sizes div */}
+        <div className="sizes-div mt-6">
+          <p className="text-sm font-normal text-gray mb-2 font-poppins">
+            Size
+          </p>
+          <div className="flex flex-wrap gap-2 mb-3">
+            {sizeOptions.map((size, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedSize(size)}
+                className={`px-4 py-2 rounded-lg border text-sm font-medium ${
+                  selectedSize === size
+                    ? "bg-black text-white border-black"
+                    : "bg-gray-200 text-gray-700 border-gray-300"
+                } hover:bg-black hover:text-white transition`}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
         {/* colors div */}
         <div className="colors-div mt-6">
           <p className="text-sm font-normal text-gray mb-2 font-poppins">
