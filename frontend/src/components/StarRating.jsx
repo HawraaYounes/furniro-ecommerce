@@ -1,30 +1,43 @@
 import { starEmptyIcon, starFilledIcon } from "../assets";
 
 const StarRating = ({ averageRating }) => {
-    // Ensure the rating is between 0 and 5
-    const rating = Math.min(Math.max(averageRating, 0), 5);
-  
-    return (
-      <div className="flex items-center">
-        {[...Array(5)].map((_, index) => {
-          const isFullStar = index < Math.floor(rating);
-          const isHalfStar = index < rating && index >= Math.floor(rating);
-  
-          return (
-            <div key={index}>
-              {isFullStar ? (
-                <img src={starFilledIcon} alt="Filled Star" />
-              ) : isHalfStar ? (
-                <img src={starFilledIcon} alt="Half Star" style={{ clipPath: "inset(0 50% 0 0)" }} />
-              ) : (
-                <img src={starEmptyIcon} alt="Empty Star" />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-  
-  export default StarRating;
-  
+  const rating = Math.min(Math.max(averageRating, 0), 5);
+
+  return (
+    <div className="flex items-center">
+      {[...Array(5)].map((_, index) => {
+        const percentage = 
+          rating > index
+            ? rating > index + 1
+              ? 100
+              : (rating - index) * 100
+            : 0; // Determine the percentage to fill the star
+
+        return (
+          <div
+            key={index}
+            className="relative w-6 h-6 flex-shrink-0"
+            style={{
+              backgroundImage: `url(${starEmptyIcon})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              position: "relative",
+            }}
+          >
+            <div
+              className="absolute top-0 left-0 h-full"
+              style={{
+                width: `${percentage}%`,
+                backgroundImage: `url(${starFilledIcon})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default StarRating;
