@@ -67,26 +67,25 @@ const ProductDetails = () => {
           {product.description}
         </p>
         {/* sizes div */}
-        <div className="sizes-div mt-6">
-          <p className="text-sm font-normal text-gray mb-2 font-poppins">
-            Size
-          </p>
-          <div className="flex flex-wrap gap-2 mb-3">
+        <div className="sizes-div mt-5">
+          <p className="text-sm font-normal text-gray mb-2 font-poppins">Size</p>
+          <div className="flex flex-wrap gap-2">
             {sizeOptions.map((size, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedSize(size)}
-                className={`px-4 py-2 rounded-lg border text-sm font-medium ${
+                className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${
                   selectedSize === size
-                    ? "bg-black text-white border-black"
-                    : "bg-gray-200 text-gray-700 border-gray-300"
-                } hover:bg-black hover:text-white transition`}
+                    ? "bg-accent text-primary border-accent"
+                    : "bg-light text-black border-light"
+                } hover:bg-accent hover:text-primary`}
               >
                 {size}
               </button>
             ))}
           </div>
         </div>
+
         {/* colors div */}
         <div className="colors-div mt-6">
           <p className="text-sm font-normal text-gray mb-2 font-poppins">
