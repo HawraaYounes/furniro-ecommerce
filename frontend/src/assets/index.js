@@ -8,6 +8,8 @@ import warningIcon from "./icons/warning.svg";
 import failIcon from "./icons/fail.svg";
 import closeIcon from "./icons/close.svg";
 import arrowRightIcon from "./icons/arrow-right.svg";
+import starFilledIcon from "./icons/star-filled.svg"
+import starEmptyIcon from "./icons/star-empty.svg"
 
 import bedroomImg from "./images/bedroom.png";
 import livingImg from "./images/living.png";
@@ -30,6 +32,8 @@ export {
   failIcon,
   closeIcon,
   arrowRightIcon,
+  starFilledIcon,
+  starEmptyIcon,
   greenBubbles,
   redBubbles,
   grayBubbles,
