@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { setBannerData, clearBannerData } from "../store/bannerSlice";
 import { API_BASE_URL } from "../constants/config";
 import axios from "axios";
-import styles from "../style";
 import StarRating from "../components/StarRating";
+import Button from "../components/Button";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -65,15 +65,21 @@ const ProductDetails = () => {
         <p className="text-gray font-medium text-[24px] mb-4">
           $ {product.price}
         </p>
+        {/* star rating div */}
         <div className="mb-5">
           <StarRating averageRating={3.4} />
         </div>
-        <p className="font-normal text-sm font-poppins sm:w-5/6 sm:text-wrap">
-          {product.description}
-        </p>
+        {/* description div */}
+        <div>
+          <p className="font-normal text-sm font-poppins sm:w-5/6 sm:text-wrap">
+            {product.description}
+          </p>
+        </div>
         {/* sizes div */}
         <div className="sizes-div mt-5">
-          <p className="text-sm font-normal text-gray mb-2 font-poppins">Size</p>
+          <p className="text-sm font-normal text-gray mb-2 font-poppins">
+            Size
+          </p>
           <div className="flex flex-wrap gap-2">
             {sizeOptions.map((size, index) => (
               <button
@@ -106,6 +112,11 @@ const ProductDetails = () => {
               ></div>
             ))}
           </div>
+        </div>
+
+        {/* actions div */}
+        <div className="">
+        <Button label="Add to Cart" variant="outline" />
         </div>
       </div>
     </div>
