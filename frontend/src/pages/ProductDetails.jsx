@@ -6,6 +6,7 @@ import { API_BASE_URL } from "../constants/config";
 import axios from "axios";
 import StarRating from "../components/StarRating";
 import Button from "../components/Button";
+import IncrementDecrementButton from "../components/IncrementDecrementButton";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -115,8 +116,9 @@ const ProductDetails = () => {
         </div>
 
         {/* actions div */}
-        <div className="">
-        <Button label="Add to Cart" variant="outline" />
+        <div className="flex gap-2 items-center justify-center">
+        <Button label="Add To Cart" variant="outline" />
+        <IncrementDecrementButton/>
         </div>
       </div>
     </div>
