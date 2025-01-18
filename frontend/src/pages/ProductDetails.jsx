@@ -15,7 +15,7 @@ const ProductDetails = () => {
   const [currentImage, setCurrentImage] = useState(product.images[0].url); // Set first image as default
   const [selectedSize, setSelectedSize] = useState(null); // State to track selected size
   const [selectedColor, setSelectedColor] = useState(null); // State to track selected color
-  console.log("PRODUCT IMAGES",product.images)
+  console.log("PRODUCT IMAGES", product.images);
   // Placeholder size options
   const sizeOptions = [
     "One Size",
@@ -116,9 +116,10 @@ const ProductDetails = () => {
         </div>
 
         {/* actions div */}
-        <div className="flex gap-2 items-center justify-center">
-        <Button label="Add To Cart" variant="outline" />
-        <IncrementDecrementButton/>
+        <div className="flex gap-2 justify-items-start justify-between flex-wrap">
+          <IncrementDecrementButton />
+          <Button label="Add To Cart" variant="outline"/>
+          <Button label="Compare" variant="outline" />
         </div>
       </div>
     </div>
