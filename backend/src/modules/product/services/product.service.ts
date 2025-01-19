@@ -287,12 +287,12 @@ export class ProductService {
       };
     }
   }
-
+  
   async addProductColor(params: AddProductColorParamsDto, body: AddProductColorBodyDto) {
     const { id } = params;
     const { colors } = body;
   
-    // Find the product by ID
+    // Find the product by ID, including its associated colors
     const product = await this.productRepository.findOne({
       where: { id },
       relations: ['colors'],
@@ -302,33 +302,41 @@ export class ProductService {
       return ProductResponses.PRODUCT_NOT_FOUND;
     }
   
-    // Validate colors
+    // Validate color IDs by checking against the color repository
     const validColors = await this.colorRepository.findBy({ id: In(colors) });
     const validColorIds = validColors.map((color) => color.id);
     const invalidColorIds = colors.filter((colorId) => !validColorIds.includes(colorId));
   
-    if (invalidColorIds.length) {
+    if (invalidColorIds.length > 0) {
       return {
         ...ProductResponses.INVALID_COLOR_IDS,
         data: { invalidColorIds },
       };
     }
   
-    // Add valid colors to the product
-    product.colors = [...new Set([...product.colors, ...validColors])];
+    // Check if all valid colors are already associated with the product
+    const existingColorIds = product.colors.map((color) => color.id);
+    const newColorIds = validColorIds.filter((colorId) => !existingColorIds.includes(colorId));
   
-    // Save the product
+    if (newColorIds.length === 0) {
+      return {
+        ...ProductResponses.COLORS_ALREADY_ASSOCIATED,
+        data: { existingColorIds },
+      };
+    }
+  
+    // Add only the new colors to the product
+    const newColors = validColors.filter((color) => newColorIds.includes(color.id));
+    product.colors = [...product.colors, ...newColors];
+  
+    // Save the product with updated colors
     await this.productRepository.save(product);
   
     return {
       ...ProductResponses.COLORS_ADDED,
-      data: { addedColorIds: validColorIds },
+      data: { addedColorIds: newColorIds },
     };
   }
-  
-  
-  
-  
 
 }
 

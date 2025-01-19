@@ -66,4 +66,10 @@ export const ProductResponses: Record<string, ApiResponse> = {
     message: 'Colors successfully added to the product',
     data: null,
   },
+  COLORS_ALREADY_ASSOCIATED: {
+    success: false,
+    statusCode: StatusCodes.CONFLICT,
+    message: 'All sent colors are already associated with the product',
+    data: null,
+  },
 };
