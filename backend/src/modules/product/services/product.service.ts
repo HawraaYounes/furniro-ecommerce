@@ -1,6 +1,6 @@
 import { Injectable, Inject, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Transactional } from 'typeorm-transactional';
@@ -16,6 +16,8 @@ import { CreateProductDto } from '../dto/create-product.dto';
 import { FindProductParamsDto } from '../dto/find-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { DeleteProductParamsDto } from '../dto/delete-product.dto';
+import { AddProductColorBodyDto, AddProductColorParamsDto } from 'src/modules/category/dto/add-product-color.dto';
+import { Color } from '../entities/color.entity';
 
 
 @Injectable()
@@ -28,6 +30,8 @@ export class ProductService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    @InjectRepository(Color)
+    private readonly colorRepository: Repository<Color>,
     private configService: ConfigService
   ) { }
 
@@ -111,7 +115,8 @@ export class ProductService {
         ...product,
         images: product.images.map((image) => ({
           ...image,
-          url: `${this.configService.get<string>('BACKEND_BASE_URL')}/productImage/${image.url}`,        })),
+          url: `${this.configService.get<string>('BACKEND_BASE_URL')}/productImage/${image.url}`,
+        })),
       }));
 
       // Cache the paginated products
@@ -143,17 +148,17 @@ export class ProductService {
           data: cachedProduct,
         };
       }
-  
+
       // Fetch data from database
       const product = await this.productRepository.findOne({
         where: { id: params.id },
-        relations: ['images', 'category'],
+        relations: ['images', 'category', 'colors'],
       });
-  
+
       if (!product) {
         return ProductResponses.PRODUCT_NOT_FOUND;
       }
-  
+
       // Map image URLs for the fetched product
       const updatedProduct = {
         ...product,
@@ -162,10 +167,10 @@ export class ProductService {
           url: `${this.configService.get<string>('BACKEND_BASE_URL')}/productImage/${image.url}`,
         })),
       };
-  
+
       // Cache the updated product with mapped image URLs
       await this.cacheManager.set(cacheKey, updatedProduct, this.configService.get<number>('CACHE_TTL'));
-  
+
       return {
         ...ProductResponses.PRODUCTS_RETRIEVED,
         data: updatedProduct,
@@ -175,7 +180,7 @@ export class ProductService {
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
-  
+
 
   async update(id: number, payload: UpdateProductDto) {
     try {
@@ -266,6 +271,62 @@ export class ProductService {
     const keys = await this.cacheManager.store.keys('products:*');
     await Promise.all(keys.map((key) => this.cacheManager.del(key)));
   }
+  async clearCache(): Promise<any> {
+    try {
+      // Clear all keys in Redis cache
+      await this.cacheManager.reset(); // Clears all cached data
+      return {
+        success: true,
+        message: 'Cache cleared successfully',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Error clearing cache',
+        error: error.message,
+      };
+    }
+  }
+
+
+
+  async addProductColor(params: AddProductColorParamsDto, body: AddProductColorBodyDto) {
+    try {
+        // Find the product by ID
+    const product = await this.productRepository.findOne({
+      where: { id: params.id },
+      relations: ['colors'], // Ensure colors relation is loaded
+    });
+  
+    // If the product is not found, return an appropriate response
+    if (!product) {
+      return ProductResponses.PRODUCT_NOT_FOUND;
+    }
+  
+    // Fetch all valid colors using the `In` operator
+    const validColors = await this.colorRepository.findBy({ id: In(body.colors) });
+    console.log(validColors)
+    if (!validColors.length) {
+      return { message: 'No valid colors found to add' };
+    }
+  
+    // Add the valid colors to the product's existing colors
+    product.colors = [...product.colors, ...validColors];
+  
+    // Save the updated product with the new associations
+    await this.productRepository.save(product);
+  
+    return {
+      message: 'Colors added successfully',
+      addedColors: validColors.map((color) => color.id),
+    };
+    } catch (error) {
+      console.log(error)
+    }
+  
+  }
+  
+  
 
 }
 
