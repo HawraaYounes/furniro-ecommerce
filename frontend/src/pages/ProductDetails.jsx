@@ -7,6 +7,7 @@ import axios from "axios";
 import StarRating from "../components/StarRating";
 import Button from "../components/Button";
 import IncrementDecrementButton from "../components/IncrementDecrementButton";
+import ProductDetailsTable from "../components/ProductDetailsTable";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -16,6 +17,11 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState(null); // State to track selected size
   const [selectedColor, setSelectedColor] = useState(null); // State to track selected color
   console.log("PRODUCT IMAGES", product.images);
+  const productData = {
+    sku: "SS01",
+    category: "Sofas",
+    tags: ["Chairs", "Indoor", "Home", "Dining"],
+  };
   // Placeholder size options
   const sizeOptions = [
     "One Size",
@@ -120,6 +126,11 @@ const ProductDetails = () => {
           <IncrementDecrementButton />
           <Button label="Add To Cart" variant="outline" />
           <Button label="Compare" variant="outline" />
+        </div>
+
+        {/* details div */}
+        <div className="border-t-1 border-[#D9D9D9] mt-8 font-poppins text-[#D9D9D9] font-light text-base">
+          <ProductDetailsTable data={productData} />{" "}
         </div>
       </div>
     </div>
