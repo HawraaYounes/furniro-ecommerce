@@ -119,7 +119,7 @@ const ProductDetails = () => {
                 onClick={() => setSelectedColor(color)}
               ></div>
             ))}
-            <p className="font-poppins font-normal">{selectedColor}</p>
+            <p className="font-poppins text-gray font-light">{selectedColor}</p>
           </div>
         </div>
 
