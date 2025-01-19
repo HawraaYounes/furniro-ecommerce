@@ -5,7 +5,7 @@ const IncrementDecrementButton = ({ maxValue = 100 }) => {
 
   // Outer container style matches the Button component's padding
   const containerStyle =
-    "font-poppins bg-white text-black border border-black p-3 md:py-[15px] rounded-lg flex justify-between font-normal";
+    "font-poppins bg-white text-black border border-black p-3 md:py-[15px] rounded-lg flex justify-between items-center font-normal";
 
   // Inner button styles
   const buttonStyle =

@@ -116,9 +116,9 @@ const ProductDetails = () => {
         </div>
 
         {/* actions div */}
-        <div className="flex gap-2 justify-items-start justify-between flex-wrap">
+        <div className="flex flex-wrap gap-2 sm:gap-1 justify-between sm:justify-start md:flex-nowrap w-full">
           <IncrementDecrementButton />
-          <Button label="Add To Cart" variant="outline"/>
+          <Button label="Add To Cart" variant="outline" />
           <Button label="Compare" variant="outline" />
         </div>
       </div>
