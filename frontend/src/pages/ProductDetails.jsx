@@ -116,8 +116,10 @@ const ProductDetails = () => {
                 key={index}
                 className="w-7 h-7 rounded-full cursor-pointer"
                 style={{ backgroundColor: color }}
+                onClick={() => setSelectedColor(color)}
               ></div>
             ))}
+            <p className="font-poppins font-normal">{selectedColor}</p>
           </div>
         </div>
 
