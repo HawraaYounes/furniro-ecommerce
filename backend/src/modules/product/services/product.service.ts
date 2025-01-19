@@ -288,43 +288,45 @@ export class ProductService {
     }
   }
 
-
-
   async addProductColor(params: AddProductColorParamsDto, body: AddProductColorBodyDto) {
-    try {
-        // Find the product by ID
+    const { id } = params;
+    const { colors } = body;
+  
+    // Find the product by ID
     const product = await this.productRepository.findOne({
-      where: { id: params.id },
-      relations: ['colors'], // Ensure colors relation is loaded
+      where: { id },
+      relations: ['colors'],
     });
   
-    // If the product is not found, return an appropriate response
     if (!product) {
       return ProductResponses.PRODUCT_NOT_FOUND;
     }
   
-    // Fetch all valid colors using the `In` operator
-    const validColors = await this.colorRepository.findBy({ id: In(body.colors) });
-    console.log(validColors)
-    if (!validColors.length) {
-      return { message: 'No valid colors found to add' };
+    // Validate colors
+    const validColors = await this.colorRepository.findBy({ id: In(colors) });
+    const validColorIds = validColors.map((color) => color.id);
+    const invalidColorIds = colors.filter((colorId) => !validColorIds.includes(colorId));
+  
+    if (invalidColorIds.length) {
+      return {
+        ...ProductResponses.INVALID_COLOR_IDS,
+        data: { invalidColorIds },
+      };
     }
   
-    // Add the valid colors to the product's existing colors
-    product.colors = [...product.colors, ...validColors];
+    // Add valid colors to the product
+    product.colors = [...new Set([...product.colors, ...validColors])];
   
-    // Save the updated product with the new associations
+    // Save the product
     await this.productRepository.save(product);
   
     return {
-      message: 'Colors added successfully',
-      addedColors: validColors.map((color) => color.id),
+      ...ProductResponses.COLORS_ADDED,
+      data: { addedColorIds: validColorIds },
     };
-    } catch (error) {
-      console.log(error)
-    }
-  
   }
+  
+  
   
   
 

@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { ApiResponse } from 'src/common/interfaces/response.interface';
 
-export const ProductResponses : Record<string, ApiResponse>= {
+export const ProductResponses: Record<string, ApiResponse> = {
   NO_PRODUCTS_FOUND: {
     success: true,
     statusCode: StatusCodes.NO_CONTENT,
@@ -53,5 +53,17 @@ export const ProductResponses : Record<string, ApiResponse>= {
     statusCode: StatusCodes.OK,
     message: 'Products successfully retrieved',
     data: [],
+  },
+  INVALID_COLOR_IDS: {
+    success: false,
+    statusCode: StatusCodes.BAD_REQUEST,
+    message: 'Some color IDs are invalid',
+    data: null,
+  },
+  COLORS_ADDED: {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Colors successfully added to the product',
+    data: null,
   },
 };
