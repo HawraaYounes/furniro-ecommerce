@@ -105,7 +105,7 @@ const ProductDetails = () => {
         </div>
 
         {/* colors div */}
-        <div className="colors-div mt-6">
+        <div className="colors-div my-6">
           <p className="text-sm font-normal text-gray mb-2 font-poppins">
             Color
           </p>
