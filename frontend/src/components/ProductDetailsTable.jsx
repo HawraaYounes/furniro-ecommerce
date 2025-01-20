@@ -14,19 +14,19 @@ const ProductDetailsTable = ({ product }) => {
         <tbody>
           {/* SKU Row */}
           <tr>
-            <th className="p-2 ">SKU:</th>
+            <th className="p-2 font-light">SKU:</th>
             <td className="p-2 ">{sku}</td>
           </tr>
 
           {/* Category Row */}
           <tr>
-            <th className="p-2 ">Category:</th>
+            <th className="p-2 font-light">Category:</th>
             <td className="p-2 ">{category.name}</td>
           </tr>
 
           {/* Tags Row */}
           <tr>
-            <th className="p-2 ">Tags:</th>
+            <th className="p-2 font-light">Tags:</th>
             <td className="p-2 ">
               {tags && tags.length > 0 ? (
                 tags.map((tag, index) => (
@@ -45,7 +45,7 @@ const ProductDetailsTable = ({ product }) => {
 
           {/* Share Row */}
           <tr>
-            <th className="p-2">Share:</th>
+            <th className="p-2 font-light">Share:</th>
             <td className="p-2">
               <a
                 href="https://www.facebook.com"

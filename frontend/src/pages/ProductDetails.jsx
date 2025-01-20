@@ -135,7 +135,7 @@ const ProductDetails = () => {
         </div>
 
         {/* details div */}
-        <div className="border-t-1 border-[#D9D9D9] mt-10 font-poppins text-[#D9D9D9] font-light text-base">
+        <div className="border-t-1 border-[#D9D9D9] mt-10 font-poppins text-gray font-light text-base">
           <ProductDetailsTable product={product} />
         </div>
       </div>
