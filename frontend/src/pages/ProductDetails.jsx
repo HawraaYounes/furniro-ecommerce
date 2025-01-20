@@ -111,15 +111,19 @@ const ProductDetails = () => {
           </p>
           <div className="flex gap-2 mb-3">
             {/* Static colors for design */}
-            {["#d4bf96", "#15667B", "#000000"].map((color, index) => (
+            {product.colors.map((color, index) => (
               <div
                 key={index}
-                className="w-7 h-7 rounded-full cursor-pointer"
-                style={{ backgroundColor: color }}
-                onClick={() => setSelectedColor(color)}
+                className={`w-7 h-7 rounded-full cursor-pointer ${
+                  selectedColor === color.name
+                    ? "border border-blue-300 shadow-sm shadow-blue-300" // Apply this class for the selected color
+                    : "border border-[#D9D9D9]"
+                }`}
+                style={{ backgroundColor: color.hexCode }}
+                onClick={() => setSelectedColor(color.name)}
               ></div>
             ))}
-            <p className="font-poppins text-gray font-light">{selectedColor}</p>
+            <p className="ml-3 font-poppins text-gray font-light">{selectedColor}</p>
           </div>
         </div>
 
