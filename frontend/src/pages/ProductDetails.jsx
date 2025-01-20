@@ -16,7 +16,7 @@ const ProductDetails = () => {
   const [currentImage, setCurrentImage] = useState(product.images[0].url); // Set first image as default
   const [selectedSize, setSelectedSize] = useState(null); // State to track selected size
   const [selectedColor, setSelectedColor] = useState(null); // State to track selected color
-  console.log("PRODUCT IMAGES", product);
+
   const productData = {
     sku: "SS01",
     category: "Sofas",
@@ -136,7 +136,7 @@ const ProductDetails = () => {
 
         {/* details div */}
         <div className="border-t-1 border-[#D9D9D9] mt-10 font-poppins text-[#D9D9D9] font-light text-base">
-          <ProductDetailsTable data={productData} />{" "}
+          <ProductDetailsTable product={product} />
         </div>
       </div>
     </div>

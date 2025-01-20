@@ -3,7 +3,6 @@ import { chair } from "../assets";
 import styles from "../style";
 
 const ProductCard = ({ product }) => {
-  console.log("PRODUCT CARD FIRST IMAGE",product.images)
   return (
     <div className="overflow-hidden shadow-md hover:shadow-lg bg-[#F4F5F7] text-left h-[400px] ">
       <div

@@ -1,7 +1,12 @@
 import React from "react";
 
-const ProductDetailsTable = ({ data }) => {
-  const { sku, category, tags } = data;
+const ProductDetailsTable = ({ product }) => {
+  console.log("PRODUCT in ProductDetailsTable", product);
+
+  // const { sku, category, tags } = product;
+  const sku = "SS01";
+  const tags = ["Chairs", "Indoor", "Home", "Dining"];
+  const { category } = product;
 
   return (
     <div className="pt-10 border-t">
@@ -17,7 +22,7 @@ const ProductDetailsTable = ({ data }) => {
           {/* Category Row */}
           <tr>
             <th className="p-2 ">Category:</th>
-            <td className="p-2 ">{category}</td>
+            <td className="p-2 ">{category.name}</td>
           </tr>
 
           {/* Tags Row */}
@@ -78,7 +83,7 @@ const ProductDetailsTable = ({ data }) => {
           <strong>SKU:</strong> <span>{sku}</span>
         </div>
         <div>
-          <strong>Category:</strong> <span>{category}</span>
+          <strong>Category:</strong> <span>{category.name}</span>
         </div>
         <div>
           <strong>Tags:</strong>{" "}
