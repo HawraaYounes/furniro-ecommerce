@@ -10,9 +10,12 @@ import { diskStorage } from 'multer';
 import { Color } from './entities/color.entity';
 import { ColorController } from './controllers/color.controller';
 import { ColorService } from './services/color.service';
+import { TagController } from './controllers/tag.controller';
+import { TagService } from './services/tag.service';
+import { Tag } from './entities/tag.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Product, ProductImage, Category, Color]),
+    imports: [TypeOrmModule.forFeature([Product, ProductImage, Category, Color, Tag]),
     MulterModule.register({
         storage: diskStorage({
           destination: './uploads/products',
@@ -22,7 +25,7 @@ import { ColorService } from './services/color.service';
           },
         }),
       }),],
-    controllers: [ProductController,ColorController],
-    providers: [ProductService,ColorService],
+    controllers: [ProductController,ColorController, TagController],
+    providers: [ProductService,ColorService, TagService],
 })
 export class ProductModule { }

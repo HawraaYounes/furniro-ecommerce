@@ -17,6 +17,7 @@ import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Color } from './modules/product/entities/color.entity';
+import { Tag } from './modules/product/entities/tag.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { Color } from './modules/product/entities/color.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, Category, Product, ProductImage, Color],
+        entities: [User, Category, Product, ProductImage, Color, Tag],
         synchronize: false,
         // logging: true,
       }),
