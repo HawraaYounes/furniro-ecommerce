@@ -29,5 +29,5 @@ export class Product {
     @JoinTable({
         name: "products_colors",
     })
-    colors?: Color[];
+    colors: Color[];
 }
