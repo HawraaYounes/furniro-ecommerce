@@ -17,6 +17,9 @@ export class Product {
     @Column()
     description: string;
 
+    @Column({ unique: true, nullable: false }) // Adding the SKU column
+    sku: string;
+
     // Foreign key for Category
     @ManyToOne(() => Category, (category) => category.products, { nullable: false })
     @JoinColumn({ name: 'category_id' })

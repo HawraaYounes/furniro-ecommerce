@@ -38,7 +38,7 @@ import { Color } from './modules/product/entities/color.entity';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [User, Category, Product, ProductImage, Color],
-        synchronize: true,
+        synchronize: false,
         // logging: true,
       }),
       async dataSourceFactory(options) {
