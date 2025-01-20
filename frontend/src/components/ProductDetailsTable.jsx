@@ -4,9 +4,8 @@ const ProductDetailsTable = ({ product }) => {
   console.log("PRODUCT in ProductDetailsTable", product);
 
   // const { sku, category, tags } = product;
-  const sku = "SS01";
   const tags = ["Chairs", "Indoor", "Home", "Dining"];
-  const { category } = product;
+  const { sku, category } = product;
 
   return (
     <div className="pt-10 border-t">
