@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 import { Category } from '../../category/category.entity';
 import { ProductImage } from './product-image.entity';
 import { Color } from './color.entity';
+import { Tag } from './tag.entity';
 
 @Entity('products')
 export class Product {
@@ -33,4 +34,10 @@ export class Product {
         name: "products_colors",
     })
     colors: Color[];
+
+    @ManyToMany(() => Tag, (tag) => tag.products, { cascade: true })
+    @JoinTable({
+        name: "products_tags",  // Junction table name
+    })
+    tags: Tag[];
 }
