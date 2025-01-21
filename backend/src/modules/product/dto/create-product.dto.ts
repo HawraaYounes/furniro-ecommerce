@@ -1,5 +1,4 @@
-// create-product.dto.ts
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsArray, ArrayNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -17,4 +16,10 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNumber({}, { each: true })
+  tags: number[];
 }

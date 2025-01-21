@@ -18,6 +18,7 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { DeleteProductParamsDto } from '../dto/delete-product.dto';
 import { AddProductColorBodyDto, AddProductColorParamsDto } from 'src/modules/category/dto/add-product-color.dto';
 import { Color } from '../entities/color.entity';
+import { Tag } from '../entities/tag.entity';
 
 
 @Injectable()
@@ -31,40 +32,53 @@ export class ProductService {
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
     @InjectRepository(Color)
+    private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Tag)
     private readonly colorRepository: Repository<Color>,
     private configService: ConfigService
   ) { }
-
+  
   @Transactional()
   async createProduct(dto: CreateProductDto, files: Express.Multer.File[]) {
     try {
+      // Validate category existence
       const category = await this.categoryRepository.findOne({
         where: { id: dto.category_id },
       });
-
       if (!category) {
         return CategoryResponses.CATEGORY_NOT_FOUND;
       }
-
+  
+      // Validate tags existence
+      let tags = [];
+      if (dto.tags && dto.tags.length > 0) {
+        tags = await this.tagRepository.findBy({ id: In(dto.tags) }); 
+        if (tags.length !== dto.tags.length) {
+          return ProductResponses.INVALID_TAG_IDS; 
+        }
+      }
+  
+      // Create product
       const product = this.productRepository.create({
         name: dto.name,
         description: dto.description,
         price: dto.price,
         category,
+        tags, // Associate tags
       });
-
+  
       const savedProduct = await this.productRepository.save(product);
-
+  
+      // Save product images
       const images = files.map((file) => ({
         url: file.filename,
         product: savedProduct,
       }));
-
       await this.productImageRepository.save(images);
-
+  
       // Invalidate cached products list
       await this.invalidateProductsCache();
-
+  
       return {
         ...ProductResponses.PRODUCT_CREATED,
         data: savedProduct,
@@ -74,6 +88,8 @@ export class ProductService {
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
+  
+  
 
   async findAll(paginationDto: PaginationDto) {
     const { page, limit } = paginationDto;

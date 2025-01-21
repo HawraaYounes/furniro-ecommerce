@@ -72,4 +72,10 @@ export const ProductResponses: Record<string, ApiResponse> = {
     message: 'All sent colors are already associated with the product',
     data: null,
   },
+  INVALID_TAG_IDS: {
+    success: false,
+    statusCode: StatusCodes.BAD_REQUEST,
+    message: 'One or more tags do not exist',
+    data: null,
+  },
 };
