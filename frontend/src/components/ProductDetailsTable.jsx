@@ -27,12 +27,12 @@ const ProductDetailsTable = ({ product }) => {
           {/* Tags Row */}
           <tr>
             <th className="p-2 font-light">Tags:</th>
-            <td className="p-2 ">
+            <td className=" ">
               {tags && tags.length > 0 ? (
                 tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="inline-block px-2 py-1 m-1 bg-gray-200 rounded"
+                    className="inline-block  py-1 m-1 bg-gray-200 rounded"
                   >
                     {tag}
                   </span>
