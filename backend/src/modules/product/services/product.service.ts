@@ -52,13 +52,13 @@ export class ProductService {
       // Validate tags existence
       let tags = [];
       if (dto.tags && dto.tags.length > 0) {
-        tags = await this.tagRepository.findBy({ id: In(dto.tags) }); 
+        tags = await this.tagRepository.findBy({ id: In(dto.tags) });
         if (tags.length !== dto.tags.length) {
-          return ProductResponses.INVALID_TAG_IDS; 
+          return ProductResponses.INVALID_TAG_IDS;
         }
       }
   
-      // Create product
+      // Create product (initially without SKU)
       const product = this.productRepository.create({
         name: dto.name,
         description: dto.description,
@@ -67,7 +67,12 @@ export class ProductService {
         tags, // Associate tags
       });
   
+      // Save product to generate ID
       const savedProduct = await this.productRepository.save(product);
+  
+      // Update SKU after saving the product (based on ID)
+      savedProduct.sku = `SKU-${savedProduct.id}`;
+      await this.productRepository.save(savedProduct);
   
       // Save product images
       const images = files.map((file) => ({
