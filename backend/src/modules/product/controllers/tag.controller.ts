@@ -32,11 +32,11 @@ export class TagController {
     }
 
     @Get()
+    @Public()
     @ApiOperation({ summary: 'Get all tags' })
     @ApiResponse({
         status: 200,
         description: 'Tags successfully retrieved.',
-        type: [Tag], 
     })
     @ApiResponse({
         status: 404,

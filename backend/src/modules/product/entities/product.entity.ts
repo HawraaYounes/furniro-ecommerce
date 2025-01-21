@@ -18,7 +18,7 @@ export class Product {
     @Column()
     description: string;
 
-    @Column({ unique: true, nullable: false }) // Adding the SKU column
+    @Column({ unique: true, nullable: false }) 
     sku: string;
 
     // Foreign key for Category

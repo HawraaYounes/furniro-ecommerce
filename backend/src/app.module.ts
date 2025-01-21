@@ -39,7 +39,7 @@ import { Tag } from './modules/product/entities/tag.entity';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [User, Category, Product, ProductImage, Color, Tag],
-        synchronize: false,
+        synchronize: true,
         // logging: true,
       }),
       async dataSourceFactory(options) {
