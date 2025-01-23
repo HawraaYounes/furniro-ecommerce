@@ -203,33 +203,51 @@ export class ProductService {
   }
 
 
+
   async update(id: number, payload: UpdateProductDto) {
     try {
       const existingProduct = await this.productRepository.findOne({
         where: { id },
       });
-
+  
       if (!existingProduct) {
         return ProductResponses.PRODUCT_NOT_FOUND;
       }
-
-      // Update the product
-      await this.productRepository.update(id, payload);
-
+  
+      let foundTags = [];
+      if (payload.tags && payload.tags.length > 0) {
+        foundTags = await this.tagRepository.findBy({
+          id: In(payload.tags), // Fetch Tag entities by their IDs
+        });
+  
+        if (foundTags.length !== payload.tags.length) {
+          return {
+            ...ProductResponses.INVALID_TAGS,
+            message: 'Some tags provided do not exist.',
+          };
+        }
+      }
+  
+      // Perform the update without modifying the original payload
+      const updatedProduct = await this.productRepository.save({
+        id, // Ensure the product ID is included for the update
+        ...payload,
+        tags: foundTags, // Pass the resolved Tag entities
+      });
+  
       // Invalidate cache
       await this.invalidateProductCache(id);
-
-      // Fetch updated product
-      const updatedProduct = await this.findOne({ id });
+  
       return {
         ...ProductResponses.PRODUCT_UPDATED,
-        data: updatedProduct.data,
+        data: updatedProduct,
       };
     } catch (error) {
       console.error('Error in update:', error);
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
+  
 
   async delete(params: DeleteProductParamsDto) {
     try {
