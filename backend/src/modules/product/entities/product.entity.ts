@@ -21,7 +21,6 @@ export class Product {
     @Column({ unique: true, nullable: false }) 
     sku: string;
 
-    // Foreign key for Category
     @ManyToOne(() => Category, (category) => category.products, { nullable: false })
     @JoinColumn({ name: 'category_id' })
     category: Category;
@@ -37,7 +36,7 @@ export class Product {
 
     @ManyToMany(() => Tag, (tag) => tag.products, { cascade: true,onDelete: "CASCADE",  })
     @JoinTable({
-        name: "products_tags",  // Junction table name
+        name: "products_tags",  
     })
     tags: Tag[];
 }
