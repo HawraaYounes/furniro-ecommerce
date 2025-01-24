@@ -10,6 +10,9 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { DeleteProductParamsDto } from '../dto/delete-product.dto';
 import { Public } from 'src/modules/auth/public-strategy';
 import { AddProductColorBodyDto, AddProductColorParamsDto } from 'src/modules/category/dto/add-product-color.dto';
+import { STATUS_CODES } from 'http';
+import { StatusCodes } from 'http-status-codes';
+import * as fs from 'fs';
 
 @Controller('products')
 export class ProductController {
@@ -17,26 +20,39 @@ export class ProductController {
 
   @Post()
   @UseInterceptors(
-    FilesInterceptor('images', 10, {
+    FilesInterceptor("images", 10, {
       storage: diskStorage({
-        destination: './uploads/products',
+        destination: "./uploads/products",
         filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
           callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
         },
       }),
-    }),
+    })
   )
   async createProduct(
     @Body() createProductDto: CreateProductDto,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: Express.Multer.File[]
   ) {
-    if (files.length === 0) {
-      throw new Error('At least one image must be uploaded.');
+    if (!files || files.length === 0) {
+      throw new Error("At least one image must be uploaded.");
     }
-    return this.productService.createProduct(createProductDto, files);
+  
+    const result = await this.productService.createProduct(createProductDto, files);
+    console.log(result,"11111")
+    // Handle error response
+    if (result.statusCode !== StatusCodes.CREATED) {
+      // Clean up uploaded files if product creation fails
+      files.forEach((file) => {
+        const filePath = `./uploads/products/${file.filename}`;
+        fs.unlinkSync(filePath); // Remove the file from storage
+      });
+    }
+    console.log(result)
+    return result;
   }
+  
 
   @Public()
   @Get()

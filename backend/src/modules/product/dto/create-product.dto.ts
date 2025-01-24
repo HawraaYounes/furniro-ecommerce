@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsNumber, IsArray, ArrayNotEmpty, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString, IsNumber, IsArray, ArrayNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -20,6 +21,7 @@ export class CreateProductDto {
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
-  @IsNumber({}, { each: true })
+  @IsNumber({}, { each: true }) 
+  @Type(() => Number) 
   tags: number[];
 }
