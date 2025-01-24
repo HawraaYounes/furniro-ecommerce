@@ -64,16 +64,20 @@ export class ProductService {
         description: dto.description,
         price: dto.price,
         category,
-        tags, // Associate tags
+        tags,
+         sku: "", // Placeholder for now
       });
-  
+      
       // Save product to generate ID
       const savedProduct = await this.productRepository.save(product);
-  
-      // Update SKU after saving the product (based on ID)
+      
+      // Generate SKU based on ID
       savedProduct.sku = `SKU-${savedProduct.id}`;
-      await this.productRepository.save(savedProduct);
-  
+      
+      // Update SKU in the database
+      await this.productRepository.update(savedProduct.id, { sku: savedProduct.sku });
+      
+      console.log("======================")
       // Save product images
       const images = files.map((file) => ({
         url: file.filename,
