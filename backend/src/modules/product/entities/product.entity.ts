@@ -26,16 +26,16 @@ export class Product {
     @JoinColumn({ name: 'category_id' })
     category: Category;
 
-    @OneToMany(() => ProductImage, (image) => image.product, { cascade: true })
+    @OneToMany(() => ProductImage, (image) => image.product, { cascade: true,onDelete: "CASCADE",  })
     images: ProductImage[];
 
-    @ManyToMany(() => Color, (color) => color.products, { cascade: true })
+    @ManyToMany(() => Color, (color) => color.products, { cascade: true ,onDelete: "CASCADE", })
     @JoinTable({
         name: "products_colors",
     })
     colors: Color[];
 
-    @ManyToMany(() => Tag, (tag) => tag.products, { cascade: true })
+    @ManyToMany(() => Tag, (tag) => tag.products, { cascade: true,onDelete: "CASCADE",  })
     @JoinTable({
         name: "products_tags",  // Junction table name
     })
