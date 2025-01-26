@@ -38,21 +38,38 @@ export class ProductController {
     if (!files || files.length === 0) {
       throw new Error("At least one image must be uploaded.");
     }
-  
-    const result = await this.productService.createProduct(createProductDto, files);
-    console.log(result,"11111")
-    // Handle error response
-    if (result.statusCode !== StatusCodes.CREATED) {
-      // Clean up uploaded files if product creation fails
+
+    try {
+      const result = await this.productService.createProduct(createProductDto, files);
+
+      console.log(result, "11111"); // Logs success if service works properly
+
+      // Handle response status code
+      if (result.statusCode !== StatusCodes.CREATED) {
+        // Clean up uploaded files on failure
+        files.forEach((file) => {
+          const filePath = `./uploads/products/${file.filename}`;
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath); // Remove the file
+          }
+        });
+        return result
+      }
+
+      return result;
+    } catch (error) {
+      // Clean up files on unexpected errors
       files.forEach((file) => {
         const filePath = `./uploads/products/${file.filename}`;
-        fs.unlinkSync(filePath); // Remove the file from storage
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath); // Remove the file
+        }
       });
+      throw new Error("Failed to create product.");
     }
-    console.log(result)
-    return result;
   }
-  
+
+
 
   @Public()
   @Get()
@@ -92,7 +109,7 @@ export class ProductController {
   }
 
   @Post(':id/new-color')
-  async addProductColor(@Param() params:AddProductColorParamsDto, @Body() body: AddProductColorBodyDto) {
+  async addProductColor(@Param() params: AddProductColorParamsDto, @Body() body: AddProductColorBodyDto) {
     const response = await this.productService.addProductColor(params, body);
     return response;
   }
