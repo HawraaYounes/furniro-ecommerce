@@ -2,27 +2,30 @@ import {
     ExceptionFilter,
     Catch,
     ArgumentsHost,
+    BadRequestException,
     HttpException,
-  } from '@nestjs/common';
-  import { Response } from 'express';
-  
+  } from "@nestjs/common";
+  import { Request, Response } from "express";
+  import * as fs from 'fs';
+
   @Catch(HttpException)
   export class UnlinkImagesExceptionFilter implements ExceptionFilter {
     catch(exception: HttpException, host: ArgumentsHost) {
       const ctx = host.switchToHttp();
+      const request = ctx.getRequest<Request>();
       const response = ctx.getResponse<Response>();
       const status = exception.getStatus();
       const message = exception.getResponse() as { message: string };
-      console.log(
-        'This is a log of exception object {} from Unlink Images Exception Filter !',
-      );
-      console.log(
-        '**************************************************************',
-      );
-      console.log(exception);
-      console.log(
-        '*************************************************************',
-      );
+      const files = request.files as Express.Multer.File[];
+  
+      if (files && Array.isArray(files)) {
+        files.forEach((file) => {
+          const filePath = `./uploads/products/${file.filename}`;
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+          }
+        });
+      }
   
       response.status(status).json({
         statusCode: status,
