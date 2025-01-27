@@ -14,6 +14,7 @@ import { STATUS_CODES } from 'http';
 import { StatusCodes } from 'http-status-codes';
 import * as fs from 'fs';
 import { UnlinkImagesExceptionFilter } from 'src/common/exceptions/unlink-images.exception';
+import { unlinkFiles } from 'src/common/utils/unlink-files.util';
 
 @Controller('products')
 export class ProductController {
@@ -42,32 +43,16 @@ export class ProductController {
     }
     try {
       const result = await this.productService.createProduct(createProductDto, files);
-     // Handle response status code
       if (result.statusCode !== StatusCodes.CREATED) {
-        // Clean up uploaded files on failure
-        files.forEach((file) => {
-          const filePath = `./uploads/products/${file.filename}`;
-          if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath); // Remove the file
-          }
-        });
-        return result
+        unlinkFiles(files); 
+        return result;
       }
-
       return result;
     } catch (error) {
-      // Clean up files on unexpected errors
-      // files.forEach((file) => {
-      //   const filePath = `./uploads/products/${file.filename}`;
-      //   if (fs.existsSync(filePath)) {
-      //     fs.unlinkSync(filePath); // Remove the file
-      //   }
-      // });
-
-      console.error(error.message || "An error occurred during product creation.");
-      // throw new Error("Failed to create product.");
+      unlinkFiles(files); 
     }
   }
+  
 
 
 
