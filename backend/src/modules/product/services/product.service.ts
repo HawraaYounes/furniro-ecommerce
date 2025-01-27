@@ -31,13 +31,13 @@ export class ProductService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-    @InjectRepository(Color)
-    private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Color)
     private readonly colorRepository: Repository<Color>,
     private configService: ConfigService
   ) { }
-  
+
   @Transactional()
   async createProduct(dto: CreateProductDto, files: Express.Multer.File[]) {
     try {
@@ -48,16 +48,19 @@ export class ProductService {
       if (!category) {
         return CategoryResponses.CATEGORY_NOT_FOUND;
       }
-  
+      
       // Validate tags existence
       let tags = [];
-      if (dto.tags && dto.tags.length > 0) {
-        tags = await this.tagRepository.findBy({ id: In(dto.tags) });
-        if (tags.length !== dto.tags.length) {
-          return ProductResponses.INVALID_TAG_IDS;
-        }
+      tags = await this.tagRepository.findBy({ id: In(dto.tags) });
+      if (tags.length !== dto.tags.length) {
+        return ProductResponses.INVALID_TAG_IDS;
       }
-  
+      let colors = [];
+      colors = await this.colorRepository.findBy({ id: In(dto.colors) });
+      if (colors.length !== dto.colors.length) {
+        return ProductResponses.INVALID_COLOR_IDS;
+      }
+
       // Create product (initially without SKU)
       const product = this.productRepository.create({
         name: dto.name,
@@ -65,28 +68,23 @@ export class ProductService {
         price: dto.price,
         category,
         tags,
-         sku: "", // Placeholder for now
+        colors,
+        sku: "", // Placeholder for now
       });
-      
       // Save product to generate ID
       const savedProduct = await this.productRepository.save(product);
-      
       // Generate SKU based on ID
       savedProduct.sku = `SKU-${savedProduct.id}`;
-      
       // Update SKU in the database
       await this.productRepository.update(savedProduct.id, { sku: savedProduct.sku });
-      
       // Save product images
       const images = files.map((file) => ({
         url: file.filename,
         product: savedProduct,
       }));
       await this.productImageRepository.save(images);
-  
       // Invalidate cached products list
       await this.invalidateProductsCache();
-  
       return {
         ...ProductResponses.PRODUCT_CREATED,
         data: savedProduct,
@@ -95,7 +93,7 @@ export class ProductService {
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
-  
+
 
   async findAll(paginationDto: PaginationDto) {
     const { page, limit } = paginationDto;
@@ -210,17 +208,17 @@ export class ProductService {
       const existingProduct = await this.productRepository.findOne({
         where: { id },
       });
-  
+
       if (!existingProduct) {
         return ProductResponses.PRODUCT_NOT_FOUND;
       }
-  
+
       let foundTags = [];
       if (payload.tags && payload.tags.length > 0) {
         foundTags = await this.tagRepository.findBy({
           id: In(payload.tags), // Fetch Tag entities by their IDs
         });
-  
+
         if (foundTags.length !== payload.tags.length) {
           return {
             ...ProductResponses.INVALID_TAGS,
@@ -228,17 +226,17 @@ export class ProductService {
           };
         }
       }
-  
+
       // Perform the update without modifying the original payload
       const updatedProduct = await this.productRepository.save({
         id, // Ensure the product ID is included for the update
         ...payload,
         tags: foundTags, // Pass the resolved Tag entities
       });
-  
+
       // Invalidate cache
       await this.invalidateProductCache(id);
-  
+
       return {
         ...ProductResponses.PRODUCT_UPDATED,
         data: updatedProduct,
@@ -248,7 +246,7 @@ export class ProductService {
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
-  
+
 
   async delete(params: DeleteProductParamsDto) {
     try {
@@ -327,51 +325,51 @@ export class ProductService {
       };
     }
   }
-  
+
   async addProductColor(params: AddProductColorParamsDto, body: AddProductColorBodyDto) {
     const { id } = params;
     const { colors } = body;
-  
+
     // Find the product by ID, including its associated colors
     const product = await this.productRepository.findOne({
       where: { id },
       relations: ['colors'],
     });
-  
+
     if (!product) {
       return ProductResponses.PRODUCT_NOT_FOUND;
     }
-  
+
     // Validate color IDs by checking against the color repository
     const validColors = await this.colorRepository.findBy({ id: In(colors) });
     const validColorIds = validColors.map((color) => color.id);
     const invalidColorIds = colors.filter((colorId) => !validColorIds.includes(colorId));
-  
+
     if (invalidColorIds.length > 0) {
       return {
         ...ProductResponses.INVALID_COLOR_IDS,
         data: { invalidColorIds },
       };
     }
-  
+
     // Check if all valid colors are already associated with the product
     const existingColorIds = product.colors.map((color) => color.id);
     const newColorIds = validColorIds.filter((colorId) => !existingColorIds.includes(colorId));
-  
+
     if (newColorIds.length === 0) {
       return {
         ...ProductResponses.COLORS_ALREADY_ASSOCIATED,
         data: { existingColorIds },
       };
     }
-  
+
     // Add only the new colors to the product
     const newColors = validColors.filter((color) => newColorIds.includes(color.id));
     product.colors = [...product.colors, ...newColors];
-  
+
     // Save the product with updated colors
     await this.productRepository.save(product);
-  
+
     return {
       ...ProductResponses.COLORS_ADDED,
       data: { addedColorIds: newColorIds },

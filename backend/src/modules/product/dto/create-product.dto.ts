@@ -24,4 +24,11 @@ export class CreateProductDto {
   @IsNumber({}, { each: true }) 
   @Type(() => Number) 
   tags: number[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNumber({}, { each: true }) 
+  @Type(() => Number) 
+  colors: number[];
 }
