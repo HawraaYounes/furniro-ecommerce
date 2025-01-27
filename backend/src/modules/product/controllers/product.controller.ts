@@ -10,9 +10,7 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { DeleteProductParamsDto } from '../dto/delete-product.dto';
 import { Public } from 'src/modules/auth/public-strategy';
 import { AddProductColorBodyDto, AddProductColorParamsDto } from 'src/modules/category/dto/add-product-color.dto';
-import { STATUS_CODES } from 'http';
 import { StatusCodes } from 'http-status-codes';
-import * as fs from 'fs';
 import { UnlinkImagesExceptionFilter } from 'src/common/exceptions/unlink-images.exception';
 import { unlinkFiles } from 'src/common/utils/unlink-files.util';
 
