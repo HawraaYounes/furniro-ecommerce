@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, UseInterceptors, UploadedFiles, Query, UseFilters } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -13,12 +13,14 @@ import { AddProductColorBodyDto, AddProductColorParamsDto } from 'src/modules/ca
 import { STATUS_CODES } from 'http';
 import { StatusCodes } from 'http-status-codes';
 import * as fs from 'fs';
+import { UnlinkImagesExceptionFilter } from 'src/common/exceptions/unlink-images.exception';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
   @Post()
+  @UseFilters(UnlinkImagesExceptionFilter)
   @UseInterceptors(
     FilesInterceptor("images", 10, {
       storage: diskStorage({
@@ -38,13 +40,9 @@ export class ProductController {
     if (!files || files.length === 0) {
       throw new Error("At least one image must be uploaded.");
     }
-
     try {
       const result = await this.productService.createProduct(createProductDto, files);
-
-      console.log(result, "11111"); // Logs success if service works properly
-
-      // Handle response status code
+     // Handle response status code
       if (result.statusCode !== StatusCodes.CREATED) {
         // Clean up uploaded files on failure
         files.forEach((file) => {
@@ -59,13 +57,15 @@ export class ProductController {
       return result;
     } catch (error) {
       // Clean up files on unexpected errors
-      files.forEach((file) => {
-        const filePath = `./uploads/products/${file.filename}`;
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath); // Remove the file
-        }
-      });
-      throw new Error("Failed to create product.");
+      // files.forEach((file) => {
+      //   const filePath = `./uploads/products/${file.filename}`;
+      //   if (fs.existsSync(filePath)) {
+      //     fs.unlinkSync(filePath); // Remove the file
+      //   }
+      // });
+
+      console.error(error.message || "An error occurred during product creation.");
+      // throw new Error("Failed to create product.");
     }
   }
 

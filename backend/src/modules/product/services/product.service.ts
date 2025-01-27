@@ -77,7 +77,6 @@ export class ProductService {
       // Update SKU in the database
       await this.productRepository.update(savedProduct.id, { sku: savedProduct.sku });
       
-      console.log("======================")
       // Save product images
       const images = files.map((file) => ({
         url: file.filename,
@@ -93,7 +92,6 @@ export class ProductService {
         data: savedProduct,
       };
     } catch (error) {
-      console.error('Error in createProduct:', error);
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
