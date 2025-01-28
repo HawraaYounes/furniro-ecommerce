@@ -17,11 +17,6 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState(null); // State to track selected size
   const [selectedColor, setSelectedColor] = useState(null); // State to track selected color
 
-  const productData = {
-    sku: "SS01",
-    category: "Sofas",
-    tags: ["Chairs", "Indoor", "Home", "Dining"],
-  };
   // Placeholder size options
   const sizeOptions = [
     "One Size",

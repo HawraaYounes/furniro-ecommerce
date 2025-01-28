@@ -1,12 +1,9 @@
 import React from "react";
 
 const ProductDetailsTable = ({ product }) => {
-  console.log("PRODUCT in ProductDetailsTable", product);
 
-  // const { sku, category, tags } = product;
-  const tags = ["Chairs", "Indoor", "Home", "Dining"];
-  const { sku, category } = product;
-
+  const { sku, category, tags } = product;
+  
   return (
     <div className="pt-10 border-t">
       {/* Table for larger screens */}
@@ -29,12 +26,12 @@ const ProductDetailsTable = ({ product }) => {
             <th className="p-2 font-light">Tags:</th>
             <td>
               {tags && tags.length > 0 ? (
-                tags.map((tag, index) => (
+                tags.map((tag) => (
                   <span
-                    key={index}
+                    key={tag.id}
                     className="inline-block  py-1 m-1 bg-gray-200 rounded"
                   >
-                    {tag}
+                    {tag.name}
                   </span>
                 ))
               ) : (
@@ -92,7 +89,7 @@ const ProductDetailsTable = ({ product }) => {
                 key={index}
                 className="inline-block px-2 py-1 m-1 bg-gray-200 rounded"
               >
-                {tag}
+                {tag.name}
               </span>
             ))
           ) : (
