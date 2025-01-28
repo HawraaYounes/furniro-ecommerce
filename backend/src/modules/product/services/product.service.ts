@@ -48,15 +48,16 @@ export class ProductService {
       if (!category) {
         return CategoryResponses.CATEGORY_NOT_FOUND;
       }
-      
+
       // Validate tags existence
-      let tags = [];
-      tags = await this.tagRepository.findBy({ id: In(dto.tags) });
+      const tags = await this.tagRepository.findBy({ id: In(dto.tags) });
+
       if (tags.length !== dto.tags.length) {
         return ProductResponses.INVALID_TAG_IDS;
       }
-      let colors = [];
-      colors = await this.colorRepository.findBy({ id: In(dto.colors) });
+
+      // Validate colors existence
+      const colors = await this.colorRepository.findBy({ id: In(dto.colors) });
       if (colors.length !== dto.colors.length) {
         return ProductResponses.INVALID_COLOR_IDS;
       }
@@ -67,32 +68,41 @@ export class ProductService {
         description: dto.description,
         price: dto.price,
         category,
-        tags,
-        colors,
+        tags, // Pass the tags array (array of Tag entities)
+        colors, // Pass the colors array (array of Color entities)
         sku: "", // Placeholder for now
       });
+
       // Save product to generate ID
       const savedProduct = await this.productRepository.save(product);
+
       // Generate SKU based on ID
       savedProduct.sku = `SKU-${savedProduct.id}`;
+
       // Update SKU in the database
       await this.productRepository.update(savedProduct.id, { sku: savedProduct.sku });
+
       // Save product images
       const images = files.map((file) => ({
         url: file.filename,
         product: savedProduct,
       }));
       await this.productImageRepository.save(images);
+
       // Invalidate cached products list
       await this.invalidateProductsCache();
+
       return {
         ...ProductResponses.PRODUCT_CREATED,
         data: savedProduct,
       };
     } catch (error) {
+      console.error('Error creating product:', error);
       return CommonResponses.INTERNAL_SERVER_ERROR;
     }
   }
+
+
 
 
   async findAll(paginationDto: PaginationDto) {

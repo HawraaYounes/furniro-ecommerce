@@ -1,5 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsString, IsNumber, IsArray, ArrayNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { Color } from '../entities/color.entity';
+import { Tag } from '../entities/tag.entity';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -18,17 +20,15 @@ export class CreateProductDto {
   @IsNumber()
   price: number;
 
-  @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
   @IsNumber({}, { each: true }) 
   @Type(() => Number) 
-  tags: number[];
+  tags: Tag[];
 
-  @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
   @IsNumber({}, { each: true }) 
   @Type(() => Number) 
-  colors: number[];
+  colors: Color[];
 }
