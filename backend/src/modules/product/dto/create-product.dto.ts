@@ -21,12 +21,14 @@ export class CreateProductDto {
   price: number;
 
   @IsArray()
+  @IsNotEmpty()
   @ArrayNotEmpty()
   @IsNumber({}, { each: true }) 
   @Type(() => Number) 
   tags: Tag[];
 
   @IsArray()
+  @IsNotEmpty()
   @ArrayNotEmpty()
   @IsNumber({}, { each: true }) 
   @Type(() => Number) 
