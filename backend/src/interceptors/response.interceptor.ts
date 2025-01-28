@@ -18,8 +18,6 @@ export class ResponseInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((res) => {
-        console.log("-----------------1-------------")
-        console.log("RES.....",res)
         // Handle success response
         const { statusCode, message, data, meta } = res; // Destructure `meta` from the service response
 
@@ -35,7 +33,6 @@ export class ResponseInterceptor implements NestInterceptor {
       }),
       catchError((error) => {
         // Handle errors
-        console.log("-----------------2-------------")
         const statusCode = error instanceof HttpException
           ? error.getStatus()
           : HttpStatus.INTERNAL_SERVER_ERROR;

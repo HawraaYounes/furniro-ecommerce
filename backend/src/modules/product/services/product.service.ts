@@ -182,7 +182,7 @@ export class ProductService {
       // Fetch data from database
       const product = await this.productRepository.findOne({
         where: { id: params.id },
-        relations: ['images', 'category', 'colors'],
+        relations: ['images', 'category', 'colors',"tags"],
       });
 
       if (!product) {
