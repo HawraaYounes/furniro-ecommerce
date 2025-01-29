@@ -102,7 +102,7 @@ const ProductDetailsTable = ({ product }) => {
             href="https://www.facebook.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 mr-4"
+            className="text-blue-700 mr-4"
           >
             Facebook
           </a>
@@ -110,7 +110,7 @@ const ProductDetailsTable = ({ product }) => {
             href="https://twitter.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-400 mr-4"
+            className="text-blue-700 mr-4"
           >
             Twitter
           </a>

@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsNumber, IsArray, ArrayNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Color } from '../entities/color.entity';
 import { Tag } from '../entities/tag.entity';
 
