@@ -126,6 +126,9 @@ export class ProductService {
       // Fetch data from database
       const [products, total] = await this.productRepository.findAndCount({
         relations: ['images', 'category'],
+        order: {
+          images: { id: 'ASC' }, 
+        },
         skip: (page - 1) * limit,
         take: limit,
       });
@@ -183,6 +186,9 @@ export class ProductService {
       const product = await this.productRepository.findOne({
         where: { id: params.id },
         relations: ['images', 'category', 'colors',"tags"],
+        order: {
+          images: { id: 'ASC' }, 
+        },
       });
 
       if (!product) {
