@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { Color } from '../entities/color.entity';
 import { Tag } from '../entities/tag.entity';
 
@@ -17,6 +17,10 @@ export class CreateProductDto {
   @MinLength(50)
   @MaxLength(400)
   summary: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 
   @IsNotEmpty()
   @IsNumber()

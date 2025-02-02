@@ -18,6 +18,9 @@ export class Product {
     @Column({ length: 400 })
     summary: string;
 
+    @Column({nullable: true})
+    description: string;
+
     @Column({ unique: true, nullable: false }) 
     sku: string;
 
