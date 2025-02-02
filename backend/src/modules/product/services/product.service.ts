@@ -65,7 +65,7 @@ export class ProductService {
       // Create product (initially without SKU)
       const product = this.productRepository.create({
         name: dto.name,
-        description: dto.description,
+        summary: dto.summary,
         price: dto.price,
         category,
         tags, // Pass the tags array (array of Tag entities)

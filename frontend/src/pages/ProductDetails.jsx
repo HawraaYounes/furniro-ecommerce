@@ -71,10 +71,10 @@ const ProductDetails = () => {
         <div className="mb-5">
           <StarRating averageRating={3.4} />
         </div>
-        {/* description div */}
+        {/* summary div */}
         <div>
           <p className="font-normal text-sm font-poppins sm:w-5/6 sm:text-wrap">
-            {product.description}
+            {product.summary}
           </p>
         </div>
         {/* sizes div */}

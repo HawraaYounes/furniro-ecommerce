@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
           {product.name }  
         </h3>
         <p className={`${styles.paragraph}`}>{product.title}</p>
-        <p className={`font-poppins font-normal truncate text-graydarker`}>{product.description}</p>
+        <p className={`font-poppins font-normal truncate text-graydarker`}>{product.summary}</p>
         <p className="text-gray-700 font-semibold mt-2">
           $ {product.price.toLocaleString()}
         </p>

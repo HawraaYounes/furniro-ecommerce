@@ -16,7 +16,7 @@ export class Product {
     price: number;
 
     @Column({ length: 400 })
-    description: string;
+    summary: string;
 
     @Column({ unique: true, nullable: false }) 
     sku: string;

@@ -16,7 +16,7 @@ export class CreateProductDto {
   @IsString()
   @MinLength(50)
   @MaxLength(400)
-  description: string;
+  summary: string;
 
   @IsNotEmpty()
   @IsNumber()
