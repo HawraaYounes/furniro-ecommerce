@@ -68,6 +68,7 @@ export class ProductService {
         summary: dto.summary,
         price: dto.price,
         category,
+        description: dto.description,
         tags, // Pass the tags array (array of Tag entities)
         colors, // Pass the colors array (array of Color entities)
         sku: "", // Placeholder for now
@@ -126,13 +127,10 @@ export class ProductService {
       // Fetch data from database
       const [products, total] = await this.productRepository.findAndCount({
         relations: ['images', 'category'],
-        order: {
-          images: { id: 'ASC' }, 
-        },
         skip: (page - 1) * limit,
         take: limit,
       });
-
+     
       if (products.length === 0) {
         return {
           ...ProductResponses.NO_PRODUCTS_FOUND, meta: {
@@ -146,7 +144,7 @@ export class ProductService {
 
       const updatedProducts = products.map((product) => ({
         ...product,
-        images: product.images.map((image) => ({
+        images: product.images.sort((a, b) => a.id - b.id).map((image) => ({
           ...image,
           url: `${this.configService.get<string>('BACKEND_BASE_URL')}/productImage/${image.url}`,
         })),
