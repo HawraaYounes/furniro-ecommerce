@@ -2,7 +2,7 @@ import React from 'react'
 
 const DetailsTab = () => {
   return (
-    <div className='pt-4'>
+    <div className='py-9'>
       <p>Hello</p>
     </div>
   )

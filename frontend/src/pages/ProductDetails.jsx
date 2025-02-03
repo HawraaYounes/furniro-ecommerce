@@ -26,7 +26,7 @@ const ProductDetails = () => {
   return (
     <div className="px-14 sm:px-16">
       <ProductInfo product={product} />
-      <hr className="h-[1px] my-8 border-[#D9D9D9] w-full" />
+      <hr className="h-[1px] border-[#D9D9D9] w-full" />
       <DetailsTab />
     </div>
   );
