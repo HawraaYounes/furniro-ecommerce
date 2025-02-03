@@ -17,7 +17,7 @@ const ProductInfo = ({product}) => {
         "Custom Size",
       ];
   return (
-    <div className={` flex flex-col sm:flex-row w-full`}>
+    <div className={`pb-10 flex flex-col sm:flex-row w-full`}>
     <div className="sm:w-1/6 flex sm:flex-col items-center order-2 sm:order-1 overflow-x-scroll no-scrollbar">
       {product.images.map((image) => (
         <img

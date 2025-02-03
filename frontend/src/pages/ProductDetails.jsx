@@ -26,7 +26,8 @@ const ProductDetails = () => {
   return (
     <div className="px-14 sm:px-16">
       <ProductInfo product={product} />
-      <DetailsTab/>
+      <hr className="h-[1px] my-8 border-[#D9D9D9] w-full" />
+      <DetailsTab />
     </div>
   );
 };
@@ -35,7 +36,7 @@ export const fetchProductDetailsLoader = async ({ params }) => {
   const { productId } = params;
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/products/${productId}`); 
+    const response = await axios.get(`${API_BASE_URL}/products/${productId}`);
     if (response.data.success) {
       return response.data.data; // Return the product data (from the "data" field)
     } else {
