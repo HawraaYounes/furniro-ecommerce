@@ -1,4 +1,4 @@
-import { starEmptyIcon, starFilledIcon } from "../assets";
+import { starEmptyIcon, starFilledIcon } from "../../assets";
 
 const StarRating = ({ averageRating }) => {
   const rating = Math.min(Math.max(averageRating, 0), 5);

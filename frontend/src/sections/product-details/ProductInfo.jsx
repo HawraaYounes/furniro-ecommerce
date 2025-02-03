@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import Button from '../../components/Button'
-import ProductDetailsTable from '../../components/ProductDetailsTable'
-import IncrementDecrementButton from '../../components/IncrementDecrementButton'
-import StarRating from '../../components/StarRating'
+import ProductDetailsTable from '../../components/product-details/ProductDetailsTable'
+import IncrementDecrementButton from '../../components/product-details/IncrementDecrementButton'
+import StarRating from '../../components/product-details/StarRating'
 
 const ProductInfo = ({product}) => {
       const [currentImage, setCurrentImage] = useState(product.images[0].url); // Set first image as default
