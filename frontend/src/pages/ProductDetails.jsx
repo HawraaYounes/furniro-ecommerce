@@ -5,6 +5,7 @@ import { setBannerData, clearBannerData } from "../store/bannerSlice";
 import { API_BASE_URL } from "../constants/config";
 import axios from "axios";
 import ProductInfo from "../sections/product-details/ProductInfo";
+import DetailsTab from "../sections/product-details/DetailsTab";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -23,8 +24,9 @@ const ProductDetails = () => {
   }, [dispatch, params.productId]);
 
   return (
-    <div>
+    <div className="px-14 sm:px-16">
       <ProductInfo product={product} />
+      <DetailsTab/>
     </div>
   );
 };
