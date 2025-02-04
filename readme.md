@@ -98,7 +98,7 @@ ping
 ## Backend
 
  1. Clone the repository:
-git clone [<repo-url>](https://github.com/HawraaYounes/furniro-ecommerce)
+git clone https://github.com/HawraaYounes/furniro-ecommerce
 
  2. Install the dependencies:
 cd backend
@@ -116,7 +116,7 @@ npm run start:dev
 ## Frontend
 
  1. Clone the repository:
-git clone [<repo-url>](https://github.com/HawraaYounes/furniro-ecommerce)
+git clone https://github.com/HawraaYounes/furniro-ecommerce
 
  2. Install the dependencies:
 cd frontend
