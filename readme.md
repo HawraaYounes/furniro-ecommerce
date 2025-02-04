@@ -59,9 +59,9 @@ CACHE_TTL=3600
 APP_PORT=3000
 FRONTEND_BASE_URL=http://localhost:3000
 BACKEND_BASE_URL=http://localhost:3000
+```
 
-
-# Frontend (.env.example)
+### Frontend (.env.example)
 
 # Create a .env file in the root of the frontend folder with the following variables:
 
