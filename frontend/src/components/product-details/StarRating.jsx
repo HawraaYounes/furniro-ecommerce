@@ -6,7 +6,7 @@ const StarRating = ({ averageRating }) => {
   return (
     <div className="flex items-center">
       {[...Array(5)].map((_, index) => {
-        const percentage = 
+        const percentage =
           rating > index
             ? rating > index + 1
               ? 100
@@ -16,7 +16,7 @@ const StarRating = ({ averageRating }) => {
         return (
           <div
             key={index}
-            className="relative w-5 h-5 flex-shrink-0"
+            className="relative w-[18px] h-[18px] flex-shrink-0"
             style={{
               backgroundImage: `url(${starEmptyIcon})`,
               backgroundSize: "cover",
