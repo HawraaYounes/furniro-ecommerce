@@ -63,67 +63,68 @@ BACKEND_BASE_URL=http://localhost:3000
 
 ### Frontend (.env.example)
 
-# Create a .env file in the root of the frontend folder with the following variables:
+ Create a .env file in the root of the frontend folder with the following variables:
 
 # API Base URL
+```env
 VITE_API_BASE_URL=http://localhost:3000
-
-# Other Frontend Configs
-VITE_ENV=development
+```
 
 # Redis Setup
 To run Redis with the project:
 
 # 1. Install Redis
-# If you don't have Redis installed, you can download and install it from the official Redis website: https://redis.io/download.
+ If you don't have Redis installed, you can download and install it from the official Redis website: https://redis.io/download.
 
 # 2. Start Redis
-# If you're using Redis locally, run the following command to start the Redis server:
+ If you're using Redis locally, run the following command to start the Redis server:
+```
 redis-server
-
+```
 # 3. Configure Redis
-# The backend is configured to connect to Redis on localhost:6379 by default, 
-# but you can change the host and port in the .env file as needed.
+ The backend is configured to connect to Redis on localhost:6379 by default, but you can change the host and port in the .env file as needed.
 
 # 4. Verify Redis Connection
-# You can check if Redis is running by connecting to it using the Redis CLI:
+#You can check if Redis is running by connecting to it using the Redis CLI:
+```
 redis-cli
 ping
-# If the response is PONG, Redis is successfully running.
+```
+ If the response is PONG, Redis is successfully running.
 
 
 # How to Run the Project
 
 ## Backend
 
-# 1. Clone the repository:
+ 1. Clone the repository:
 git clone <repo-url>
 
-# 2. Install the dependencies:
+ 2. Install the dependencies:
 cd backend
 npm install
 
-# 3. Set up your PostgreSQL database and configure the .env file.
+ 3. Set up your PostgreSQL database and configure the .env file.
 
-# 4. Run the Redis server as explained above.
+ 4. Run the Redis server as explained above.
 
-# 5. Run the backend application:
+ 5. Run the backend application:
 npm run start:dev
 
-# 6. Access the API documentation at http://localhost:3000/api.
+ 6. Access the API documentation at http://localhost:3000/api.
 
 ## Frontend
 
-# 1. Clone the repository:
+ 1. Clone the repository:
 git clone <repo-url>
 
-# 2. Install the dependencies:
+ 2. Install the dependencies:
 cd frontend
 npm install
 
-# 3. Configure the .env file with the correct API URL (VITE_API_BASE_URL).
+ 3. Configure the .env file with the correct API URL (VITE_API_BASE_URL).
 
-# 4. Run the development server:
+ 4. Run the development server:
 npm run dev
 
-# 5. Open the app in your browser at http://localhost:5173.
+ 5. Open the app in your browser at http://localhost:5173.
