@@ -1,7 +1,7 @@
 
 const ProductDescriptionTab = () => {
   return (
-    <div>
+    <div className="px-10">
       DESCRIPTION TAB COMPONENT
     </div>
   )

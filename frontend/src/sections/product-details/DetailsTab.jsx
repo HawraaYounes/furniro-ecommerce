@@ -12,15 +12,15 @@ const DetailsTab = ({product}) => {
   currentTab==="Description"? content=<ProductDescriptionTab/>: content=<ProductReviewsTab/>
   return (
     <div className="py-9 ">
-      <div className="flex">
+      <div className={`flex justify-center font-poppins gap-9`}>
         {tabs.map((tab) => (
-          <p className="cursor-pointer p-3" key={tab.id} onClick={() => setCurrentTab(tab.name)}>
+          <p className={`cursor-pointerS ${currentTab===tab.name?'font-medium text-black':'font-light text-gray'}`} key={tab.id} onClick={() => setCurrentTab(tab.name)}>
             {tab.name}
           </p>
         ))}
       </div>
 
-      <p className="m-2 bg-red-300">{content}</p>
+      <div className="m-2 py-7 bg-red-300">{content}</div>
     </div>
   );
 };
