@@ -9,11 +9,14 @@ This is a full-stack e-commerce project for a furniture store, built using **Nes
 - **Redis**: Used for caching to improve performance.
 - **TypeORM**: ORM for interacting with the PostgreSQL database.
 - **PostgreSQL**: Relational database used to store data.
+- **JWT (JSON Web Token)**: For user authentication and authorization.
+- **bcryptjs**: For hashing passwords securely.
+- **Multer**: Middleware for handling multipart/form-data, used for uploading files (like images).
 - **Swagger**: For API documentation and testing.
   
 ### Frontend:
 - **ReactJS**: A JavaScript library for building user interfaces.
-- **Redux**: For advanced state management and handling complex data flow.
+- **Redux Toolkit**: A set of tools for efficient Redux state management.
 - **Tailwind CSS**: For styling, ensuring a modern and responsive design.
 
 ## Project Structure
