@@ -14,7 +14,7 @@ const DetailsTab = ({product}) => {
     <div className="py-9 ">
       <div className={`flex justify-center font-poppins gap-9`}>
         {tabs.map((tab) => (
-          <p className={`cursor-pointer ${currentTab===tab.name?'font-medium text-black':'font-light text-gray'}`} key={tab.id} onClick={() => setCurrentTab(tab.name)}>
+          <p className={`cursor-pointer ${currentTab===tab.name?'font-medium text-black underline':'font-light text-gray'}`} key={tab.id} onClick={() => setCurrentTab(tab.name)}>
             {tab.name}
           </p>
         ))}
