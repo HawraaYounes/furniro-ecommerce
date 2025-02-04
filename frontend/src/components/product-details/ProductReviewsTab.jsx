@@ -29,9 +29,9 @@ const ProductReviewsTab = () => {
       <div className="flex items-center px-4 sm:w-1/4 w-full justify-between  relative">
         <div className="flex gap-6 justify-center w-full border-b border-gray pb-2 content-center sm:absolute sm:inset-x-0 sm:top-0">
           <div className="">
-            <p className="text-5xl font-semibold">
-              {averageRating.toFixed(1)}
-              <span className="text-xs font-light">/ 5</span>
+            <p className="text-5xl font-semibold ">
+              <span className="px-1">{averageRating.toFixed(1)}</span>
+              <span className="text-sm font-light">/ 5</span>
             </p>
           </div>
           <div className="flex flex-col justify-center">
