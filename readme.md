@@ -67,7 +67,7 @@ BACKEND_BASE_URL=http://localhost:3000
 
 # API Base URL
 ```env
-VITE_API_BASE_URL=http://localhost:3000
+VITE_API_BASE_URL=http://localhost:5173
 ```
 
 # Redis Setup
