@@ -22,12 +22,13 @@ const ProductReviewsTab = () => {
       comment: "Bad product! Dont Buy it!",
     },
   ];
+
   return (
-    <div className="flex flex-wrap sm:flex-nowrap w-full font-poppins gap-6">
+    <div className="flex flex-col sm:flex-row w-full font-poppins gap-6">
       {/* Average Rating */}
-      <div className="flex items-center px-4 w-1/4 justify-between relative ">
-        <div className="flex gap-6 justify-center w-full border-b border-gray pb-2 absolute inset-x-0 top-0">
-          <div className="">
+      <div className="flex items-center px-4 sm:w-1/4 w-full justify-between relative">
+        <div className="flex gap-6 justify-center w-full border-b border-gray pb-2 sm:absolute sm:inset-x-0 sm:top-0">
+          <div>
             <p className="text-3xl font-bold">
               {averageRating.toFixed(1)}
               <span className="text-xs font-light">/ 5</span>
@@ -43,7 +44,7 @@ const ProductReviewsTab = () => {
       </div>
 
       {/* Reviews List */}
-      <div className="w-3/4 text-left">
+      <div className="sm:w-3/4 w-full text-left">
         {reviews.map((review, index) => (
           <div key={index} className="px-4 mb-4">
             <div className="flex items-center gap-2">
