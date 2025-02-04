@@ -25,27 +25,27 @@ const ProductReviewsTab = () => {
   return (
     <div className="flex flex-wrap sm:flex-nowrap w-full font-poppins gap-6">
       {/* Average Rating */}
-      <div className="flex items-center px-4  w-1/4 justify-between relative ">
-      <div className="flex  gap-6 justify-center w-full border-b border-gray pb-2 absolute inset-x-0 top-0">
-        <div className="">
-          <p className="text-3xl font-bold">
-            {averageRating.toFixed(1)}
-            <span className="text-xs font-light">/ 5</span>
-          </p>
-        </div>
-        <div className="flex flex-col">
-          <StarRating averageRating={averageRating} />
-          <span className="text-gray text-xs mt-1">
-            Based on {totalReviews} reviews
-          </span>
-        </div>
+      <div className="flex items-center px-4 w-1/4 justify-between relative ">
+        <div className="flex gap-6 justify-center w-full border-b border-gray pb-2 absolute inset-x-0 top-0">
+          <div className="">
+            <p className="text-3xl font-bold">
+              {averageRating.toFixed(1)}
+              <span className="text-xs font-light">/ 5</span>
+            </p>
+          </div>
+          <div className="flex flex-col">
+            <StarRating averageRating={averageRating} />
+            <span className="text-gray text-xs mt-1">
+              Based on {totalReviews} reviews
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Reviews List */}
       <div className="w-3/4 text-left">
         {reviews.map((review, index) => (
-          <div key={index} className="px-4 ">
+          <div key={index} className="px-4 mb-4">
             <div className="flex items-center gap-2">
               <StarRating averageRating={review.rating} />
               <span className="font-medium">{review.name}</span>
