@@ -60,7 +60,7 @@ CACHE_TTL=3600
 
 # Application Configuration
 APP_PORT=3000
-FRONTEND_BASE_URL=http://localhost:3000
+FRONTEND_BASE_URL=http://localhost:5173
 BACKEND_BASE_URL=http://localhost:3000
 ```
 
