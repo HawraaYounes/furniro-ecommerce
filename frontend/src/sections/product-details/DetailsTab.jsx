@@ -20,7 +20,7 @@ const DetailsTab = ({product}) => {
         ))}
       </div>
 
-      <div className="m-2 py-7 bg-red-300">{content}</div>
+      <div className="m-2 py-7">{content}</div>
     </div>
   );
 };
