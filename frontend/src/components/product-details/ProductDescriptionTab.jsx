@@ -15,7 +15,7 @@ const ProductDescriptionTab = () => {
   const shortText = text.split(" ").slice(0, 100).join(" ") + "...";
 
   return (
-    <div className="px-10 flex flex-col items-start">
+    <div className="sm:px-3 flex flex-col items-start">
       <p className="w-full text-base font-poppins text-gray text-left font-light whitespace-pre-wrap">
         {isExpanded ? text : shortText}
       </p>

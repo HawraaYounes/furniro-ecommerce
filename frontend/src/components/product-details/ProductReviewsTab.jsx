@@ -1,8 +1,8 @@
 import StarRating from "./StarRating";
 
 const ProductReviewsTab = () => {
-  const averageRating = 4.9;
-  const totalReviews = 214;
+  const averageRating = 4.4;
+  const totalReviews = 26;
   const reviews = [
     {
       name: "Isabella P.",
@@ -51,7 +51,7 @@ const ProductReviewsTab = () => {
               <StarRating averageRating={review.rating} />
               <span className="font-medium">{review.name}</span>
             </div>
-            <p className="mt-2 font-light">{review.comment}</p>
+            <p className="mt-2 font-light text-gray">{review.comment}</p>
           </div>
         ))}
       </div>
