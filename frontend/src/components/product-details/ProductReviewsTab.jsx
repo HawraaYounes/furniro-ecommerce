@@ -22,19 +22,27 @@ const ProductReviewsTab = () => {
       comment: "Bad product! Dont Buy it!",
     },
   ];
-
+  const ratingCounts = [5, 4, 3, 2, 1].map((rating) => ({
+    rating,
+    count: reviews.filter((review) => Math.round(review.rating) === rating).length,
+    percentage:
+      (reviews.filter((review) => Math.round(review.rating) === rating).length /
+        totalReviews) *
+      100,
+  }));
+  
   return (
     <div className="flex flex-col sm:flex-row w-full font-poppins gap-6">
       {/* Average Rating */}
       <div className="flex items-center px-4 sm:w-1/4 w-full justify-between  relative">
-        <div className="flex gap-6 justify-center w-full border-b border-gray pb-2 content-center sm:absolute sm:inset-x-0 sm:top-0">
+        <div className="flex flex-col justify-start sm:flex-row sm:gap-6 sm:justify-center w-full border-b border-gray pb-2 sm:content-center sm:absolute sm:inset-x-0 sm:top-0">
           <div className="">
-            <p className="text-5xl font-semibold ">
+            <p className="text-5xl font-semibold text-left">
               <span className="px-1">{averageRating.toFixed(1)}</span>
               <span className="text-sm font-light">/ 5</span>
             </p>
           </div>
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center text-left">
             <StarRating averageRating={averageRating} />
             <span className="text-gray text-xs mt-1">
               Based on {totalReviews} reviews
