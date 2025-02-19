@@ -3,7 +3,7 @@ import { starFilledIcon } from "../../assets";
 
 const RatingProgressBar = ({ count, percentage }) => {
   return (
-    <div className="items-center flex justify-evenly w-full">
+    <div className="items-center flex justify-evenly w-full font-poppins text-gray font-light">
             <span>
               <img src={starFilledIcon}  />
             </span>
