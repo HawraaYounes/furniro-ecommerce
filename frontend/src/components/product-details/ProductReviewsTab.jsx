@@ -25,7 +25,7 @@ const ProductReviewsTab = () => {
   ];
 
   // Calculate rating distribution
-  const ratingDistribution = [5,4,3,2,1].map((star) => ({
+  const ratingDistribution = [5,4,3,2,12].map((star) => ({
     star,
     count: reviews.filter((review) => Math.floor(review.rating) === star).length,
     percentage: (reviews.filter((review) => Math.floor(review.rating) === star).length / totalReviews) * 100,
@@ -39,7 +39,7 @@ const ProductReviewsTab = () => {
           <div>
             <p className="text-5xl font-semibold text-left">
               <span className="px-1">{averageRating.toFixed(1)}</span>
-              <span className="text-sm font-light">/ 5</span>
+              <span className="text-sm font-light text-gray">/ 5</span>
             </p>
           </div>
           <div className="flex flex-col justify-center text-left">
