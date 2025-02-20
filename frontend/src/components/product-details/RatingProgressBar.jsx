@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { starFilledIcon } from "../../assets";
 
-const RatingProgressBar = ({ count, percentage }) => {
+const RatingProgressBar = ({ count, percentage, star }) => {
   return (
     <div className="items-center flex justify-evenly w-full font-poppins text-gray-600 font-light text-gray gap-3 text-sm">
       <div className="flex gap-1 text-center">
-        <span>5</span>
+        <span>{star}</span>
         <span className="self-center h-full ">
           <img src={starFilledIcon} alt="Star Icon" className="h-full w-full" />
         </span>

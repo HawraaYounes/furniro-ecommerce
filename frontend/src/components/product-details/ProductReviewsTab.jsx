@@ -25,7 +25,7 @@ const ProductReviewsTab = () => {
   ];
 
   // Calculate rating distribution
-  const ratingDistribution = [5,4,3,2,12].map((star) => ({
+  const ratingDistribution = [5,4,3,2,1].map((star) => ({
     star,
     count: reviews.filter((review) => Math.floor(review.rating) === star).length,
     percentage: (reviews.filter((review) => Math.floor(review.rating) === star).length / totalReviews) * 100,
