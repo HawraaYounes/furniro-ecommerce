@@ -34,8 +34,8 @@ const ProductReviewsTab = () => {
   return (
     <div className="flex flex-col sm:flex-row w-full font-poppins gap-6">
       {/* Average Rating */}
-      <div className="flex flex-col sm:w-1/4 w-full gap-6">
-        <div className="flex flex-col sm:flex-row sm:gap-6 sm:justify-center w-full border-b border-gray pb-4">
+      <div className="flex flex-row sm:flex-col  sm:w-1/4 w-full gap-6">
+        <div className="flex flex-col sm:flex-row sm:gap-6 sm:justify-center w-full sm:border-b border-gray pb-4">
           <div>
             <p className="text-5xl font-semibold text-left">
               <span className="px-1">{averageRating.toFixed(1)}</span>
