@@ -44,7 +44,7 @@ const ProductReviewsTab = () => {
           </div>
           <div className="flex flex-col justify-center text-left">
             <StarRating averageRating={averageRating} />
-            <span className="text-gray text-xs mt-1">
+            <span className="text-gray text-xs mt-1 mr-[1px]">
               Based on {totalReviews} reviews
             </span>
           </div>
