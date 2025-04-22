@@ -1,4 +1,5 @@
 import StarRating from "./StarRating";
+import RatingProgressBar from "./RatingProgressBar"; // Import the new component
 
 const ProductReviewsTab = () => {
   const averageRating = 4.4;
@@ -12,7 +13,7 @@ const ProductReviewsTab = () => {
     },
     {
       name: "Liam S.",
-      rating: 3.5,
+      rating: 5,
       comment:
         "I’ve been searching for the perfect moisturizer, and I finally found it! This product is so hydrating, absorbs quickly, and doesn’t leave a greasy residue. The natural ingredients make my skin feel revitalized and refreshed. It’s definitely a new staple in my skincare regimen.",
     },
@@ -22,32 +23,43 @@ const ProductReviewsTab = () => {
       comment: "Bad product! Dont Buy it!",
     },
   ];
-  const ratingCounts = [5, 4, 3, 2, 1].map((rating) => ({
-    rating,
-    count: reviews.filter((review) => Math.round(review.rating) === rating).length,
-    percentage:
-      (reviews.filter((review) => Math.round(review.rating) === rating).length /
-        totalReviews) *
-      100,
+
+  // Calculate rating distribution
+  const ratingDistribution = [5,4,3,2,1].map((star) => ({
+    star,
+    count: reviews.filter((review) => Math.floor(review.rating) === star).length,
+    percentage: (reviews.filter((review) => Math.floor(review.rating) === star).length / totalReviews) * 100,
   }));
-  
+
   return (
     <div className="flex flex-col sm:flex-row w-full font-poppins gap-6">
       {/* Average Rating */}
-      <div className="flex items-center px-4 sm:w-1/4 w-full justify-between  relative">
-        <div className="flex flex-col justify-start sm:flex-row sm:gap-6 sm:justify-center w-full border-b border-gray pb-2 sm:content-center sm:absolute sm:inset-x-0 sm:top-0">
-          <div className="">
+      <div className="flex flex-row sm:flex-col  sm:w-1/4 w-full gap-4">
+        <div className="flex flex-col sm:flex-row sm:gap-6 sm:justify-center w-full border-r sm:border-r-0 sm:border-b border-gray pb-4">
+          <div>
             <p className="text-5xl font-semibold text-left">
               <span className="px-1">{averageRating.toFixed(1)}</span>
-              <span className="text-sm font-light">/ 5</span>
+              <span className="text-sm font-light text-gray">/ 5</span>
             </p>
           </div>
           <div className="flex flex-col justify-center text-left">
             <StarRating averageRating={averageRating} />
-            <span className="text-gray text-xs mt-1">
+            <span className="text-gray text-xs mt-1 mr-[1px]">
               Based on {totalReviews} reviews
             </span>
           </div>
+        </div>
+
+        {/* Rating Distribution */}
+        <div className="w-full">
+          {ratingDistribution.map(({ star, count, percentage }) => (
+            <RatingProgressBar
+              key={star}
+              star={star}
+              count={count}
+              percentage={percentage}
+            />
+          ))}
         </div>
       </div>
 
